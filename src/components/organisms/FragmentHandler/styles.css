@@ -1,0 +1,18 @@
+.fragment-handler-cont{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    min-height: 100vh;
+    align-self: stretch;
+}
+
+.empty-fragment-cont{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 10px solid black;
+    flex: 1;
+    align-self: stretch;
+}

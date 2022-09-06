@@ -1,0 +1,15 @@
+.profile-tab-view-cont{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 20px 0px;
+    gap: 20px;
+    width: 300px;
+    min-height: 100vh;
+    height: 100%; 
+    position: sticky;
+    left: 0px;
+    top: 0px;
+}
+

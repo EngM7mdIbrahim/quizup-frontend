@@ -1,0 +1,18 @@
+.text-input-box-cont{
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.text-input-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    
+}

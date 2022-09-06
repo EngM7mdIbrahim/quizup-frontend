@@ -1,0 +1,16 @@
+.side-tab-bar-item-cont{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 60px;
+    width: 100%;
+}
+
+.side-tab-bar-item-cont:hover{
+    cursor: pointer;
+}
+
+.selected-tab-bar-item{
+    width: 5px;
+    height: 100%;
+}

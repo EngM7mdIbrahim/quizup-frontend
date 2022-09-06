@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;800&display=swap");
+h1 {
+  font-size: 48px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+p {
+  font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+p {
+  font-weight: 400;
+  font-family: "Inter";
+}
+
+a:link,a:visited {
+  color: '#0d98ba';
+  background-color: transparent;
+  text-decoration: none;
+}
+
+
+.bold-text {
+  font-weight: 800;
+}

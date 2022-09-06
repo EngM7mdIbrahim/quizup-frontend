@@ -1,0 +1,17 @@
+.rounded {
+  border-radius: 50%;
+}
+
+.bordered {
+  border: 2px solid black;
+}
+
+.profile {
+  padding: 28.5px;
+}
+
+
+img{
+  object-fit: cover;
+}
+

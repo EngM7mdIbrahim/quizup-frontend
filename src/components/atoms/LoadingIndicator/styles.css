@@ -1,0 +1,41 @@
+.loading-cont{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.loading-item{
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    background-color: whitesmoke;
+    animation: loading-anim 2s ease infinite;
+}
+
+.loading-animation{
+    animation-delay: 300ms;
+    animation: loading-anim 1s ease infinite;
+}
+
+
+
+@keyframes loading-anim{
+    0%{
+        transform: rotate(0deg);
+    }
+    5%{
+        transform: rotate(-10deg);
+    }
+    10%{
+        transform: rotate(-10deg);
+    }
+    90%{
+        transform: rotate(370deg);
+    }
+    95%{
+        transform: rotate(370deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}

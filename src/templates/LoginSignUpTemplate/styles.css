@@ -1,0 +1,19 @@
+.login-temp-cont{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height:100vh;
+    gap: 20px;
+}
+
+.login-temp-sub-cont{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.login-signup-temp-img-cont{
+   flex: 2;
+   align-self: stretch; 
+}

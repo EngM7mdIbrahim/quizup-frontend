@@ -1,0 +1,13 @@
+.toolbar-cont{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100vw;
+    padding: 0px 20px;
+    height: 70px;
+    box-shadow: 8px 0px 10px rgba(0, 0, 00, 0.5);
+}
