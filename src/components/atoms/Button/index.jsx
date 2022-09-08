@@ -4,6 +4,7 @@ import AppLabel, { TYPES } from '../../atoms/AppLabel'
 import "./styles.css";
 
 export default function Button({
+  style ={},
   children = ["No text here! - BA"],
   isPrimary = true,
   onClick = () => {
@@ -14,11 +15,11 @@ export default function Button({
 {
   
   return isPrimary ? (
-    <button className={`${className}`} style={{ backgroundColor: ACCENT }} onClick={onClick}>
+    <button className={`${className}`} style={{ backgroundColor: ACCENT, ...style }} onClick={onClick}>
       {children}
     </button>
   ) : (
-    <button className={`${className}`} style={{ color: TEXT_COLOR, backgroundColor: PRIMARY }} onClick={onClick}>
+    <button className={`${className}`} style={{ color: TEXT_COLOR, backgroundColor: PRIMARY, ...style }} onClick={onClick}>
       {children}
     </button>
   );

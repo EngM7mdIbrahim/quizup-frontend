@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
-import { isLoadingAction, isRejectedAction } from "../utils/helper";
-import { getQuizzesReq } from "../api/quizzes.api";
+import { checkAxiosError, isLoadingAction, isRejectedAction } from "../utils/helper";
+import { getQuizzesReq, deleteQuizReq } from "../api/quizzes.api";
 import format from "date-format";
 
 const initialState = {
@@ -24,11 +24,11 @@ export const quizSlice = createSlice({
         state.isLoading = false;
         state.quizzes = payload;
       })
-      .addMatcher(isLoadingAction, (state) => {
+      .addMatcher(isLoadingAction('quizzes'), (state) => {
         state.isLoading = true;
         state.errorMessage = "";
       })
-      .addMatcher(isRejectedAction, (state, { payload }) => {
+      .addMatcher(isRejectedAction('quizzes'), (state, { payload }) => {
         state.errorMessage = payload;
         state.isLoading = false;
       });
@@ -45,14 +45,26 @@ export const getQuizzes = createAsyncThunk(
           ...quiz,
           lastEdit: format.asString("dd/mm/yyyy", new Date(quiz.lastEdit)),
         };
-        console.log("New Quiz: ", newQuiz);
         return newQuiz;
       });
-      console.log("Quizzes: ", newQuizzes);
       return newQuizzes;
     } catch (error) {
-      console.error(error);
-      return rejectWithValue(error.response.data.message);
+      console.error(error)
+      return rejectWithValue(checkAxiosError(error));
+    }
+  }
+);
+
+export const deleteQuiz = createAsyncThunk(
+  "quizzes/deleteQuiz",
+  async ({id}, { rejectWithValue, dispatch }) => {
+    try {
+      await deleteQuizReq(id);
+      dispatch(getQuizzes())
+      return true;
+    } catch (error) {
+      console.error(error)
+      return rejectWithValue(checkAxiosError(error));
     }
   }
 );

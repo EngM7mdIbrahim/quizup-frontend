@@ -10,12 +10,13 @@ export const formatMessages = (message) => {
   return newMessage;
 };
 
-export const isRejectedAction = (action) => {
-  return action.type.endsWith("rejected");
+export const isRejectedAction = (actionSlice) => {
+  return (action) => action.type.endsWith("rejected") && action.type.includes(actionSlice);
 };
 
-export const isLoadingAction = (action) => {
-  return action.type.endsWith("pending");
+export const isLoadingAction = (actionSlice) => {
+  return (action) =>
+    action.type.endsWith("pending") && action.type.includes(actionSlice);
 };
 
 export const isFulfilledAuthAction = (action) => {
@@ -25,3 +26,12 @@ export const isFulfilledAuthAction = (action) => {
   );
 };
 
+export const checkAxiosError = (error)=>{
+  const isDev = true;
+  
+  if(error.code.includes('ERR_NETWORK')){
+      return `${isDev ? 'Axios: ': ''} ${error.message}`
+  }else{
+    return `${isDev ? 'Server: ': ''} ${error.response.data.message}`
+  }
+}

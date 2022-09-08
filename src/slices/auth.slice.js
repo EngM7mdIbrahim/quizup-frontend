@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { signInReq, signUpReq } from "../api/auth.api";
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../utils/constants";
 import {
+  checkAxiosError,
   isFulfilledAuthAction,
   isLoadingAction,
   isRejectedAction,
@@ -21,6 +22,7 @@ export const authSlice = createSlice({
   reducers: {
     resetState: (state) => {
       state.errorMessage = "";
+      state.isLoading=false;
     },
     signOut: (state) => {
       state.accessToken = null;
@@ -34,16 +36,16 @@ export const authSlice = createSlice({
       .addMatcher(isFulfilledAuthAction, (state, { payload }) => {
         state.isLoading = false;
         state.accessToken = payload.accessToken;
+        state.name = payload.name;
         localStorage.setItem(ACCESS_TOKEN_KEY, state.accessToken);
         // state.refreshToken = payload.refreshToken;
         // localStorage.setItem(REFRESH_TOKEN_KEY, state.refreshToken);
-        console.log('payload: ', payload)
       })
-      .addMatcher(isLoadingAction, (state) => {
+      .addMatcher(isLoadingAction('auth'), (state, action) => {
         state.isLoading = true;
         state.errorMessage = "";
       })
-      .addMatcher(isRejectedAction, (state, { payload }) => {
+      .addMatcher(isRejectedAction('auth'), (state, { payload }) => {
         state.errorMessage = payload;
         state.isLoading = false;
       });
@@ -57,7 +59,8 @@ export const signIn = createAsyncThunk(
       let response = await signInReq(payload);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      console.error(error)
+      return rejectWithValue(checkAxiosError(error));
     }
   }
 );
@@ -69,7 +72,8 @@ export const signUp = createAsyncThunk(
       let response = await signUpReq(payload);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      console.error(error)
+      return rejectWithValue(checkAxiosError(error));
     }
   }
 );

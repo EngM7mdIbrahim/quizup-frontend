@@ -9,6 +9,7 @@ export default function IconButton({
   className = "",
   backgroundColor = PRIMARY,
   iconName = undefined,
+  imageType=TYPES.EXTRA_SMALL,
   onClick = () =>
     console.error("No on click handler passed here - IconButton "),
 }) {
@@ -17,7 +18,7 @@ export default function IconButton({
       style={{ backgroundColor, ...style }}
       className={`icon-button-cont ${className}`}
     >
-      <Image imageName={iconName} type={TYPES.EXTRA_SMALL} />
+      <Image imageName={iconName} type={imageType} />
     </div>
   );
 }

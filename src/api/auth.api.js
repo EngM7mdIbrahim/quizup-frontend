@@ -4,7 +4,6 @@ export const signInReq = async (user)=>{
         email: user.email,
         password: user.password
     })
-    console.log(response);
     return response;
 }
 

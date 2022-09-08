@@ -11,7 +11,8 @@ import { useSelector, useDispatch } from "react-redux";
 import LoadingPopUp from "./components/molecules/LoadingPopUp";
 import ErrorPopUp from "./components/molecules/ErrorPopUp";
 import { setErrorMessage } from "./slices/general.slice";
-import ReportsTemplate from "./templates/ReportsTemplate";
+import ClassesScene from "./scenes/ClassesScene";
+import SingleClassTemplate from "./templates/SingleClassTemplate";
 
 function App() {
   const { isLoading, errorMessage } = useSelector((state) => state.general);
@@ -33,7 +34,8 @@ function App() {
           <Route path="/signup" element={<SignupScene />} />
           <Route path="/profile" element={<ProfileScene />}>
               <Route path="/profile/quizzes" index element={<QuizzesScene/>} />
-              <Route path="/profile/reports" index element={<ReportsTemplate/>} />
+              <Route path="/profile/reports" element={<ClassesScene/>} />
+              <Route path="/profile/reports/:id" element={<SingleClassTemplate className="JS Test"/>} />
           </Route>
         </Routes>
       </BrowserRouter>
