@@ -5,26 +5,22 @@ import useGeneralListener from "../hooks/useGeneralListener";
 import * as yup from "yup";
 import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
 import { resetState, signUp } from "../slices/auth.slice";
-import { useNavigate } from "react-router-dom";
-
-const handleAppleSignup = () => alert("Under Construction!");
-const handleFacebookSignup = () => alert("Under Construction!");
-const handleGoogleSignup = () => alert("Under Construction!");
+import useResetNaviagtor from "../hooks/useResetNaviagtor";
 
 export default function SignupScene() {
-  const { isLoading, errorMessage, accessToken} = useSelector(
+  const { isLoading, errorMessage, accessToken } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
   useGeneralListener(errorMessage, isLoading);
-  const goTo = useNavigate();
+
+  const customNavigator = useResetNaviagtor(resetState);
 
   useEffect(() => {
     if (accessToken) {
-      dispatch(resetState());
-      goTo("/profile");
+      customNavigator("/profile");
     }
-  }, [isLoading, errorMessage, accessToken, dispatch]);
+  }, [isLoading, errorMessage, accessToken, dispatch, customNavigator]);
 
   const handleSignUp = (user) => {
     dispatch(signUp(user));
@@ -76,6 +72,7 @@ export default function SignupScene() {
       type: FORM_INPUT_TYPES.LINK,
       text: "You are already a dealer?",
       route: "/signin",
+      react: true,
       routeText: "Signin then!",
     },
   ];
@@ -83,9 +80,6 @@ export default function SignupScene() {
     <LoginSignupTemplate
       inputs={inputs}
       title="Join us! Become a Leader!"
-      // onAppleSignup={handleAppleSignup}
-      // onGoogleSignup={handleGoogleSignup}
-      // onFacebookSignup={handleFacebookSignup}
       onFormSubmit={handleSignUp}
     />
   );

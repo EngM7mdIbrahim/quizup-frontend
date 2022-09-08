@@ -28,6 +28,7 @@ export const FORM_LINK_EXAMPLE = {
   type: FORM_INPUT_TYPES.LINK,
   route: undefined,
   text: "",
+  react: false,
   routeText: 'No route text passed - Form'
 };
 

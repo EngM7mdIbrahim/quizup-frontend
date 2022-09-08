@@ -1,0 +1,16 @@
+.tab-bar-chooser-item-cont{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    background: none;
+}
+
+.tab-bar-chooser-item-cont:hover{
+    cursor: pointer;
+}
+.tab-bar-chooser-item-cont p{
+    font-weight: bold;
+    text-transform: capitalize;
+}

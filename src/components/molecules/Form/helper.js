@@ -66,6 +66,7 @@ export const getLink = (input) => {
   return (
     <LinkLabel
       key={nanoid()}
+      react={input.react || FORM_LINK_EXAMPLE.react}
       href={input.route || FORM_LINK_EXAMPLE.route}
       label={input.text || FORM_LINK_EXAMPLE.text   }
     >

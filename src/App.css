@@ -5,6 +5,10 @@
   min-height:100vh;
 }
 
-.border{
-  border: 4px solid black
+.profile-template-page{
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+  flex: 1;
+  background-image: url('./assets/images/background.svg');
 }

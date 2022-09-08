@@ -1,0 +1,50 @@
+.quiz-card-cont{
+    display: flex;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 5px;
+    width: 100%;
+    height: 180px;
+    gap: 30px;
+    transition: all 300ms ease;
+}
+
+.quiz-card-details-cont{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    align-self: stretch;
+}
+.quiz-card-details-bottom-cont{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+}
+
+.quiz-card-actions-cont{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: flex-end;
+    height: 100%;
+    width: 200px;
+    position: relative;
+}
+
+.quiz-card-delete-btn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+}
+
+.quiz-card-cont:hover{
+    cursor: pointer;
+    box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.6);
+}

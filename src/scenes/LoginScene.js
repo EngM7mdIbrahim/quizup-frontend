@@ -5,26 +5,21 @@ import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { signIn, resetState } from "../slices/auth.slice";
 import useGeneralListener from "../hooks/useGeneralListener";
-import { useNavigate } from "react-router-dom";
+import useResetNaviagtor from "../hooks/useResetNaviagtor";
 
-const handleAppleSignup = () => alert("Under Construction!");
-const handleFacebookSignup = () => alert("Under Construction!");
-const handleGoogleSignup = () => alert("Under Construction!");
 export default function LoginScene() {
   const { isLoading, errorMessage, accessToken } = useSelector((state) => state.auth);
   useGeneralListener(errorMessage,isLoading);
   const dispatch = useDispatch();
-  const goTo = useNavigate();
+  const customNavigator = useResetNaviagtor(resetState);
 
   useEffect(() => {
     if (accessToken) {
-      dispatch(resetState());
-      goTo("/profile/templates");
+      customNavigator("/profile/quizzes");
     }
   }, [isLoading, errorMessage, dispatch]);
 
   const handleLogin = (user) => {
-    console.log("User: ", user);
     dispatch(signIn(user));
   };
 
@@ -55,6 +50,7 @@ export default function LoginScene() {
       type: FORM_INPUT_TYPES.LINK,
       text: "Don't have an account?",
       route: "/signup",
+      react: true,
       routeText: "Signup then!",
     },
   ];
@@ -64,9 +60,6 @@ export default function LoginScene() {
       inputs={inputs}
       onFormSubmit={handleLogin}
       title="What's up, Leader!"
-      // onAppleSignup={handleAppleSignup}
-      // onGoogleSignup={handleGoogleSignup}
-      // onFacebookSignup={handleFacebookSignup}
     />
   );
 }

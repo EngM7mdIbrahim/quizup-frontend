@@ -6,6 +6,7 @@ button{
   color: white;
   border: none;
   font-weight: 500;
+  font-weight: bold;
 }
 
 .secondary-button{

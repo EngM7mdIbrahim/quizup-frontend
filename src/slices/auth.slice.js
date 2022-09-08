@@ -10,7 +10,7 @@ import {
 const initialState = {
   isLoading: false,
   errorMessage: "",
-  accessToken: localStorage.getItem(ACCESS_TOKEN_KEY),
+  accessToken: localStorage.getItem(ACCESS_TOKEN_KEY)==='null'? null : localStorage.getItem(ACCESS_TOKEN_KEY),
   name: "Unkown Name!",
   // refreshToken: localStorage.getItem(ACCESS_TOKEN_KEY),
 };
@@ -26,7 +26,7 @@ export const authSlice = createSlice({
       state.accessToken = null;
       // state.refreshToken = null;
       localStorage.setItem(ACCESS_TOKEN_KEY, null);
-      localStorage.setItem(REFRESH_TOKEN_KEY, null);
+      // localStorage.setItem(REFRESH_TOKEN_KEY, null);
     },
   },
   extraReducers: (builder) => {

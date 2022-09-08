@@ -1,0 +1,14 @@
+.tab-bar-chooser-cont{
+    display: flex;
+    border-radius: 5px;
+    height: 40px;
+    position: relative;
+}
+.tab-bar-chooser-selector{
+    position: absolute;
+    width: 200px;
+    height: 100%;
+    border-radius: 5px;
+    left: 200px;
+    transition: all 300ms ease;
+}

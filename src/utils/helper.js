@@ -1,8 +1,3 @@
-import { useEffect } from "react";
-export const formatDate = (date) => {
-  return date.toLocaleDateString("en-us");
-};
-
 export const formatMessages = (message) => {
   const newMessage = {
     emailError: message.includes("email") ? message : "",
@@ -29,3 +24,4 @@ export const isFulfilledAuthAction = (action) => {
     action.type.endsWith("fulfilled")
   );
 };
+
