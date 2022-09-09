@@ -2,6 +2,23 @@
     gap: 20px;
     padding: 20px;
 }
-
+.single-report-card-cont{
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    gap:20px;
+    border-radius: 5px;
+}
+.empty-card-component{
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    flex:  1;
+    align-self: stretch;
+    margin: 20px;
+}
 
   

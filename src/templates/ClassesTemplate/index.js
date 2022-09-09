@@ -17,9 +17,9 @@ export default function ReportsTemplate({
     >
       <AppLabel isBold>Reports</AppLabel>
       {classes.map((session) => {
-        console.log("Session: ", session);
         return (
           <ReportCard
+            key={session._id}
             onClick={()=>{onReportClick(session._id)}}
             players={session.players.length}
             classTitle={session.name}

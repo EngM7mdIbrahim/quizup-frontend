@@ -12,6 +12,7 @@ export default function TopBar({
   onTabClick = (index, name) =>
     console.error("No on tab selector handler passed  - TopBar ", index, name),
   onButtonClick = () => console.error("No button handler - TopBar!"),
+  buttonText = 'Log out',
   className = "",
 }) {
   return (
@@ -28,7 +29,7 @@ export default function TopBar({
         <TabBarChooser onTabClick={onTabClick} tabs={['quizzes', 'reports']} />
       </div>
       <Button onClick={onButtonClick} isPrimary={false}>
-        Log Out
+        {buttonText}
       </Button>
     </div>
   );

@@ -43,7 +43,7 @@ export default function QuizzesScene() {
     );
   };
   const handleCreateQuiz = () => {
-    customNavigator("/createQuiz");
+    customNavigator("/profile/quizzes/create");
   };
 
   return (
@@ -55,6 +55,7 @@ export default function QuizzesScene() {
       />
       <QuizzesTemplate
         handleQuizDelete={handleDeleteQuiz}
+        handleCreateQuiz={handleCreateQuiz}
         userName={name}
         quizzes={quizzes}
       />

@@ -18,6 +18,9 @@ export default function QuizzesTemplate({
   handleQuizDelete = (id) => {
     console.error("No delete handler passed - QuizzesTemplate. ID: ", id);
   },
+  handleCreateQuiz = () =>{
+    console.error("No create quiz handler passed - QuizzesTemplate");
+  }
 }) {
   return (
     <div
@@ -39,7 +42,7 @@ export default function QuizzesTemplate({
             onDeleteClick={handleQuizDelete}
           />
         ))}
-      <CreateQuizCard />
+      <CreateQuizCard onClick={handleCreateQuiz} />
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function QuizCard({
           {courseTitle}
         </AppLabel>
         <div className=" quiz-card-details-bottom-cont">
-          <UserRecord userName={userName} />
+          <UserRecord tag={userName} />
           <AppLabel type={TYPES.PAR}>
             Last Modified: {lastModified}
           </AppLabel>

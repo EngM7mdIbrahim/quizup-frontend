@@ -13,7 +13,7 @@ export default function ReportCard({ onClick= ()=>console.error(' No on click ha
         <AppLabel isBold type={LABEL_TYPES.SUB_SUB_TITLE}>{classTitle}</AppLabel>
       </div>
       <AppLabel style={{flex: 1, textAlign: 'center'}} type={LABEL_TYPES.PAR}>Last Edited on: {lastEdited}</AppLabel>
-      <UserRecord userName={`${players} players`}/>
+      <UserRecord tag={`${players} players`}/>
     </div>
   );
 }

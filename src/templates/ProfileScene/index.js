@@ -1,3 +1,4 @@
+import { create } from "@mui/material/styles/createTransitions";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {  Outlet, useNavigate } from "react-router-dom";
@@ -13,21 +14,27 @@ export default function ProfileScene({
   const dispatch = useDispatch();
   useEffect(()=>{
     goTo('/profile/quizzes')
-  },[])
+  },[]);
+
+  const createQuiz = window.location.href.includes('/profiel/quizzes/create')
 
   const handleTabClick = (_,name)=>{
-    if(name)
     goTo(`/profile/${name}`);
   }
-
   const handleSignOut = ()=>{
     dispatch(signOut());
     goTo('/signin');
   }
+
+  const handleSaveQuiz = () =>{
+    
+  }
+  const handleTopBarButton = createQuiz ? handleSaveQuiz : handleSignOut; 
+  const buttonText = createQuiz ? 'Save Quiz' : 'Log out'
   
   return (
     <div style={{flexDirection: 'column'}} className="page">
-      <TopBar onButtonClick={handleSignOut} onTabClick={handleTabClick}  userName={name} />
+      <TopBar buttonText={buttonText} onButtonClick={handleTopBarButton} onTabClick={handleTabClick}  userName={name} />
       <Outlet/>
     </div>
   );

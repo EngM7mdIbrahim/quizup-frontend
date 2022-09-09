@@ -6,10 +6,3 @@
     gap: 10px;
 }
 
-.user-record-img-cont{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 7px;
-    border-radius: 50%;
-}
