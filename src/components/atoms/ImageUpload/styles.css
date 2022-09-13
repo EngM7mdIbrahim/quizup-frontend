@@ -1,0 +1,39 @@
+.image-upload-cont {
+  width: 400px;
+  height: 300px;
+  border-radius: 5px;
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 300ms ease;
+}
+
+.image-upload-cont:hover,
+.image-upolad-cancel:hover {
+  cursor: pointer;
+
+  box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.disable-hover:hover {
+  cursor: auto;
+  box-shadow: none;
+}
+
+.image-upload-selected-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.image-upolad-cancel {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+  border-radius: 50%;
+  transition: all 300ms ease;
+}

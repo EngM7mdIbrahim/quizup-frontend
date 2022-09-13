@@ -2,23 +2,25 @@ import React from "react";
 import "./styles.css";
 
 import { PRIMARY } from "../../../styles/colors";
-import Image, { TYPES } from '../../atoms/Image'
+import Image, { TYPES } from "../../atoms/Image";
 
 export default function IconButton({
+  hidden = false,
   style = {},
   className = "",
   backgroundColor = PRIMARY,
   iconName = undefined,
-  imageType=TYPES.EXTRA_SMALL,
+  imageType = TYPES.EXTRA_SMALL,
   onClick = () =>
     console.error("No on click handler passed here - IconButton "),
 }) {
   return (
-    <div onClick={onClick}
+    <div
+      onClick={onClick}
       style={{ backgroundColor, ...style }}
       className={`icon-button-cont ${className}`}
     >
-      <Image imageName={iconName} type={imageType} />
+      {hidden && <Image imageName={iconName} type={imageType} />}
     </div>
   );
 }

@@ -35,6 +35,7 @@ export default function QuestionPreviewItem({
   return (
     <div
       onClick={() => {
+       
         onClick(id);
       }}
       style={{ backgroundColor: SECONDARY, ...style }}

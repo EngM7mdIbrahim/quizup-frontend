@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     width: 250px;
-    flex: 1;
+    align-self: stretch;
     overflow-y: scroll;
     height: 90vh;
 }

@@ -3,3 +3,25 @@
   padding: 20px;
 }
 
+.question-edit-cont{
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: scroll;
+}
+
+.question-opts-row-cont{
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  flex-direction: row;
+}
+.question-opts-cont{
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  flex-direction: column;
+
+}

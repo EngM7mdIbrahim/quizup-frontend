@@ -4,6 +4,13 @@ import { PRIMARY } from "../../../styles/colors";
 import QuestionPreviewItem from "../../molecules/QuestionPreviewItem";
 import "./styles.css";
 
+const init_questions = [
+  { id: nanoid(), type: "answer" },
+  { id: nanoid(), type: "answer" },
+  { id: nanoid(), type: "answer" },
+  { id: nanoid(), type: "answer" },
+];
+
 export default function QuestionsPreviewBar({
   onQuestionUpClick = (id) =>
     console.error(
@@ -20,33 +27,38 @@ export default function QuestionsPreviewBar({
       "No on select click hanlder was passed - QuestionsPreviewBar. ID: ",
       id
     ),
-  questions = [{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },{ id: nanoid(), type: "answer" },],
+  questions = init_questions,
   style = {},
   className = "",
+  selected = init_questions[0].id,
+  setSelected=(selected) =>{console.error(
+    "No on set selected hanlder was passed - QuestionsPreviewBar. ID: ",
+    selected
+  )}
 }) {
-  const [selected, setSelected] = useState(questions[0].id);
-  const handleItemClick = (id)=>{
-    console.log('Entered!');
-    console.log
+  const handleItemClick = (id) => {
     setSelected(id);
     onQuestionSelect(id);
   };
+  console.log(questions)
   return (
     <div
       style={{ backgroundColor: PRIMARY, ...style }}
       className={`questions-preview-bar-cont ${className}`}
     >
-      {questions.map((question) => (
-        <QuestionPreviewItem
-          selected={question.id === selected}
-          onClick={handleItemClick}
-          onDownClick={onQuestionDownClick}
-          onUpClick={onQuestionUpClick}
-          id={question.id}
-          key={question.id}
-          type={question.type}
-        />
-      ))}
+      {questions.map((question, index) => {
+        return (
+          <QuestionPreviewItem
+            selected={index === selected}
+            onClick={handleItemClick}
+            onDownClick={onQuestionDownClick}
+            onUpClick={onQuestionUpClick}
+            id={index}
+            key={index}
+            type={question.type}
+          />
+        );
+      })}
     </div>
   );
 }

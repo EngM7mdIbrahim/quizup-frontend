@@ -1,0 +1,16 @@
+.edit-label-input {
+  border: none;
+  outline: none;
+  background: none;
+  text-align: center;
+}
+
+.edit-label-input:active,
+.edit-label-input:hover {
+
+
+}
+
+.bold-text {
+  font-weight: 800;
+}
