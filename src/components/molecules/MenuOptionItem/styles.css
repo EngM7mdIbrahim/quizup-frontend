@@ -1,0 +1,24 @@
+.create-question-preview-item-cont {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  border-radius: 5px;
+  width: 100%;
+  padding: 20px;
+  transition: all 300ms ease;
+}
+.create-question-preview-item-actions-cont {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content:center ;
+}
+
+.selected-item {
+  border: 2px solid #c60017;
+}
+
+.create-question-preview-item-cont:hover{
+  cursor: pointer;
+  box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.5);
+}

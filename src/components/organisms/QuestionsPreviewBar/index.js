@@ -5,10 +5,10 @@ import QuestionPreviewItem from "../../molecules/QuestionPreviewItem";
 import "./styles.css";
 
 const init_questions = [
-  { id: nanoid(), type: "answer" },
-  { id: nanoid(), type: "answer" },
-  { id: nanoid(), type: "answer" },
-  { id: nanoid(), type: "answer" },
+  { id: nanoid(), type: "choices" },
+  { id: nanoid(), type: "choices" },
+  { id: nanoid(), type: "choices" },
+  { id: nanoid(), type: "choices" },
 ];
 
 export default function QuestionsPreviewBar({
@@ -27,20 +27,21 @@ export default function QuestionsPreviewBar({
       "No on select click hanlder was passed - QuestionsPreviewBar. ID: ",
       id
     ),
+  onQuestionDelete = (id) =>
+    console.error(
+      "No on down click hanlder was passed - QuestionsPreviewBar. ID: ",
+      id
+    ),
+  onAddQuestion = () => {
+    console.error(
+      "No on add question hanlder was passed - QuestionsPreviewBar. ID: "
+    );
+  },
   questions = init_questions,
   style = {},
   className = "",
   selected = init_questions[0].id,
-  setSelected=(selected) =>{console.error(
-    "No on set selected hanlder was passed - QuestionsPreviewBar. ID: ",
-    selected
-  )}
 }) {
-  const handleItemClick = (id) => {
-    setSelected(id);
-    onQuestionSelect(id);
-  };
-  console.log(questions)
   return (
     <div
       style={{ backgroundColor: PRIMARY, ...style }}
@@ -50,9 +51,12 @@ export default function QuestionsPreviewBar({
         return (
           <QuestionPreviewItem
             selected={index === selected}
-            onClick={handleItemClick}
+            onClick={(id) => {
+              question.type === 'add' ? onAddQuestion() : onQuestionSelect(id);
+            }}
             onDownClick={onQuestionDownClick}
             onUpClick={onQuestionUpClick}
+            onQuestionDelete={onQuestionDelete}
             id={index}
             key={index}
             type={question.type}

@@ -9,19 +9,27 @@ const CHOICES = "ABCD";
 
 export default function QuestionOption({
   value = "No value passed here - QuestionOption",
-  onNewValue = (newValue) => {
-    console.error("No on new value handler! - QuestionOption", newValue);
+  onQuestionOptionCorrectSelect = (letter)=>{
+    console.error(
+      "No on question option correct select handler! - QuestionOption. Letter: ",
+      letter
+    );
+  },
+  onNewValue = (newValue, letter) => {
+    console.error(
+      "No on new value handler! - QuestionOption. Value: ",
+      newValue
+    );
   },
   letter = 0,
   editable = false,
-  game = false,
   style = {},
   className = "",
-  selected = true,
+  selected = 0,
 }) {
   return (
     <div
-      style={{ backgroundColor: game ? SECONDARY : PRIMARY, ...style }}
+      style={{ backgroundColor: !editable ? SECONDARY : PRIMARY, ...style }}
       className={`quest-opt-cont ${className}`}
     >
       <div
@@ -35,7 +43,7 @@ export default function QuestionOption({
       {editable ? (
         <EditLabel
           value={value}
-          onNewValue={onNewValue}
+          onNewValue={(newValue)=>onNewValue(newValue, letter)}
           className="question-opt-text"
           type={INPUT_SIZES.PAR}
         />
@@ -47,11 +55,12 @@ export default function QuestionOption({
 
       <IconButton
         className="question-opt-icon-cont"
-        hidden={!selected}
+        hidden={selected !== letter}
         iconName="check.png"
         big
+        onClick={()=>onQuestionOptionCorrectSelect(letter)}
         style={{
-          backgroundColor: game ? PRIMARY : SECONDARY,
+          backgroundColor: !editable ? PRIMARY : SECONDARY,
         }}
       />
     </div>

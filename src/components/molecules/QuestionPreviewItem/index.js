@@ -5,6 +5,7 @@ import IconButton from "../../atoms/IconButton";
 import IconBackground from "../../molecules/IconBackground";
 import Button from "../../atoms/Button";
 import { nanoid } from "@reduxjs/toolkit";
+import MenuOptionItem from "../MenuOptionItem";
 
 export default function QuestionPreviewItem({
   id = nanoid(),
@@ -22,6 +23,11 @@ export default function QuestionPreviewItem({
       "No on down click hanlder was passed - QuestionPreviewItem. ID: ",
       id
     ),
+  onQuestionDelete = (id) =>
+    console.error(
+      "No on down click hanlder was passed - onQuestionDelete. ID: ",
+      id
+    ),
   onClick = (id) =>
     console.error(
       "No on click hanlder was passed - QuestionPreviewItem. ID: ",
@@ -32,10 +38,9 @@ export default function QuestionPreviewItem({
   if (!type) {
     iconName = undefined;
   }
-  return (
+  return type!=='add' ? (
     <div
       onClick={() => {
-       
         onClick(id);
       }}
       style={{ backgroundColor: SECONDARY, ...style }}
@@ -50,6 +55,7 @@ export default function QuestionPreviewItem({
           }}
           style={{ flex: 1, backgroundColor: ACCENT, borderRadius: "50%" }}
           iconName="up-chevron.png"
+          stopPropagation
         />
         <IconBackground big iconName={iconName} />
         <IconButton
@@ -58,9 +64,11 @@ export default function QuestionPreviewItem({
           }}
           style={{ flex: 1, backgroundColor: ACCENT, borderRadius: "50%" }}
           iconName="down-chevron.png"
+          stopPropagation
+          
         />
       </div>
-      <Button>Delete</Button>
+      <Button stopPropagation onClick={() => onQuestionDelete(id)}>Delete</Button>
     </div>
-  );
+  ) : (<MenuOptionItem value="Add Question" onClick={onClick} />)
 }

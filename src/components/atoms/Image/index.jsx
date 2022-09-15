@@ -40,6 +40,7 @@ export default function Image({
   style = {},
   className = "",
   isContain = false,
+  stopPropagation = false,
   onClick = () => {},
 }) {
   let SIZE = {};
@@ -92,7 +93,10 @@ export default function Image({
   };
   return (
     <img
-      onClick={onClick}
+      onClick={(e) => {
+        onClick();
+        stopPropagation && e.stopPropagation();
+      }}
       className={
         (isBordered ? "bordered" : "") +
         (isRounded ? "rounded " : "") +

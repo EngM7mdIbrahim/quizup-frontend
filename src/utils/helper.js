@@ -35,3 +35,12 @@ export const checkAxiosError = (error)=>{
     return `${isDev ? 'Server: ': ''} ${error.response.data.message}`
   }
 }
+
+export const constructChoicesArray = (questions)=>{
+  let choices = [];
+
+  for(let i= 0;i<questions;i++){
+    choices.push(`Write choice ${i}`)
+  }
+  return choices;
+}

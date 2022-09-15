@@ -8,3 +8,7 @@ export const getQuizzesReq = async ()=>{
 export const deleteQuizReq = async (id)=>{
     await apiClient.delete(`/quizzes/${id}`);
 }
+
+export const createTemplateReq = async(template)=>{
+    return await apiClient.post('/quizzes/');
+}

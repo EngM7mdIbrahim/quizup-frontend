@@ -23,5 +23,12 @@
   gap: 15px;
   width: 100%;
   flex-direction: column;
-
+  flex: 1;
+  justify-content: center;
+}
+.question-edit-header-cont{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }

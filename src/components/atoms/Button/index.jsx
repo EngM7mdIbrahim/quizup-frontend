@@ -4,6 +4,7 @@ import AppLabel, { TYPES } from '../../atoms/AppLabel'
 import "./styles.css";
 
 export default function Button({
+  stopPropagation = false,
   style ={},
   children = ["No text here! - BA"],
   isPrimary = true,
@@ -11,11 +12,12 @@ export default function Button({
     console.error("No on click handler! - BA");
   },
   className = ""
+  
 }) 
 {
   
   return isPrimary ? (
-    <button className={`${className}`} style={{ backgroundColor: ACCENT, ...style }} onClick={onClick}>
+    <button className={`${className}`} style={{ backgroundColor: ACCENT, ...style }} onClick={(e)=>{ onClick(); stopPropagation && e.stopPropagation()}}>
       {children}
     </button>
   ) : (

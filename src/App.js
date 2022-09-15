@@ -8,12 +8,13 @@ import ProfileScene from "./templates/ProfileScene";
 
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import LoadingPopUp from "./components/molecules/LoadingPopUp";
-import ErrorPopUp from "./components/molecules/ErrorPopUp";
+import LoadingPopUp from "./components/organisms/LoadingPopUp";
+import ErrorPopUp from "./components/organisms/ErrorPopUp";
 import { setErrorMessage } from "./slices/general.slice";
 import ClassesScene from "./scenes/ClassesScene";
 import SingleClassScene from "./scenes/SingleClassScene";
 import CreateQuizTemplate from "./templates/CreateQuizTemplate";
+import CreateQuizScene from "./scenes/CreateQuizScene";
 
 function App() {
   const { isLoading, errorMessage } = useSelector((state) => state.general);
@@ -35,7 +36,7 @@ function App() {
           <Route path="/signup" element={<SignupScene />} />
           <Route path="/profile" element={<ProfileScene />}>
             <Route path="/profile/quizzes" index element={<QuizzesScene />} />
-            <Route path="/profile/quizzes/create" index element={<CreateQuizTemplate />} />
+            <Route path="/profile/quizzes/create" index element={<CreateQuizScene />} />
             <Route path="/profile/reports" element={<ClassesScene />} />
             <Route path="/profile/reports/:id" element={<SingleClassScene />} />
           </Route>

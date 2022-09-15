@@ -6,6 +6,7 @@ import Image, { TYPES } from "../../atoms/Image";
 
 export default function IconButton({
   hidden = false,
+  stopPropagation = false,
   style = {},
   className = "",
   backgroundColor = PRIMARY,
@@ -16,11 +17,14 @@ export default function IconButton({
 }) {
   return (
     <div
-      onClick={onClick}
+      onClick={(e) => {
+        onClick();
+        stopPropagation && e.stopPropagation();
+      }}
       style={{ backgroundColor, ...style }}
       className={`icon-button-cont ${className}`}
     >
-      {hidden && <Image imageName={iconName} type={imageType} />}
+      {!hidden && <Image imageName={iconName} type={imageType} />}
     </div>
   );
 }

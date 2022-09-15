@@ -7,7 +7,7 @@ import { deleteQuiz, getQuizzes, resetState } from "../slices/quizzes.slice";
 import useResetNaviagtor from "../hooks/useResetNaviagtor";
 import useAlertModal from "../hooks/useAlertModal";
 import { showConfirmation } from "../slices/general.slice";
-import AlertPopUp from "../components/molecules/AlertPopUp";
+import AlertPopUp from "../components/organisms/AlertPopUp";
 
 export default function QuizzesScene() {
   const { accessToken, name } = useSelector((state) => state.auth);
