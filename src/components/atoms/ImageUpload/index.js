@@ -9,6 +9,7 @@ export default function ImageUpload({
   image = null,
   style = {},
   className = "",
+  onClearImage = ()=> {console.error("No on clear image hanlder was passed - ImageUpload.")},
 }) {
   const handleFile = (event) => {
     onNewImage(event.target.files[0]);
@@ -31,7 +32,7 @@ export default function ImageUpload({
       className={`image-upload-cont disable-hover ${className}`}
     >
       <Image
-        onClick={(e) =>{onNewImage(null)}}
+        onClick={(e) =>{console.log('Clicked'); onClearImage()}}
         className="image-upolad-cancel"
         type={TYPES.ALMOSTTINY}
         imageName="cancel.png"

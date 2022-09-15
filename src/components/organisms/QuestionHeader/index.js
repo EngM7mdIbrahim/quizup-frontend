@@ -8,6 +8,7 @@ export default function QuestionHeader({
   onQuestionTitleChange,
   selected,
   onQuestionImageChange,
+  onClearImage
 }) {
   return (
     <>
@@ -19,6 +20,7 @@ export default function QuestionHeader({
         isBold
       />
       <ImageUpload
+      onClearImage={onClearImage}
         onNewImage={(image) => {
           onQuestionImageChange(image, selected);
         }}

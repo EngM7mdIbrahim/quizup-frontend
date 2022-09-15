@@ -69,6 +69,10 @@ export default function CreateQuizTemplate({
       selected
     );
   },
+  onQuestionClearImage = () =>
+  console.error(
+    "No on clear image  hanlder was passed - CreateQuizTemplate."
+  ),
   onQuestionTypeChoice = (choiceNum) => {
     console.error(
       "No on question type choice handler! - CreateQuizTemplate. ChoicesNum: ",
@@ -110,7 +114,6 @@ export default function CreateQuizTemplate({
   const handleSave = () => {
     //Extract Quiz Object
   };
-  console.log('')
   return (
     <div
       style={{ flexDirection: "row", ...style }}
@@ -139,6 +142,7 @@ export default function CreateQuizTemplate({
               <Button onClick={onTemplateSave}>Save Template</Button>
             </div>
             <QuestionHeader
+            onClearImage={()=>onQuestionClearImage(selected)}
               onQuestionTitleChange={onQuestionTitleChange}
               selected={selected}
               questions={questions}

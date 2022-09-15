@@ -11,20 +11,15 @@ import {
   createTemplate,
   resetState,
   setTemplate,
-  deleteQuestion,changeQuestionTitle
+  deleteQuestion,
+  changeQuestionTitle,
+  changeQuestionImage,
+  clearQuestionImage,
+  changeQuestionCorrectAns,
+  changeQuestionOrder,
+  changeQuestionOptionText,
+  addNewQuestion
 } from "../slices/quizzes.slice";
-
-const QUESTION_SCHEME = {
-  question: "What is your question",
-  image: null,
-  choices: [
-    "Write Choice 1",
-    "Write Choice 2",
-    "Write Choice 3",
-    "Write Choice 4",
-  ],
-  correctAnswer: 0,
-};
 
 export default function CreateQuizScene() {
   const { accessToken } = useSelector((state) => state.auth);
@@ -76,71 +71,7 @@ export default function CreateQuizScene() {
 
   const { questions, showModal, selected } = template;
 
-
-  const handleQuestionImageChange = (image, id) => {
-    let newQuestions = [...questions];
-    newQuestions[id].image = image;
-    dispatch(setTemplate({ ...template, questions: newQuestions }));
-  };
-
-  const handleQuestionOptionCorrectSelect = (letter, id) => {
-    let newQuestions = [...questions];
-    newQuestions[id].correctAnswer = letter;
-    dispatch(setTemplate({ ...template, questions: newQuestions }));
-  };
-
-  const handleQuestionOptionTextChange = (newValue, optionId, id) => {
-    let newQuestions = [...questions];
-    newQuestions[id].choices[optionId] = newValue;
-    dispatch(setTemplate({ ...template, questions: newQuestions }));
-  };
-
-  const handleQuestionUpDownClick = (index, isUp) => {
-    let newQuestions = [...questions];
-    let change = isUp
-      ? index !== 0
-        ? -1
-        : 0
-      : index !== questions.length - 1
-      ? 1
-      : 0;
-    const newSelected = index + change;
-    const [question] = newQuestions.splice(index, 1);
-    newQuestions.splice(newSelected, 0, question);
-    dispatch(
-      setTemplate({
-        ...template,
-        selected: newSelected,
-        questions: newQuestions,
-      })
-    );
-  };
-
-  const handleQuestionChoice = (question) => {
-    let newQuestions = [...questions];
-    console.log(newQuestions);
-    const [add_question] = newQuestions.splice(questions.length - 1, 1);
-    let newQuestion = {
-      ...QUESTION_SCHEME,
-      choices: constructChoicesArray(question),
-    };
-    dispatch(
-      setTemplate({
-        ...template,
-        showModal: false,
-        questions: [...newQuestions, newQuestion, add_question],
-      })
-    );
-  };
-
-  const handleTemplateSave = () => {
-    const template = {
-      name: "Test Template react 1",
-      tag: "test tag 1",
-      questions,
-    };
-    dispatch(createTemplate(template));
-  };
+  
 
   const newQuestions = questions.map((question) => {
     if (question.type === "add") {
@@ -162,13 +93,17 @@ export default function CreateQuizScene() {
       onQuestionSelect={(id) =>
         dispatch(setTemplate({ ...template, selected: id }))
       }
-      onQuestionDelete={(id)=>dispatch(deleteQuestion(id))}
-      onQuestionTitleChange={(newTitle, id)=>(dispatch(changeQuestionTitle({newTitle,id})))}
-      onQuestionImageChange={handleQuestionImageChange}
-      onQuestionOptionCorrectSelect={handleQuestionOptionCorrectSelect}
-      onQuestionOptionTextChange={handleQuestionOptionTextChange}
-      onQuestionUpClick={(id) => {
-        handleQuestionUpDownClick(id, true);
+      onQuestionDelete={(id) => dispatch(deleteQuestion(id))}
+      onQuestionTitleChange={(newTitle, id) =>
+        dispatch(changeQuestionTitle({ newTitle, id }))
+      }
+      onQuestionImageChange={(image, id) =>
+        dispatch(changeQuestionImage({ image, id }))
+      }
+      onQuestionOptionCorrectSelect={(letter, id)=>dispatch(changeQuestionCorrectAns({letter,id}))}
+      onQuestionOptionTextChange={(newValue,optionId,id)=>dispatch(changeQuestionOptionText({id,optionId,newValue}))}
+      onQuestionUpClick={(index) => {
+        dispatch(changeQuestionOrder({index,isUp: true}));
       }}
       onHideQuestionModal={() => {
         dispatch(setTemplate({ ...template, showModal: false }));
@@ -176,11 +111,12 @@ export default function CreateQuizScene() {
       onAddQuestion={() => {
         dispatch(setTemplate({ ...template, showModal: true }));
       }}
-      onQuestionDownClick={(id) => {
-        handleQuestionUpDownClick(id, false);
+      onQuestionDownClick={(index) => {
+        dispatch(changeQuestionOrder({index,isUp: false}));
       }}
-      onTemplateSave={handleTemplateSave}
-      onQuestionTypeChoice={handleQuestionChoice}
+      onTemplateSave={()=>dispatch(createTemplate(template))}
+      onQuestionTypeChoice={question=>dispatch(addNewQuestion(question))}
+      onQuestionClearImage={(selected) => dispatch(clearQuestionImage(selected))}
     />
   );
 }

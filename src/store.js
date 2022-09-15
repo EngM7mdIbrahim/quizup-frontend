@@ -5,6 +5,7 @@ import quizzesReducer from './slices/quizzes.slice';
 import classesReducer from './slices/classes.slice'
 
 export const store = configureStore({
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}),
   reducer: {
     auth: authReducer,
     quizzes: quizzesReducer,
