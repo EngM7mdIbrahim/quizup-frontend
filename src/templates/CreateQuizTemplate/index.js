@@ -89,6 +89,11 @@ export default function CreateQuizTemplate({
       "No on title change handler! - CreateQuizTemplate. NewValue: ", newValue
     );
   },
+  onTemplateTagChange = (newValue) => {
+    console.error(
+      "No on tag change handler! - CreateQuizTemplate. NewValue: ", newValue
+    );
+  },
   questions = [
     {
       question: "Test Question 1",
@@ -115,11 +120,10 @@ export default function CreateQuizTemplate({
   className = "",
   selected = 0,
   isQuestionModalShwon = false,
-  templateTitle = "No title passed here - CreateQuizTemplate"
+  templateTitle = "No title passed here - CreateQuizTemplate",
+  templateTag = "No tag passed here - CreateQuizTemplate"
 }) {
-  const handleSave = () => {
-    //Extract Quiz Object
-  };
+  
   return (
     <div
       style={{ flexDirection: "row", ...style }}
@@ -136,15 +140,18 @@ export default function CreateQuizTemplate({
         onQuestionUpClick={onQuestionUpClick}
         onQuestionDelete={onQuestionDelete}
         onAddQuestion={onAddQuestion}
+        onTemplateTagChange={onTemplateTagChange}
         selected={selected}
         questions={questions}
+        templateTag = {templateTag}
+
       />
 
       <div className="question-edit-cont">
         {questions.length > 1 && (
           <>
             <div className="question-edit-header-cont">
-              <EditLabel value={templateTitle} onNewValue={onTemplateTitleChange} isBold/>
+              <EditLabel style={{textAlign: 'left'}} value={templateTitle} onNewValue={onTemplateTitleChange} isBold/>
               <Button onClick={onTemplateSave}>Save Template</Button>
             </div>
             <QuestionHeader

@@ -33,3 +33,9 @@ a:link,a:visited {
 .bold-text {
   font-weight: 800;
 }
+
+.break-word{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -5,7 +5,6 @@ import useResetNaviagtor from "../hooks/useResetNaviagtor";
 import CreateQuizTemplate, {
   QUESTION_TYPES,
 } from "../templates/CreateQuizTemplate";
-import { nanoid } from "@reduxjs/toolkit";
 import {
   createTemplate,
   resetState,
@@ -18,61 +17,32 @@ import {
   changeQuestionOrder,
   changeQuestionOptionText,
   addNewQuestion,
-  changeTemplateTitle
+  changeTemplateTitle,
+  changeTemplateTag
 } from "../slices/quizzes.slice";
+import { useParams } from "react-router-dom";
 
 export default function CreateQuizScene() {
   const { accessToken } = useSelector((state) => state.auth);
-  const { isLoading, errorMessage, template } = useSelector(
+  const { isLoading, errorMessage, template, quizzes } = useSelector(
     (state) => state.quizzes
   );
   useGeneralListener(errorMessage, isLoading);
   const dispatch = useDispatch();
   const customNavigator = useResetNaviagtor(resetState);
+  const {id} = useParams();
+  if(id && quizzes[id]){
+    dispatch(setTemplate(quizzes[id]))
+  }
+
 
   useEffect(() => {
     if (!accessToken) {
       customNavigator("/profile/quizzes");
-      console.log("Entered!");
     }
   }, [isLoading, errorMessage, dispatch]);
 
-  const int_questions = [
-    {
-      id: nanoid(),
-      question: "Test Question 1",
-      choices: ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
-      correctAnswer: 0,
-      image: null,
-    },
-    {
-      id: nanoid(),
-      question: "Test Question 2",
-      choices: ["Choice 1", "Choice 2"],
-      correctAnswer: 1,
-      image: null,
-    },
-    {
-      id: nanoid(),
-      question: "Test Question 3",
-      choices: ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
-      correctAnswer: null,
-      image: null,
-    },
-    {
-      id: nanoid(),
-      question: "Test Question 4",
-      choices: ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
-      correctAnswer: 2,
-      image: null,
-    },
-    { type: "add" },
-  ];
-
-  const { questions, showModal, selected, title } = template;
-
-  
-
+  const { questions, showModal, selected, name, tag } = template;
   const newQuestions = questions.map((question) => {
     if (question.type === "add") {
       return question;
@@ -85,12 +55,14 @@ export default function CreateQuizScene() {
           : QUESTION_TYPES.CHOICES,
     };
   });
+
   return (
     <CreateQuizTemplate
       questions={newQuestions}
       selected={selected}
       isQuestionModalShwon={showModal}
-      templateTitle={title}
+      templateTitle={name}
+      templateTag={tag}
       onQuestionSelect={(id) =>
         dispatch(setTemplate({ ...template, selected: id }))
       }
@@ -117,6 +89,7 @@ export default function CreateQuizScene() {
       }}
       onTemplateSave={()=>dispatch(createTemplate(template))}
       onTemplateTitleChange={(newValue)=>{dispatch(changeTemplateTitle(newValue))}}
+      onTemplateTagChange={(newValue)=>{dispatch(changeTemplateTag(newValue))}}
       onQuestionTypeChoice={question=>dispatch(addNewQuestion(question))}
       onQuestionClearImage={(selected) => dispatch(clearQuestionImage(selected))}
     />

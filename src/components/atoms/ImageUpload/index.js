@@ -17,15 +17,12 @@ export default function ImageUpload({
 }) {
   const handleFile = (event) => {
     const url = URL.createObjectURL(event.target.files[0]);
-    console.log("Initiated Image URL: ", url);
     let extName = event.target.files[0].name.split('.')[1];
     onNewImage([url,extName]);
   };
 
   const handleImageClearance = () => {
-    console.log("Unmounting url ...");
     URL.revokeObjectURL(imageURL);
-    console.log("Image URL: ", imageURL);
     onClearImage();
   };
 
@@ -36,7 +33,6 @@ export default function ImageUpload({
       }
     };
   }, []);
-  console.log("Component ImageURL: ", imageURL);
   return !imageURL ? (
     <label
       onChange={handleFile}

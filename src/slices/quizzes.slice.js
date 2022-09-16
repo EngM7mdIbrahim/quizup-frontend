@@ -9,7 +9,7 @@ import {
   getQuizzesReq,
   deleteQuizReq,
   createTemplateReq,
-  sendQuizImagesReq
+  sendQuizImagesReq,
 } from "../api/quizzes.api";
 import format from "date-format";
 
@@ -30,6 +30,7 @@ const initialState = {
   errorMessage: "",
   quizzes: undefined,
   template: {
+    name: "Untitled Quiz",
     questions: [
       {
         question: "What is your question",
@@ -46,7 +47,7 @@ const initialState = {
     ],
     showModal: false,
     selected: 0,
-    title: 'Create Template'
+    tag: "No tags",
   },
 };
 
@@ -74,13 +75,16 @@ export const quizzesSlice = createSlice({
         ],
         showModal: false,
         selected: 0,
+        name: "Untitled Quiz",
+        tag: "No tags",
       };
     },
     setTemplate: (state, { payload }) => {
       state.template = payload;
     },
     deleteQuestion: (state, { payload }) => {
-      state.template.questions.splice(payload, 1);
+      if (state.template.questions.length - 1 !== payload)
+        state.template.questions.splice(payload, 1);
     },
     changeQuestionTitle: (state, { payload }) => {
       state.template.questions[payload.id].question = payload.newTitle;
@@ -127,8 +131,11 @@ export const quizzesSlice = createSlice({
       state.template.questions[payload.id].choices[payload.optionId] =
         payload.newValue;
     },
-    changeTemplateTitle:(state, {payload})=>{
-      state.template.title = payload
+    changeTemplateTitle: (state, { payload }) => {
+      state.template.name = payload;
+    },
+    changeTemplateTag: (state, { payload }) => {
+      state.template.tag = payload;
     },
   },
   extraReducers: (builder) => {
@@ -176,7 +183,7 @@ export const deleteQuiz = createAsyncThunk(
   "quizzes/deleteQuiz",
   async (id, { rejectWithValue, dispatch }) => {
     try {
-      console.log("ID: ", id);
+
       await deleteQuizReq(id);
       dispatch(getQuizzes());
       return true;
@@ -194,8 +201,8 @@ export const createTemplate = createAsyncThunk(
       let imagesURLS = payload.questions.map((question) => question.image);
       let payloadJSON = {
         ...payload,
-        name: "Test Template React 4",
-        tag: "MERN Course",
+        name: payload.name,
+        tag: payload.tag,
         questions: payload.questions.map((question) => {
           let newQuestion = { ...question };
           if (newQuestion.image) {
@@ -211,22 +218,27 @@ export const createTemplate = createAsyncThunk(
       payloadJSON.questions.pop();
       imagesURLS.pop();
 
-      let questionIDs = await createTemplateReq(payloadJSON);
-      console.log('Questions ID: ', questionIDs)
+      let [questionIDs,id] = await createTemplateReq(payloadJSON);
       let questionIDsCounter = 0;
-      let images = await Promise.all(imagesURLS
-        .map( async(imageArr) => {
-          if(imageArr){
-            let imageBlob = await fetch(imageArr[0]).then(r => r.blob());
-            return new File([imageBlob],questionIDs[questionIDsCounter++]+'.'+imageArr[1])
+      let images = await Promise.all(
+        imagesURLS.map(async (imageArr) => {
+          if (imageArr) {
+            let imageBlob = await fetch(imageArr[0]).then((r) => r.blob());
+            return new File(
+              [imageBlob],
+              questionIDs[questionIDsCounter++] + "." + imageArr[1]
+            );
           }
           questionIDsCounter++;
           return null;
-        }))
-      
+        })
+      );
+
       images = images.filter((data) => data);
 
-      await sendQuizImagesReq(images);
+      await sendQuizImagesReq(images, id);
+
+
 
       return;
     } catch (error) {
@@ -247,7 +259,8 @@ export const {
   changeQuestionOptionText,
   changeQuestionOrder,
   addNewQuestion,
-  changeTemplateTitle
+  changeTemplateTitle,
+  changeTemplateTag,
 } = quizzesSlice.actions;
 
 export default quizzesSlice.reducer;

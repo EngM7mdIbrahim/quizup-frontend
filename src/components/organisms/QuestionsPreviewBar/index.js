@@ -1,6 +1,8 @@
 import { nanoid } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { PRIMARY } from "../../../styles/colors";
+import AppLabel, {TYPES} from "../../atoms/AppLabel";
+import EditLabel, { INPUT_SIZES } from "../../atoms/EditLabel";
 import QuestionPreviewItem from "../../molecules/QuestionPreviewItem";
 import "./styles.css";
 
@@ -37,16 +39,24 @@ export default function QuestionsPreviewBar({
       "No on add question hanlder was passed - QuestionsPreviewBar. ID: "
     );
   },
+  onTemplateTagChange = (newValue) => {
+    console.error(
+      "No on tag change handler! - QuestionsPreviewBar. NewValue: ", newValue
+    );
+  },
   questions = init_questions,
   style = {},
   className = "",
   selected = init_questions[0].id,
+  templateTag = "No tag passed here - QuestionsPreviewBar"
 }) {
   return (
     <div
       style={{ backgroundColor: PRIMARY, ...style }}
       className={`questions-preview-bar-cont ${className}`}
     >
+      <AppLabel isBold type={TYPES.SUB_SUB_TITLE}>Tag</AppLabel>
+      <EditLabel type={INPUT_SIZES.SUB_SUB_TITLE} value={templateTag} onNewValue={onTemplateTagChange}/>
       {questions.map((question, index) => {
         return (
           <QuestionPreviewItem

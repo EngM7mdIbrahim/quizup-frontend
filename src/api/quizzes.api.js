@@ -11,23 +11,24 @@ export const deleteQuizReq = async (id) => {
 };
 
 export const createTemplateReq = async (template) => {
-  let response = await apiClient.post("/quizzes/", template);
-  return response.data.questions;
+  let {data} = await apiClient.post("/quizzes/", template);
+  const {questions, id} = data
+  return [questions,id];
 };
 
-export const sendQuizImagesReq = async (images, imagesMetaData) => {
+export const sendQuizImagesReq = async (images, quizID) => {
   const formData = new FormData();
-  console.log("Images: ", images);
   images.forEach((image) => {
     formData.append("images", image);
   });
+  formData.append('quizID',quizID)
   //Log From Data
   for (const pair of formData.entries()) {
     console.log(`${pair[0]}, ${pair[1]}`);
   }
 
 
-  let response = await axios.post(BASE_URL + "/quizzes/upload", formData, {
+  await axios.post(BASE_URL + "/quizzes/upload", formData, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`,
     },
@@ -40,5 +41,4 @@ export const sendQuizImagesReq = async (images, imagesMetaData) => {
   //     Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`,
   //   },
   // });
-  console.log("Images Response: ", response);
 };

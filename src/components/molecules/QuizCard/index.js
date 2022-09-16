@@ -36,7 +36,7 @@ export default function QuizCard({
         <AppLabel isBold type={TYPES.SUB_TITLE}>
           {templateTitle}
         </AppLabel>
-        <AppLabel style={{ flex: 1 }} type={TYPES.PAR}>
+        <AppLabel  className="break-word" style={{ flex: 1  }} type={TYPES.PAR}>
           {courseTitle}
         </AppLabel>
         <div className=" quiz-card-details-bottom-cont">

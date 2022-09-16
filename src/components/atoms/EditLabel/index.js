@@ -26,10 +26,10 @@ export default function EditLabel({
       onChange={(e) => {
         onNewValue(e.target.value);
       }}
-      style={{ fontSize: type, color: TEXT_COLOR, ...style }}
       className={`${
         isBold ? "bold-text" : ""
       } edit-label-input ${className}`}
+      style={{ fontSize: type, color: TEXT_COLOR, ...style }}
     />
   );
 }
