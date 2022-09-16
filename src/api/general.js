@@ -1,9 +1,7 @@
 import {
   ACCESS_TOKEN_KEY,
   BASE_URL,
-  REFRESH_TOKEN_KEY,
 } from "../utils/constants";
-import { refreshTokenReq } from "./auth.api";
 
 const axios = require("axios");
 const apiClient = axios.create({

@@ -1,5 +1,4 @@
 import React from "react";
-import AppLabel from "../../components/atoms/AppLabel";
 import Button from "../../components/atoms/Button";
 import QuestionChoiceModalPopUp from "../../components/organisms/QuestionChoiceModalPopUp";
 import CreateQuizEmptyContainer from "../../components/organisms/CreateQuizEmptyContainer";
@@ -7,6 +6,7 @@ import QuestionHeader from "../../components/organisms/QuestionHeader";
 import QuestionOptions from "../../components/organisms/QuestionOptions";
 import QuestionsPreviewBar from "../../components/organisms/QuestionsPreviewBar";
 import "./styles.css";
+import EditLabel from "../../components/atoms/EditLabel";
 export const QUESTION_TYPES = { CHOICES: "choices", TRUE_FALSE: "true-false" };
 
 export default function CreateQuizTemplate({
@@ -84,6 +84,11 @@ export default function CreateQuizTemplate({
       "No on template save handler! - CreateQuizTemplate."
     );
   },
+  onTemplateTitleChange = (newValue) => {
+    console.error(
+      "No on title change handler! - CreateQuizTemplate. NewValue: ", newValue
+    );
+  },
   questions = [
     {
       question: "Test Question 1",
@@ -110,6 +115,7 @@ export default function CreateQuizTemplate({
   className = "",
   selected = 0,
   isQuestionModalShwon = false,
+  templateTitle = "No title passed here - CreateQuizTemplate"
 }) {
   const handleSave = () => {
     //Extract Quiz Object
@@ -138,7 +144,7 @@ export default function CreateQuizTemplate({
         {questions.length > 1 && (
           <>
             <div className="question-edit-header-cont">
-              <AppLabel isBold>Create Template</AppLabel>
+              <EditLabel value={templateTitle} onNewValue={onTemplateTitleChange} isBold/>
               <Button onClick={onTemplateSave}>Save Template</Button>
             </div>
             <QuestionHeader

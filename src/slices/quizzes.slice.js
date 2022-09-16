@@ -9,6 +9,7 @@ import {
   getQuizzesReq,
   deleteQuizReq,
   createTemplateReq,
+  sendQuizImagesReq
 } from "../api/quizzes.api";
 import format from "date-format";
 
@@ -45,6 +46,7 @@ const initialState = {
     ],
     showModal: false,
     selected: 0,
+    title: 'Create Template'
   },
 };
 
@@ -90,7 +92,7 @@ export const quizzesSlice = createSlice({
       state.template.questions[payload.id].correctAnswer = payload.letter;
     },
     changeQuestionOrder: (state, { payload }) => {
-      if(state.template.questions.length<=2){
+      if (state.template.questions.length <= 2) {
         return;
       }
       let change = payload.isUp
@@ -106,20 +108,27 @@ export const quizzesSlice = createSlice({
       state.template.selected = newSelected;
     },
     addNewQuestion: (state, { payload }) => {
-      const [add_question] = state.template.questions.splice(state.template.questions.length - 1, 1);
+      const [add_question] = state.template.questions.splice(
+        state.template.questions.length - 1,
+        1
+      );
       let newQuestion = {
         ...QUESTION_SCHEME,
         choices: constructChoicesArray(payload),
       };
       state.template.showModal = false;
       state.template.questions.push(newQuestion);
-      state.template.questions.push(add_question)
+      state.template.questions.push(add_question);
     },
     clearQuestionImage: (state, { payload }) => {
       state.template.questions[payload].image = null;
     },
     changeQuestionOptionText: (state, { payload }) => {
-      state.template.questions[payload.id].choices[payload.optionId] = payload.newValue;
+      state.template.questions[payload.id].choices[payload.optionId] =
+        payload.newValue;
+    },
+    changeTemplateTitle:(state, {payload})=>{
+      state.template.title = payload
     },
   },
   extraReducers: (builder) => {
@@ -165,8 +174,9 @@ export const getQuizzes = createAsyncThunk(
 
 export const deleteQuiz = createAsyncThunk(
   "quizzes/deleteQuiz",
-  async ({ id }, { rejectWithValue, dispatch }) => {
+  async (id, { rejectWithValue, dispatch }) => {
     try {
+      console.log("ID: ", id);
       await deleteQuizReq(id);
       dispatch(getQuizzes());
       return true;
@@ -181,33 +191,44 @@ export const createTemplate = createAsyncThunk(
   "quizzes/createTemplate",
   async (payload, { rejectWithValue }) => {
     try {
-      let images = payload.questions.map((question) => question.image);
-      console.log("Request: ", payload);
+      let imagesURLS = payload.questions.map((question) => question.image);
       let payloadJSON = {
         ...payload,
+        name: "Test Template React 4",
+        tag: "MERN Course",
         questions: payload.questions.map((question) => {
-          let newQuestion = question;
-          delete newQuestion["image"];
+          let newQuestion = { ...question };
+          if (newQuestion.image) {
+            delete newQuestion["image"];
+          }
           return newQuestion;
         }),
       };
+      if (payloadJSON.showModal) delete payloadJSON["showModal"];
+      if (payloadJSON.selected) delete payloadJSON["selected"];
+
       //Removing the Add Question objects
       payloadJSON.questions.pop();
-      images.pop();
+      imagesURLS.pop();
 
       let questionIDs = await createTemplateReq(payloadJSON);
-      console.log("Response: ", questionIDs);
-      return;
+      console.log('Questions ID: ', questionIDs)
+      let questionIDsCounter = 0;
+      let images = await Promise.all(imagesURLS
+        .map( async(imageArr) => {
+          if(imageArr){
+            let imageBlob = await fetch(imageArr[0]).then(r => r.blob());
+            return new File([imageBlob],questionIDs[questionIDsCounter++]+'.'+imageArr[1])
+          }
+          questionIDsCounter++;
+          return null;
+        }))
+      
+      images = images.filter((data) => data);
 
-      // let quizzes = await createTemplate(payload);
-      // let newQuizzes = quizzes.map((quiz) => {
-      //   let newQuiz = {
-      //     ...quiz,
-      //     lastEdit: format.asString("dd/mm/yyyy", new Date(quiz.lastEdit)),
-      //   };
-      //   return newQuiz;
-      // });
-      // return newQuizzes;
+      await sendQuizImagesReq(images);
+
+      return;
     } catch (error) {
       console.error(error);
       return rejectWithValue(checkAxiosError(error));
@@ -225,7 +246,8 @@ export const {
   clearQuestionImage,
   changeQuestionOptionText,
   changeQuestionOrder,
-  addNewQuestion
+  addNewQuestion,
+  changeTemplateTitle
 } = quizzesSlice.actions;
 
 export default quizzesSlice.reducer;

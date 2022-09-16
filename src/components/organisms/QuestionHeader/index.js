@@ -24,7 +24,7 @@ export default function QuestionHeader({
         onNewImage={(image) => {
           onQuestionImageChange(image, selected);
         }}
-        image={questions[selected].image}
+        imageURL={questions[selected].image ? questions[selected].image[0] : null}
         style={{
           alignSelf: "center",
         }}

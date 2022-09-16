@@ -1,7 +1,6 @@
-.quiz-card-cont{
+.new-quiz-card-cont{
     display: flex;
     padding: 10px;
-    display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
@@ -44,7 +43,7 @@
     border-radius: 50%;
 }
 
-.quiz-card-cont:hover{
+.new-quiz-card-cont:hover{
     cursor: pointer;
     box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.6);
 }

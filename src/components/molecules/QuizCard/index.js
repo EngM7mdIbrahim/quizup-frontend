@@ -29,10 +29,10 @@ export default function QuizCard({
   return (
     <div
       style={{ backgroundColor: PRIMARY, ...style }}
-      className={`quiz-card-cont ${className}`}
+      className={`new-quiz-card-cont ${className}`}
     >
       <Image imageName="logo-square.png" type={IMAGE_TYPES.ALMOSTSMALL} />
-      <div className=" quiz-card-details-cont">
+      <div className="quiz-card-details-cont">
         <AppLabel isBold type={TYPES.SUB_TITLE}>
           {templateTitle}
         </AppLabel>

@@ -18,9 +18,9 @@ export default function QuizzesTemplate({
   handleQuizDelete = (id) => {
     console.error("No delete handler passed - QuizzesTemplate. ID: ", id);
   },
-  handleCreateQuiz = () =>{
+  handleCreateQuiz = () => {
     console.error("No create quiz handler passed - QuizzesTemplate");
-  }
+  },
 }) {
   return (
     <div
@@ -29,19 +29,21 @@ export default function QuizzesTemplate({
     >
       <AppLabel isBold>Templates</AppLabel>
       {quizzes &&
-        quizzes.map((quiz) => (
-          <QuizCard
-            userName={userName}
-            templateTitle={quiz.name}
-            courseTitle={quiz.tag}
-            lastModified={quiz.lastEdit}
-            id={quiz._id}
-            key={quiz._id}
-            onEditClick={handleQuizEdit}
-            onStartClick={handleQuizStart}
-            onDeleteClick={handleQuizDelete}
-          />
-        ))}
+        quizzes.map((quiz) => {
+          return (
+            <QuizCard
+              userName={userName}
+              templateTitle={quiz.name}
+              courseTitle={quiz.tag}
+              lastModified={quiz.lastEdit}
+              id={quiz._id}
+              key={quiz._id}
+              onEditClick={handleQuizEdit}
+              onStartClick={handleQuizStart}
+              onDeleteClick={handleQuizDelete}
+            />
+          );
+        })}
       <CreateQuizCard onClick={handleCreateQuiz} />
     </div>
   );

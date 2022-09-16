@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useGeneralListener from "../hooks/useGeneralListener";
-import { useNavigate } from "react-router-dom";
 import QuizzesTemplate from "../templates/QuizzesTemplate";
 import { deleteQuiz, getQuizzes, resetState } from "../slices/quizzes.slice";
 import useResetNaviagtor from "../hooks/useResetNaviagtor";
 import useAlertModal from "../hooks/useAlertModal";
-import { showConfirmation } from "../slices/general.slice";
 import AlertPopUp from "../components/organisms/AlertPopUp";
 
 export default function QuizzesScene() {

@@ -13,7 +13,6 @@ import ErrorPopUp from "./components/organisms/ErrorPopUp";
 import { setErrorMessage } from "./slices/general.slice";
 import ClassesScene from "./scenes/ClassesScene";
 import SingleClassScene from "./scenes/SingleClassScene";
-import CreateQuizTemplate from "./templates/CreateQuizTemplate";
 import CreateQuizScene from "./scenes/CreateQuizScene";
 
 function App() {

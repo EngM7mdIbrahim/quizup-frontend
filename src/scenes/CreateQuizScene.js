@@ -6,7 +6,6 @@ import CreateQuizTemplate, {
   QUESTION_TYPES,
 } from "../templates/CreateQuizTemplate";
 import { nanoid } from "@reduxjs/toolkit";
-import { constructChoicesArray } from "../utils/helper";
 import {
   createTemplate,
   resetState,
@@ -18,7 +17,8 @@ import {
   changeQuestionCorrectAns,
   changeQuestionOrder,
   changeQuestionOptionText,
-  addNewQuestion
+  addNewQuestion,
+  changeTemplateTitle
 } from "../slices/quizzes.slice";
 
 export default function CreateQuizScene() {
@@ -69,7 +69,7 @@ export default function CreateQuizScene() {
     { type: "add" },
   ];
 
-  const { questions, showModal, selected } = template;
+  const { questions, showModal, selected, title } = template;
 
   
 
@@ -90,6 +90,7 @@ export default function CreateQuizScene() {
       questions={newQuestions}
       selected={selected}
       isQuestionModalShwon={showModal}
+      templateTitle={title}
       onQuestionSelect={(id) =>
         dispatch(setTemplate({ ...template, selected: id }))
       }
@@ -115,6 +116,7 @@ export default function CreateQuizScene() {
         dispatch(changeQuestionOrder({index,isUp: false}));
       }}
       onTemplateSave={()=>dispatch(createTemplate(template))}
+      onTemplateTitleChange={(newValue)=>{dispatch(changeTemplateTitle(newValue))}}
       onQuestionTypeChoice={question=>dispatch(addNewQuestion(question))}
       onQuestionClearImage={(selected) => dispatch(clearQuestionImage(selected))}
     />
