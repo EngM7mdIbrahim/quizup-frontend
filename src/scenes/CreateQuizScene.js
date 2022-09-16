@@ -24,7 +24,7 @@ import { useParams } from "react-router-dom";
 
 export default function CreateQuizScene() {
   const { accessToken } = useSelector((state) => state.auth);
-  const { isLoading, errorMessage, template, quizzes } = useSelector(
+  const { isLoading, errorMessage, template, quizzes, addedQuiz } = useSelector(
     (state) => state.quizzes
   );
   useGeneralListener(errorMessage, isLoading);
@@ -36,8 +36,9 @@ export default function CreateQuizScene() {
   }
 
 
+
   useEffect(() => {
-    if (!accessToken) {
+    if (!accessToken || addedQuiz) {
       customNavigator("/profile/quizzes");
     }
   }, [isLoading, errorMessage, dispatch]);

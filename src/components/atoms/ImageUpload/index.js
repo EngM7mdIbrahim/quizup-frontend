@@ -22,7 +22,7 @@ export default function ImageUpload({
   };
 
   const handleImageClearance = () => {
-    URL.revokeObjectURL(imageURL);
+    if(imageURL && !imageURL.startsWith('http')) URL.revokeObjectURL(imageURL);
     onClearImage();
   };
 

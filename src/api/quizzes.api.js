@@ -41,4 +41,8 @@ export const sendQuizImagesReq = async (images, quizID) => {
   //     Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`,
   //   },
   // });
-};
+};try {
+  
+} catch (error) {
+  
+}

@@ -29,6 +29,7 @@ const initialState = {
   isLoading: false,
   errorMessage: "",
   quizzes: undefined,
+  addedQuiz: true,
   template: {
     name: "Untitled Quiz",
     questions: [
@@ -58,6 +59,7 @@ export const quizzesSlice = createSlice({
     resetState: (state) => {
       state.errorMessage = "";
       state.isLoading = false;
+      state.addedQuiz = false;
       state.template = {
         questions: [
           {
@@ -146,7 +148,7 @@ export const quizzesSlice = createSlice({
       })
       .addCase(createTemplate.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.quizzes = payload;
+        state.addedQuiz = payload;
       })
       .addMatcher(isLoadingAction("quizzes"), (state) => {
         state.isLoading = true;
@@ -234,13 +236,10 @@ export const createTemplate = createAsyncThunk(
         })
       );
 
-      images = images.filter((data) => data);
+      images = images.filter((image) => data);
 
       await sendQuizImagesReq(images, id);
-
-
-
-      return;
+      return true;
     } catch (error) {
       console.error(error);
       return rejectWithValue(checkAxiosError(error));
