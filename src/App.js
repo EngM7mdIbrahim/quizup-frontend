@@ -14,6 +14,7 @@ import { setErrorMessage } from "./slices/general.slice";
 import ClassesScene from "./scenes/ClassesScene";
 import SingleClassScene from "./scenes/SingleClassScene";
 import CreateQuizScene from "./scenes/CreateQuizScene";
+import TeachersScene from "./scenes/TeachersScene";
 
 function App() {
   const { isLoading, errorMessage } = useSelector((state) => state.general);
@@ -39,6 +40,7 @@ function App() {
             <Route path="/profile/reports" element={<ClassesScene />} />
             <Route path="/profile/reports/:id" element={<SingleClassScene />} />
           </Route>
+          <Route path="/class/:quizID" element={<TeachersScene />}/>
         </Routes>
       </BrowserRouter>
     </>

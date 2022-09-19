@@ -236,7 +236,7 @@ export const createTemplate = createAsyncThunk(
         })
       );
 
-      images = images.filter((image) => data);
+      images = images.filter((image) => image);
 
       await sendQuizImagesReq(images, id);
       return true;

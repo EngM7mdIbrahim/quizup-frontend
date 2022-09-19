@@ -29,9 +29,9 @@ export default function QuizzesScene() {
   // const handleEditQuiz = (id) => {
 
   // };
-  // const handleStartQuiz = (id) => {
-
-  // };
+  const handleStartQuiz = (id) => {
+    customNavigator(`/class/${id}`)
+  };
   const handleDeleteQuiz = (id) => {
     showAlert(
       `Are your sure you want to delete ${quizzes.find(quiz=>quiz._id === id).name} quiz?`,
@@ -54,6 +54,7 @@ export default function QuizzesScene() {
       <QuizzesTemplate
         handleQuizDelete={handleDeleteQuiz}
         handleCreateQuiz={handleCreateQuiz}
+        handleQuizStart={handleStartQuiz}
         userName={name}
         quizzes={quizzes}
       />

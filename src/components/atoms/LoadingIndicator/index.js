@@ -3,10 +3,10 @@ import './styles.css'
 
 import Image, { TYPES } from '../Image'
 
-export default function LoadingIndicator() {
+export default function LoadingIndicator({style ={}, className=""}) {
   return (
-    <div className="loading-cont">
-        <Image className='loading-animation' type={TYPES.MED} imageName='logo-square.png'/>
+    <div style={{...style}} className={`loading-cont ${className}`}>
+        <Image style={style!=={} ? {...style} : {}} className='loading-animation' type={style!=={} ? TYPES.MED: TYPES.UNDEFINED} imageName='logo-square.png'/>
     </div>
   )
 }

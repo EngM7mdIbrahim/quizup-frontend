@@ -1,0 +1,16 @@
+.players-list-delete-cont{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 5px;
+    height: 100%;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  
+    scrollbar-width: none; 
+}
+
+
+.players-list-delete-cont::-webkit-scrollbar{
+    display: none;
+}
