@@ -1,0 +1,30 @@
+.running-class-cont {
+    gap: 20px;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.student-running-class-details-cont{
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  min-width: 400px;
+  height: 400px;
+  width: 600px;
+  border-radius: 10px;
+  padding: 20px;
+  gap:20px;
+  align-items: stretch;
+  justify-content: center;
+  position: relative;
+}
+
+.student-running-class-logo{
+  position: relative;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: 20px
+}

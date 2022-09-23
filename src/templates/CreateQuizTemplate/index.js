@@ -70,9 +70,9 @@ export default function CreateQuizTemplate({
     );
   },
   onQuestionClearImage = () =>
-  console.error(
-    "No on clear image  hanlder was passed - CreateQuizTemplate."
-  ),
+    console.error(
+      "No on clear image  hanlder was passed - CreateQuizTemplate."
+    ),
   onQuestionTypeChoice = (choiceNum) => {
     console.error(
       "No on question type choice handler! - CreateQuizTemplate. ChoicesNum: ",
@@ -80,18 +80,18 @@ export default function CreateQuizTemplate({
     );
   },
   onTemplateSave = () => {
-    console.error(
-      "No on template save handler! - CreateQuizTemplate."
-    );
+    console.error("No on template save handler! - CreateQuizTemplate.");
   },
   onTemplateTitleChange = (newValue) => {
     console.error(
-      "No on title change handler! - CreateQuizTemplate. NewValue: ", newValue
+      "No on title change handler! - CreateQuizTemplate. NewValue: ",
+      newValue
     );
   },
   onTemplateTagChange = (newValue) => {
     console.error(
-      "No on tag change handler! - CreateQuizTemplate. NewValue: ", newValue
+      "No on tag change handler! - CreateQuizTemplate. NewValue: ",
+      newValue
     );
   },
   questions = [
@@ -121,9 +121,8 @@ export default function CreateQuizTemplate({
   selected = 0,
   isQuestionModalShwon = false,
   templateTitle = "No title passed here - CreateQuizTemplate",
-  templateTag = "No tag passed here - CreateQuizTemplate"
+  templateTag = "No tag passed here - CreateQuizTemplate",
 }) {
-  
   return (
     <div
       style={{ flexDirection: "row", ...style }}
@@ -143,25 +142,30 @@ export default function CreateQuizTemplate({
         onTemplateTagChange={onTemplateTagChange}
         selected={selected}
         questions={questions}
-        templateTag = {templateTag}
-
+        templateTag={templateTag}
       />
 
       <div className="question-edit-cont">
         {questions.length > 1 && (
           <>
             <div className="question-edit-header-cont">
-              <EditLabel style={{textAlign: 'left'}} value={templateTitle} onNewValue={onTemplateTitleChange} isBold/>
+              <EditLabel
+                style={{ textAlign: "left" }}
+                value={templateTitle}
+                onNewValue={onTemplateTitleChange}
+                isBold
+              />
               <Button onClick={onTemplateSave}>Save Template</Button>
             </div>
             <QuestionHeader
-            onClearImage={()=>onQuestionClearImage(selected)}
+              onClearImage={() => onQuestionClearImage(selected)}
               onQuestionTitleChange={onQuestionTitleChange}
               selected={selected}
               questions={questions}
               onQuestionImageChange={onQuestionImageChange}
             />
             <QuestionOptions
+              editable
               questions={questions}
               onQuestionOptionTextChange={onQuestionOptionTextChange}
               selected={selected}

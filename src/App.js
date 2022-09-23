@@ -14,7 +14,8 @@ import { setErrorMessage } from "./slices/general.slice";
 import ClassesScene from "./scenes/ClassesScene";
 import SingleClassScene from "./scenes/SingleClassScene";
 import CreateQuizScene from "./scenes/CreateQuizScene";
-import TeachersScene from "./scenes/TeachersScene";
+import TeacherClassScene from "./scenes/TeacherClassScene";
+import StudentRunningClassTemplate from "./templates/StudentRunningClassTemplate";
 
 function App() {
   const { isLoading, errorMessage } = useSelector((state) => state.general);
@@ -40,7 +41,8 @@ function App() {
             <Route path="/profile/reports" element={<ClassesScene />} />
             <Route path="/profile/reports/:id" element={<SingleClassScene />} />
           </Route>
-          <Route path="/class/:quizID" element={<TeachersScene />}/>
+          <Route path="/class/:quizID" element={<TeacherClassScene />}/>
+          <Route path="/student/:classID" element={<StudentRunningClassTemplate />}/>
         </Routes>
       </BrowserRouter>
     </>

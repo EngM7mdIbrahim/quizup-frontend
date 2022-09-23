@@ -44,3 +44,16 @@ export const constructChoicesArray = (questions)=>{
   }
   return choices;
 }
+
+export const calcChoicesStats = (choices, players) =>{
+  let choiceStats = [];
+  choices.forEach (choice => {
+    let choicesSum = 0;
+    players.forEach(player=>{
+      choicesSum += player.choices[player.choices.length -1] === choice ? 1 : 0
+    })
+    choiceStats.push(choicesSum);
+  });
+  choiceStats.push(players.length)
+  return choiceStats;
+}

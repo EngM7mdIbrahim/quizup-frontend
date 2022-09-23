@@ -1,5 +1,4 @@
 import { useFormik } from "formik";
-import * as yup from "yup";
 import React from "react";
 import {
   constructValidationSchema,
@@ -9,16 +8,18 @@ import {
 import "./styles.css";
 import Button from "../../atoms/Button";
 import { EXAMPLE_INPUTS, FORM_INPUT_TYPES } from "./constants";
-import { PRIMARY, SECONDARY } from "../../../styles/colors";
+import { SECONDARY } from "../../../styles/colors";
 import AppLabel, { TYPES } from "../../atoms/AppLabel";
 import Image, { TYPES as IMAGE_TYPES } from "../../atoms/Image";
-import IconButton from "../../atoms/IconButton";
 
 export default function Form({
   style = {},
   titleStyle = {},
   className = "",
+  subComponent = false,
+  submitButtonText = 'Submit!',
   showLabels = false,
+  showLogo = false,
   inputs = EXAMPLE_INPUTS,
   titleImageName = "logo.png",
   title = "No title for this form - Form",
@@ -31,18 +32,18 @@ export default function Form({
   });
   return (
     <div
-      style={{ backgroundColor: SECONDARY, ...style }}
-      className={`card login-form-temp ${className}`}
+      style={{ backgroundColor: subComponent ? 'transparent' : SECONDARY, ...style }}
+      className={`${subComponent? 'subcomponent-form-temp':'card login-form-temp'} ${className}`}
     >
-      <Image
-      isContain
+      {showLogo && <Image
+        isContain
         style={{ alignSelf: "center" }}
         imageName={titleImageName}
         type={IMAGE_TYPES.EXTRALARGE}
-      />
-      <AppLabel style={titleStyle} isBold type={TYPES.TITLE}>
+      />}
+      {title!=='' && <AppLabel style={titleStyle} isBold type={TYPES.TITLE}>
         {title}
-      </AppLabel>
+      </AppLabel>}
       <div className="form-inputs-cont">
         {inputs.map((input) => {
           input.value = formik.values[input.name];
@@ -64,22 +65,17 @@ export default function Form({
 
       <div className="form-icon-buttons-cont">
         {inputs.map((input) => {
-        
-          return getInput(input, [
-            FORM_INPUT_TYPES.ICON_BUTON
-          ]);
+          return getInput(input, [FORM_INPUT_TYPES.ICON_BUTON]);
         })}
       </div>
 
       <div className="form-links-cont">
         {inputs.map((input) => {
-          return getInput(input, [
-            FORM_INPUT_TYPES.LINK
-          ]);
+          return getInput(input, [FORM_INPUT_TYPES.LINK]);
         })}
       </div>
 
-      <Button onClick={formik.handleSubmit}>Submit!</Button>
+      <Button onClick={formik.handleSubmit}>{submitButtonText}</Button>
     </div>
   );
 }

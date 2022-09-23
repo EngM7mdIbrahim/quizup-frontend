@@ -47,6 +47,7 @@ export default function LoginSignupTemplate({
         className="login-temp-sub-cont"
       >
         <Form
+          showLogo
           inputs={newInputs}
           showLabels={showLabels}
           onSubmit={onFormSubmit}
@@ -56,7 +57,7 @@ export default function LoginSignupTemplate({
       </div>
       <div className="login-signup-temp-im-cont">
         <Image
-        style={{width: '100%', height: '100%'}}
+          style={{ width: "100%", height: "100%" }}
           className="login-signup-temp-img"
           imageName="login-background.png"
         />

@@ -28,7 +28,7 @@ const QUESTION_SCHEME = {
 const initialState = {
   isLoading: false,
   errorMessage: "",
-  quizzes: undefined,
+  quizzes: [],
   addedQuiz: true,
   template: {
     name: "Untitled Quiz",
@@ -95,6 +95,7 @@ export const quizzesSlice = createSlice({
       state.template.questions[payload.id].image = payload.image;
     },
     changeQuestionCorrectAns: (state, { payload }) => {
+      
       state.template.questions[payload.id].correctAnswer = payload.letter;
     },
     changeQuestionOrder: (state, { payload }) => {

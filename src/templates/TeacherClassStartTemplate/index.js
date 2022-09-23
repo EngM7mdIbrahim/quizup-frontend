@@ -6,10 +6,12 @@ import QRCodeDetails from "../../components/molecules/QRCodeDetails";
 import { ACCENT, PRIMARY } from "../../styles/colors";
 import "./styles.css";
 
-export default function RunningClassTemplate({
+export default function TeacherClassStartTemplate({
   style = {},
   className = "",
   players = [],
+  pin=undefined,
+  roomURL="",
   onDeletePlayer = (id) =>
     console.error(
       "No onDeletePlayer handler has been has been passed! - RunningClassTemplate. ID: ",
@@ -53,7 +55,7 @@ export default function RunningClassTemplate({
           className="running-class-inner-details-cont"
           id="running-class-right-details-cont"
         >
-          <QRCodeDetails value="" pin="" />
+          <QRCodeDetails value={roomURL} pin={pin} />
         </div>
       </div>
     </div>

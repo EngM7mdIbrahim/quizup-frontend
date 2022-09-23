@@ -1,0 +1,13 @@
+.choice-stat-item-cont{
+    display: flex;
+    align-items: center;
+   gap: 20px;
+   transition: all 300ms ease;
+
+}
+
+.choice-stat-item-bar{
+    height: 40px;
+    border-radius: 5px;
+
+}

@@ -44,3 +44,11 @@
   align-items: center;
   gap: 3px;
 }
+
+.subcomponent-form-temp{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  flex-direction: column;
+  
+}
