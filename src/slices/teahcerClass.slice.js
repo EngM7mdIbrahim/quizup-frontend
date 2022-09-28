@@ -1,14 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { STATUS } from "../utils/constants";
 
-
 const initialState = {
-  roomURL: 'KLDJLKAJSDKLSAJDKLASJKDLJASKLDJASKDJLKSAJDKLSAJDKSAJDLKSAJDKLJDKLJSAKDJ',
+  roomURL:
+    "KLDJLKAJSDKLSAJDKLASJKDLJASKLDJASKDJLKSAJDKLSAJDKSAJDLKSAJDKLJDKLJSAKDJ",
   pin: undefined,
-  players: [],
+  players: [
+    {
+      choices: [0],
+      name: "Arnav Puri",
+    },
+    {
+      choices: [0],
+      name: "Zhen Paital",
+    },
+    {
+      choices: [1],
+      name: "Ibrahim Moawad",
+    },
+  ],
   questionNumber: 1,
-  waitingAnswers: false,
-  status: STATUS.QUESTIONS_TRUE_FALSE,
+  waitingAnswers: true,
+  status: STATUS.END_SESSION,
 };
 
 export const teahcerClassSlice = createSlice({
@@ -16,13 +29,12 @@ export const teahcerClassSlice = createSlice({
   initialState,
   reducers: {
     resetState: (state) => {
-      state = initialState
+      state = initialState;
     },
-    setRoomDetails: (state, {payload})=>{
-      state = payload
-    }
-    
-  }
+    setRoomDetails: (state, { payload }) => {
+      state = payload;
+    },
+  },
 });
 
 export const { setRoomDetails, resetState } = teahcerClassSlice.actions;

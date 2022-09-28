@@ -21,7 +21,7 @@ export default function PlayersDeleteList({
       style={{ ...style }}
       className={`players-list-delete-cont ${className}`}
     >
-      {players.map((player, index)=><PlayerListDeleteItem key={index} name={player} onDeletePlayer={()=>onDeletePlayer(index)}/>)}
+      {players.map((player, index)=><PlayerListDeleteItem key={index} name={player.name} onDeletePlayer={()=>onDeletePlayer(index)}/>)}
     </div>
   ) : <WaitingFor text="Waiting For Players ..." />;
 }

@@ -10,15 +10,15 @@ export default function TeacherClassQuestionHeader({
   style = {},
   className = "",
   duration = 30,
-  waitingAnswers = false,
-
-  questionNumber = "No question number passed here - TeacherClassQuestionHeader",
+  showTimer = false,
+  buttonText = 'Next',
+  title = "No question number passed here - TeacherClassQuestionHeader",
   onTimeEnd = () => {
     console.error(
       "No onTimeEnd handler passed here - TeacherClassQuestionHeader"
     );
   },
-  onNextPress = () => {
+  onButtonPress = () => {
     console.error(
       "No onNextPress handler passed here - TeacherClassQuestionHeader"
     );
@@ -45,13 +45,13 @@ export default function TeacherClassQuestionHeader({
             color: WHITE,
           }}
         >
-          Question {questionNumber}:
+         {title}
         </AppLabel>
       </div>
-      {waitingAnswers ? (
+      {showTimer ? (
         <Timer duration={duration} onTimeEnd={onTimeEnd} />
       ) : (
-        <Button style={{width: '150px'}} isPrimary={false} onClick={onNextPress}>Next</Button>
+        <Button style={{width: '150px'}} isPrimary={false} onClick={onButtonPress}>{buttonText}</Button>
       )}
     </div>
   );

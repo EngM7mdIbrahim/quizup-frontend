@@ -1,15 +1,12 @@
 import React from "react";
 import * as yup from "yup";
-import Button from "../../components/atoms/Button";
 import Image, { TYPES } from "../../components/atoms/Image";
 import Form from "../../components/molecules/Form";
 import { FORM_INPUT_TYPES } from "../../components/molecules/Form/constants";
-import PlayersDeleteList from "../../components/molecules/PlayersListDelete";
-import QRCodeDetails from "../../components/molecules/QRCodeDetails";
 import { ACCENT, PRIMARY } from "../../styles/colors";
 import "./styles.css";
 
-export default function StudentRunningClassTemplate({
+export default function StudentClassStartTemplate({
   style = {},
   className = "",
   onPinSubmit = ({ pin, name }) =>

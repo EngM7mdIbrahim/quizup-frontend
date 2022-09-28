@@ -4,6 +4,7 @@ import generalReducer from "./slices/general.slice";
 import quizzesReducer from './slices/quizzes.slice';
 import classesReducer from './slices/classes.slice';
 import teacherClassReducer from './slices/teahcerClass.slice'
+import studentClassReducer from './slices/studentClass.slice'
 
 export const store = configureStore({
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}),
@@ -12,6 +13,7 @@ export const store = configureStore({
     quizzes: quizzesReducer,
     general: generalReducer,
     classes: classesReducer,
-    teacherClass: teacherClassReducer
+    teacherClass: teacherClassReducer,
+    studentClass: studentClassReducer,
   },
 });

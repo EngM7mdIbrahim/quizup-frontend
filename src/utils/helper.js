@@ -57,3 +57,13 @@ export const calcChoicesStats = (choices, players) =>{
   choiceStats.push(players.length)
   return choiceStats;
 }
+
+export const getPlayerScore = (choices, correctAnswers) =>{
+  let sum = 0;
+  choices.forEach( (choice,index)=>{
+    if(correctAnswers[index]!==undefined && choice===correctAnswers[index]){
+      sum++;
+    }
+  })
+  return sum / correctAnswers.length;
+}

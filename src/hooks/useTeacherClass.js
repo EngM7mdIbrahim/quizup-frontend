@@ -3,9 +3,10 @@ import AppLabel from "../components/atoms/AppLabel";
 import Image, { TYPES } from "../components/atoms/Image";
 import { ACCENT, WHITE } from "../styles/colors";
 import TeacherClassQuestionTemplate from "../templates/TeacherClassQuestionTemplate";
+import TeacherClassReportsTemplate from "../templates/TeacherClassReportsTemplate";
 import TeacherClassStartTemplate from "../templates/TeacherClassStartTemplate";
 import { STATUS, TEACHER_ACTIONS } from "../utils/constants";
-import { calcChoicesStats } from "../utils/helper";
+import { calcChoicesStats, getPlayerScore } from "../utils/helper";
 
 const getErrorComponent = (error) => (
   <div
@@ -28,6 +29,12 @@ const getTeacherClassStartScreen = (roomURL, pin, players) => (
 );
 
 const validateTeacherClassQuestion = (quizID, quizzes, questionNumber) => {
+  if(!quizID){
+    return `Recieved null quiz ID: ${quizID}.`;
+  }
+  if(!quizzes){
+    return `Recieved null quizzes: ${quizzes}.`;
+  }
   const quiz = quizzes.find((quiz) => quiz._id === quizID);
   if (!quiz) {
     return `The quiz with this ID: ${quizID} has no questions.`;
@@ -35,6 +42,9 @@ const validateTeacherClassQuestion = (quizID, quizzes, questionNumber) => {
   const questions = quiz.questions;
   if (!questions || !Array.isArray(questions) || questions.length === 0) {
     return `There is no quiz with this ID: ${quizID}.`;
+  }
+  if(!questionNumber){
+    return [questions]
   }
   const question = questions[questionNumber - 1];
   if (!question) {
@@ -47,11 +57,12 @@ const validateTeacherClassQuestion = (quizID, quizzes, questionNumber) => {
   return [question];
 };
 
-const getTeacherClassWaitingAnswers = (
+const getTeacherClassQuestionsScreen = (
   quizID,
   quizzes,
   questionNumber,
   players,
+  waitingAnswers,
   emitAction
 ) => {
   const payload = validateTeacherClassQuestion(
@@ -71,7 +82,7 @@ const getTeacherClassWaitingAnswers = (
       imageName={question.image}
       question={question.question}
       questionNumber={questionNumber}
-      waitingAnswers={false}
+      waitingAnswers={waitingAnswers}
       duration={30}
       choices={question.choices}
       correctAnswer={question.correctAnswer}
@@ -79,6 +90,20 @@ const getTeacherClassWaitingAnswers = (
     />
   );
 };
+
+const getTeacherClassReportsScreen = (quizID, quizzes, players) =>{
+  const payload = validateTeacherClassQuestion(
+    quizID,
+    quizzes
+  );
+  if (!Array.isArray(payload)) {
+    return getErrorComponent(payload);
+  }
+  const [questions] = payload;
+  const correctAnswers = questions.map(question=>question.correctAnswer);
+  const scores = players.map(player =>({name: player.name, score: getPlayerScore( player.choices, correctAnswers)}))
+  return <TeacherClassReportsTemplate scores={scores}  />
+}
 
 export default (socket) => {
   const { status, roomURL, pin, players, questionNumber } = useSelector(
@@ -93,6 +118,8 @@ export default (socket) => {
       "with the following payload: ",
       payload
     );
+    //TODO: handle emiting the ranks and the scores for each player.
+    //TODO: handle the saving event
     // socket.emit(action, payload);
   };
   const getUnkownComponent = (message = "Unkown Quiz ID ...") =>
@@ -103,13 +130,25 @@ export default (socket) => {
         return getTeacherClassStartScreen(roomURL, pin, players);
       case STATUS.QUESTIONS_CHOICES:
       case STATUS.QUESTIONS_TRUE_FALSE:
-        return getTeacherClassWaitingAnswers(
+        return getTeacherClassQuestionsScreen(
           quizID,
           quizzes,
           questionNumber,
           players,
+          true,
           emitAction
         );
+      case STATUS.SHOW_ANSWERS:
+        return getTeacherClassQuestionsScreen(
+          quizID,
+          quizzes,
+          questionNumber,
+          players,
+          false,
+          emitAction
+        );
+      case STATUS.END_SESSION:
+        return getTeacherClassReportsScreen(quizID, quizzes, players);
       default:
         return getUnkownComponent(
           `Recieved unsupported game status. Status: ${status}`

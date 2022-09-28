@@ -40,11 +40,11 @@ export default function TeacherClassQuestionTemplate({
       className={`page running-class-question-cont ${className}`}
     >
       <TeacherClassQuestionHeader
-        questionNumber={questionNumber}
+        title={`Question ${questionNumber}: `}
         onTimeEnd={onTimeEnd}
         duration={duration}
-        waitingAnswers = {waitingAnswers}
-        onNextPress={onNextPress}
+        showTimer = {waitingAnswers}
+        onButtonPress={onNextPress}
       />
       <AppLabel style={{ textAlign: "center", color: WHITE }} isBold>
         {question}
