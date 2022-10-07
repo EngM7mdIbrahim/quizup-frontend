@@ -52,7 +52,7 @@ export default function StudentClassStartTemplate({
     >
       <div
         style={{ backgroundColor: PRIMARY }}
-        className="student-running-class-details-cont"
+        className="student-start-class-details-cont"
       >
         <Image
           className="student-running-class-logo"

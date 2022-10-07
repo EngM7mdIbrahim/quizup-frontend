@@ -30,9 +30,12 @@ const getStudentClassStartScreen = (emitAction) => (
   />
 );
 
-const getStudentClassRunningScreen = (emitAction) => (
-  <StudentClassRunningTemplate />
-)
+const getStudentClassRunningScreen = (emitAction) => {
+  const handleChoiceClick = (choice) => {
+    emitAction(STUDENT_ACTIONS.SUBMIT_ANSWER, choice);
+  };
+  return <StudentClassRunningTemplate onChoiceClick={handleChoiceClick} />;
+};
 
 export default (socket, pin) => {
   const { status } = useSelector((state) => state.studentClass);

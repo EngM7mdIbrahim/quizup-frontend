@@ -24,7 +24,8 @@ export const TEACHER_ON_ACK = 'teacher-ack'
 export const REQUEST_UPDATE = 'student-request-update-state'
 export const STUDENT_ACTIONS = {
     JOIN_ROOM: 'student-join',
-    REQUEST_UPDATE: 'student-request-update-state'
+    REQUEST_UPDATE: 'student-request-update-state',
+    SUBMIT_ANSWER: 'student-submit-ans'
 }
 
 export const STUDENT_ON_ACK = 'student-ack'

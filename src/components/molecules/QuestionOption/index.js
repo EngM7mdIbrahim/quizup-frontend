@@ -4,6 +4,7 @@ import { ACCENT, PRIMARY, SECONDARY, WHITE } from "../../../styles/colors";
 import EditLabel, { INPUT_SIZES } from "../../atoms/EditLabel";
 import AppLabel, { TYPES } from "../../atoms/AppLabel";
 import "./styles.css";
+import IconBackgroundText from "../../atoms/IconBackgroundText";
 
 const CHOICES = "ABCD";
 
@@ -33,14 +34,7 @@ export default function QuestionOption({
       style={{ backgroundColor: !editable ? SECONDARY : PRIMARY, ...style }}
       className={`quest-opt-cont ${className}`}
     >
-      <div
-        className="question-opt-icon-cont"
-        style={{ backgroundColor: ACCENT }}
-      >
-        <AppLabel isBold style={{ color: WHITE }} type={TYPES.SUB_TITLE}>
-          {CHOICES[letter]}
-        </AppLabel>
-      </div>
+      <IconBackgroundText letter={letter} />
       {editable ? (
         <EditLabel
           value={value}
