@@ -10,14 +10,14 @@ import "./styles.css";
 export default function StudentClassRunningTemplate({
   style = {},
   className = "",
-  title = "Question 1",
-  subTitle = "Choices:",
-  body = "1",
-  bottomLabel = " You are the best!",
+  title = undefined,
+  subTitle = undefined,
+  body = undefined,
+  bottomLabel = "You are the best!",
   bottomSubLabel = undefined,
   onChoiceClick = (choice) =>
     console.error(
-      "No onChoiceClick handler has been has been passed! - StudentClassRunningTemplate. Choice:",
+      "No onChoiceClick handler has been passed! - StudentClassRunningTemplate. Choice:",
       body[choice]
     ),
 }) {
@@ -41,9 +41,9 @@ export default function StudentClassRunningTemplate({
       />
 
       {title && (
-        <AppLabel isBold style={{ textAlign: "center", color: WHITE }}>
-          {title}
-        </AppLabel>
+       title.split('\n').map(word=> <AppLabel key={word} isBold style={{ textAlign: "center", color: WHITE }}>
+       {word}
+     </AppLabel>)
       )}
 
       <div
@@ -52,7 +52,7 @@ export default function StudentClassRunningTemplate({
       >
         {subTitle && (
           <AppLabel
-            type={LABEL_TYPES.SUB_SUB_TITLE}
+            type={LABEL_TYPES.SUB_TITLE}
             isBold
             style={{ textAlign: "left", ...titleStyle }}
           >
@@ -68,6 +68,8 @@ export default function StudentClassRunningTemplate({
           <div className="student-running-class-img-cont">
             <Image imageName={body} type={TYPES.MED} />
           </div>
+        ) : React.isValidElement(body) ? (
+          <div className="student-running-class-img-cont">{body}</div>
         ) : (
           <AppLabel isBold type={LABEL_TYPES.SUB_TITLE}>
             Not a valid body passed here - StudentClassRunningTemplate!

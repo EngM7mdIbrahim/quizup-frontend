@@ -8,7 +8,8 @@ export const STATUS = {
     QUESTIONS_CHOICES: 'choices',
     QUESTIONS_TRUE_FALSE: 'true-false',
     SHOW_ANSWERS: 'show-ans',
-    END_SESSION: 'end-session'
+    END_SESSION: 'end-session',
+    WAITING_ANSWERS: 'waiting-answers'
 }
 
 

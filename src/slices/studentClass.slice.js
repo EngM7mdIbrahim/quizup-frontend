@@ -4,12 +4,11 @@ import { STATUS } from "../utils/constants";
 const initialState = {
   name: 'Mohamed Ibrahim',
   socketID: null,
-  correctAnswers: [],
-  choices: [],
+  correctAnswers: [1,0],
+  choices: [0,0],
   rank: 0,
   questionNumber: 1,
-  waitingAnswers: true,
-  status: STATUS.QUESTIONS_CHOICES,
+  status: STATUS.END_SESSION,
 };
 
 export const studentClassSlice = createSlice({

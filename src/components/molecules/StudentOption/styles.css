@@ -1,0 +1,10 @@
+
+
+.student-running-class-details-choice-cont {
+    min-width: 160px;
+    min-height: 110px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

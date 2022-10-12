@@ -1,0 +1,7 @@
+.student-stats-cont{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    padding: 10px;
+    gap: 10px;
+}
