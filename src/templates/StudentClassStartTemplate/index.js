@@ -9,30 +9,33 @@ import "./styles.css";
 export default function StudentClassStartTemplate({
   style = {},
   className = "",
+  initialPin = "No value",
   onPinSubmit = ({ pin, name }) =>
     console.error(
-      "No onPineEnter handler has been has been passed! - RunningClassTemplate. Pin:",
+      "No onPinEnter handler has been has been passed! - RunningClassTemplate. Pin:",
       pin,
       ", Name:",
       name
     ),
 }) {
-  const inputs = [
+  let inputs = [
     {
       type: FORM_INPUT_TYPES.TEXT,
-      value: "",
+      value: initialPin,
       placeholder: "Please enter the game pin",
       name: "pin",
       imageSource: "logo-square.png",
       validation: yup
         .number()
-        .typeError("Please enter a 6 digit number!")
         .required("We need the game pin to let you join a room!")
-        .test(
-          "len",
-          "The game pin should be a 6 digit number!",
-          (val) => val.toString().length === 6
-        ),
+        .typeError("Please enter a 6 digit number!")
+        .test("len", "The game pin should be a 6 digit number!", (val) => {
+          try {
+            return val.toString().length === 6;
+          } catch (e) {
+            return false;
+          }
+        }),
     },
     {
       type: FORM_INPUT_TYPES.TEXT,
@@ -45,6 +48,7 @@ export default function StudentClassStartTemplate({
         .required("Please enter your name as to be shown to other players!"),
     },
   ];
+  
   return (
     <div
       style={{ backgroundColor: ACCENT, ...style }}

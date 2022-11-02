@@ -3,12 +3,15 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import AppLabel from "../components/atoms/AppLabel";
 import Image, { TYPES } from "../components/atoms/Image";
-import { ACCENT, WHITE } from "../styles/colors";
-import { STATUS, STUDENT_ACTIONS, TEACHER_ACTIONS } from "../utils/constants";
+
+import { deleteID } from "../slices/studentClass.slice";
+import { STATUS, STUDENT_ACTIONS, SERVER_CMDS } from "../utils/constants";
 import StudentClassStartTemplate from "../templates/StudentClassStartTemplate";
 import StudentClassRunningTemplate from "../templates/StudentClassRunningTemplate";
 import IconBackgroundText from "../components/atoms/IconBackgroundText";
 import StudentStats from "../components/organisms/StudentStats";
+
+
 const getErrorComponent = (error) => (
   <div
     style={{
@@ -24,13 +27,15 @@ const getErrorComponent = (error) => (
     <AppLabel style={{ textAlign: "center" }}>{error}</AppLabel>
   </div>
 );
-const getStudentClassStartScreen = (emitAction) => (
-  <StudentClassStartTemplate
+const getStudentClassStartScreen = (emitAction, initialPin) => {
+  console.log('Pin is ', initialPin)
+  return <StudentClassStartTemplate
+    initialPin={initialPin}
     onPinSubmit={(payload) => {
       emitAction(STUDENT_ACTIONS.JOIN_ROOM, payload);
     }}
   />
-);
+  };
 
 const getStudentClassRunningScreen = (emitAction, questionNumber, choices) => {
   const handleChoiceClick = (choice) => {
@@ -88,11 +93,12 @@ const getStudentClassAfterClass = (choices, correctAnswers, rank) => {
 };
 
 export default (socket, pin) => {
-  const { status, questionNumber, choices, correctAnswers, rank } = useSelector(
+  console.log('Hook called!')
+  const { status, questionNumber, choices, correctAnswers, rank} = useSelector(
     (state) => state.studentClass
   );
   const dispatch = useDispatch();
-
+  
   const emitAction = (action, payload) => {
     console.log(
       "Action should be emitted: ",
@@ -103,18 +109,14 @@ export default (socket, pin) => {
     // socket.emit(action, payload);
   };
 
-  useEffect(() => {
-    if (!pin) {
-      emitAction(STUDENT_ACTIONS.REQUEST_UPDATE);
-    }
-  }, []);
-
   const getUnkownComponent = (message = "Unkown Quiz ID ...") =>
     getErrorComponent(message);
+
   const getRenderedComponent = () => {
     switch (status) {
       case STATUS.WAITING_FOR_PLAYERS:
-        return getStudentClassStartScreen(emitAction);
+        console.log('Habdaya')
+        return getStudentClassStartScreen(emitAction, pin);
       case STATUS.QUESTIONS_CHOICES:
         return getStudentClassRunningScreen(
           emitAction,
@@ -147,5 +149,16 @@ export default (socket, pin) => {
     }
   };
 
-  return [getUnkownComponent, emitAction, getRenderedComponent];
+  const execCMD = (cmd) => {
+    if (!cmd) {
+      return;
+    }
+    switch (cmd) {
+      case SERVER_CMDS.deleteID:
+        dispatch(deleteID());
+        break;
+    }
+  };
+
+  return [getUnkownComponent, emitAction, getRenderedComponent, execCMD];
 };

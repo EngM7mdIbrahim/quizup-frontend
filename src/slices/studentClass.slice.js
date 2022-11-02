@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { STATUS } from "../utils/constants";
+import { LOCAL_STORAGE_KEYS, STATUS } from "../utils/constants";
 
 const initialState = {
-  name: 'Mohamed Ibrahim',
-  socketID: null,
-  correctAnswers: [1,0],
-  choices: [0,0],
-  rank: 0,
-  questionNumber: 1,
-  status: STATUS.END_SESSION,
+  name: '',
+  socketID: window.localStorage.getItem(LOCAL_STORAGE_KEYS.STUDENT_SOCKET_ID),
+  correctAnswers: [],
+  choices: [],
+  rank: -1,
+  questionNumber: -1,
+  status: STATUS.WAITING_FOR_PLAYERS,
+  pin: undefined
 };
 
 export const studentClassSlice = createSlice({
@@ -16,13 +17,26 @@ export const studentClassSlice = createSlice({
   initialState,
   reducers: {
     resetState: (state) => {
-      state = initialState;
+      return initialState;
     },
     setState: (state, { payload }) => {
-      state = payload;
+      if(payload.socketID){
+        window.localStorage.setItem(LOCAL_STORAGE_KEYS.STUDENT_SOCKET_ID, payload.socketID);
+      }
+      return payload;
     },
+    setErrorMessage: (state, payload) =>{
+      state.errorMessage = payload;
+    },
+    deleteID: (state, _)=>{
+      state.socketID = null;
+      window.localStorage.setItem(LOCAL_STORAGE_KEYS.STUDENT_SOCKET_ID, null);
+    },
+    setRoomPin: (state, {payload}) =>{
+      state.pin = payload;
+    }
   },
 });
 
-export const { setRoomDetails, resetState } = studentClassSlice.actions;
+export const { setState, resetState, deleteID, setErrorMessage, setRoomPin } = studentClassSlice.actions;
 export default studentClassSlice.reducer;

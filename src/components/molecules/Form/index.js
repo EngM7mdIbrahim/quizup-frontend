@@ -26,6 +26,7 @@ export default function Form({
   onSubmit = (newData) => console.error("No on submit handler - Form", newData),
 }) {
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: getInitialValues(inputs),
     validationSchema: constructValidationSchema(inputs),
     onSubmit,

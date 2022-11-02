@@ -1,56 +1,66 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import TeacherClassStartTemplate from "../templates/TeacherClassStartTemplate";
+import { useParams } from "react-router-dom";
 import io from "socket.io-client";
-import { BASE_URL, ON_ACK_SEND_PIN, SEND_PIN } from "../utils/constants";
+import { BASE_URL, TEACHER_ON_ACK, TEACHER_ACTIONS, TEACHER_ON_ERR } from "../utils/constants";
 import { useDispatch } from "react-redux";
-import { setRoomDetails } from "../slices/teahcerClass.slice";
+  import { setRoomDetails, resetState, setErrorMessage, setRoomPin } from "../slices/teahcerClass.slice";
 import useTeacherClass from "../hooks/useTeacherClass";
+import useResetNaviagtor from "../hooks/useResetNaviagtor";
+import useGeneralListener from "../hooks/useGeneralListener";
 
-const socket = io(`${BASE_URL}`);
+
 
 export default function TeacherClassesScene() {
   const { accessToken } = useSelector((state) => state.auth);
-  const state = useSelector((state) => state.teacherClass);
+  const [socket, setSocket] = useState(null)
   const { quizzes } = useSelector((state) => state.quizzes);
   const dispatch = useDispatch();
-  const [getUnkownComponent,emitAction,getRenderedComponent] = useTeacherClass();
-  const goTo = useNavigate();
+  const [getUnkownComponent,emitAction,getRenderedComponent] = useTeacherClass(socket);
   const { quizID } = useParams();
+  const customNavigator = useResetNaviagtor(resetState);
+  useEffect(() => {
+    if(!accessToken){
+      customNavigator('/signin')
+      return;
+    }
+    const socket = io(`${BASE_URL}`);
+    socket.on('connect', () => {
+      console.log('Socket is connected! ID: ', socket.id)
+    });
+    //Add listeners
+    socket.on(TEACHER_ON_ACK, (room)=>{
+      console.log('Received update from the server!', room)
+        dispatch(setRoomDetails(room));
+    })
+    socket.on(TEACHER_ON_ERR, (errorMessage)=>{
+      console.log('Error Message from the sockets: ', errorMessage);
+      dispatch(setErrorMessage(errorMessage))
+    })
 
-  // const currentQuizIndex = quizzes.findIndex((quiz) => quiz._id === quizID);
-  // if (currentQuizIndex ===-1) {
-  //   return getUnkownComponent();
-  // }
+    setSocket(socket);
+    
+    return () => {
+      socket.off('connect');
+      socket.off(TEACHER_ON_ACK);
+      socket.off(TEACHER_ON_ERR)
+      socket.disconnect();
+      setSocket(null);
+      dispatch(resetState());
+    };
+  }, []);
   
+  useEffect(()=>{
+    if(socket){
+      emitAction(TEACHER_ACTIONS.REQ_ROOM, {accessToken, quizID})
+    }
+  }, [socket]);
 
-  // useEffect(()=>{
-  //   if(!accessToken){
-  //     goTo('/signin')
-  //   }
-  // },[goTo]);
-
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Socket is connected! ID: ', socket.id)
-  //     socket.emit(SEND_PIN, {quizID, accessToken})
-  //   });
-
-  //   //Add listeners
-  //   socket.on(ON_ACK_SEND_PIN, (data)=>{
-  //       dispatch(setRoomDetails(data));
-  //   })
-
-  //   return () => {
-  //     socket.off('connect');
-  //     socket.off(ON_ACK_SEND_PIN);
-  //     //Remove Listeners
-
-  //   };
-  // }, []);
-
-  
+  const currentQuizIndex = quizzes.findIndex((quiz) => quiz._id === quizID);
+  if (currentQuizIndex ===-1) {
+    customNavigator('/profile/quizzes')
+    return getUnkownComponent('Please restart the quiz again as your refresh has lost the class activity!');
+  }
 
   return <>{getRenderedComponent(quizID)}</>;
 }

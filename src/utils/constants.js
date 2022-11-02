@@ -5,11 +5,21 @@ export const BASE_URL = 'http://localhost:8000'
 
 export const STATUS = {
     WAITING_FOR_PLAYERS: 'waiting-players',
+    WAITING_FOR_OTHERS_JOIN: 'waiting-others-join',
     QUESTIONS_CHOICES: 'choices',
     QUESTIONS_TRUE_FALSE: 'true-false',
     SHOW_ANSWERS: 'show-ans',
     END_SESSION: 'end-session',
     WAITING_ANSWERS: 'waiting-answers'
+}
+
+export const SERVER_CMDS = {
+    deleteID: 'DELETE_ID'
+}
+
+export const LOCAL_STORAGE_KEYS = {
+    STUDENT_SOCKET_ID: 'SSID',
+    
 }
 
 
@@ -20,6 +30,7 @@ export const TEACHER_ACTIONS = {
 }
 
 export const TEACHER_ON_ACK = 'teacher-ack'
+export const TEACHER_ON_ERR = 'teacher-err';
 
 //STUDENT SOCKET ACTIONS
 export const REQUEST_UPDATE = 'student-request-update-state'
@@ -29,4 +40,5 @@ export const STUDENT_ACTIONS = {
     SUBMIT_ANSWER: 'student-submit-ans'
 }
 
-export const STUDENT_ON_ACK = 'student-ack'
+export const STUDENT_ON_ACK = 'student-ack';
+export const STUDENT_ON_ERR = 'student-err';

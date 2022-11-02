@@ -2,40 +2,35 @@ import { createSlice } from "@reduxjs/toolkit";
 import { STATUS } from "../utils/constants";
 
 const initialState = {
-  roomURL:
-    "KLDJLKAJSDKLSAJDKLASJKDLJASKLDJASKDJLKSAJDKLSAJDKSAJDLKSAJDKLJDKLJSAKDJ",
-  pin: undefined,
-  players: [
-    {
-      choices: [0],
-      name: "Arnav Puri",
-    },
-    {
-      choices: [0],
-      name: "Zhen Paital",
-    },
-    {
-      choices: [1],
-      name: "Ibrahim Moawad",
-    },
-  ],
-  questionNumber: 1,
-  waitingAnswers: true,
-  status: STATUS.END_SESSION,
+  roomURL: "",
+  players: [],
+  questionNumber: 0,
+  waitingAnswers: false,
+  status: STATUS.WAITING_FOR_PLAYERS,
+  errorMessage: "",
+  isLoading: false,
 };
 
 export const teahcerClassSlice = createSlice({
   name: "teahcerClass",
   initialState,
   reducers: {
-    resetState: (state) => {
-      state = initialState;
+    resetState: (_) => {
+      return initialState;
     },
     setRoomDetails: (state, { payload }) => {
-      state = payload;
+      
+      return {
+        ...payload,
+        isLoading: state.isLoading,
+        errorMessage: state.errorMessage
+      };
+    },
+    setErrorMessage: (state, payload) =>{
+      state.errorMessage = payload;
     },
   },
 });
 
-export const { setRoomDetails, resetState } = teahcerClassSlice.actions;
+export const { setRoomDetails, resetState, setErrorMessage } = teahcerClassSlice.actions;
 export default teahcerClassSlice.reducer;

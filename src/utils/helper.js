@@ -67,3 +67,8 @@ export const getPlayerScore = (choices, correctAnswers) =>{
   })
   return sum / correctAnswers.length;
 }
+
+export const extractPin = (roomURL) =>{
+  const roomURLTokens = roomURL.split('/')
+  return roomURLTokens[roomURLTokens.length - 1];
+}
