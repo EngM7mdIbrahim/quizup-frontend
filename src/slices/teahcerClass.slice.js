@@ -29,8 +29,11 @@ export const teahcerClassSlice = createSlice({
     setErrorMessage: (state, payload) =>{
       state.errorMessage = payload;
     },
+    resetError: (state, _) =>{
+      state.errorMessage = "";
+    },
   },
 });
 
-export const { setRoomDetails, resetState, setErrorMessage } = teahcerClassSlice.actions;
+export const { setRoomDetails, resetState, setErrorMessage, resetError } = teahcerClassSlice.actions;
 export default teahcerClassSlice.reducer;

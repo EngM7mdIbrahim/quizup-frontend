@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useGeneralListener from "../hooks/useGeneralListener";
 import QuizzesTemplate from "../templates/QuizzesTemplate";
 import { deleteQuiz, getQuizzes, resetState } from "../slices/quizzes.slice";
-import useResetNaviagtor from "../hooks/useResetNaviagtor";
+import useResetNaviagtor from "../hooks/useResetNavigator";
 import useAlertModal from "../hooks/useAlertModal";
 import AlertPopUp from "../components/organisms/AlertPopUp";
 

@@ -6,8 +6,7 @@ import { BASE_URL, TEACHER_ON_ACK, TEACHER_ACTIONS, TEACHER_ON_ERR } from "../ut
 import { useDispatch } from "react-redux";
   import { setRoomDetails, resetState, setErrorMessage, setRoomPin } from "../slices/teahcerClass.slice";
 import useTeacherClass from "../hooks/useTeacherClass";
-import useResetNaviagtor from "../hooks/useResetNaviagtor";
-import useGeneralListener from "../hooks/useGeneralListener";
+import useResetNaviagtor from "../hooks/useResetNavigator";
 
 
 

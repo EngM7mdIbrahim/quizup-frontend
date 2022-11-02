@@ -95,7 +95,6 @@ export const quizzesSlice = createSlice({
       state.template.questions[payload.id].image = payload.image;
     },
     changeQuestionCorrectAns: (state, { payload }) => {
-      
       state.template.questions[payload.id].correctAnswer = payload.letter;
     },
     changeQuestionOrder: (state, { payload }) => {
@@ -139,6 +138,9 @@ export const quizzesSlice = createSlice({
     },
     changeTemplateTag: (state, { payload }) => {
       state.template.tag = payload;
+    },
+    resetError: (state, _) => {
+      state.errorMessage = "";
     },
   },
   extraReducers: (builder) => {
@@ -186,7 +188,6 @@ export const deleteQuiz = createAsyncThunk(
   "quizzes/deleteQuiz",
   async (id, { rejectWithValue, dispatch }) => {
     try {
-
       await deleteQuizReq(id);
       dispatch(getQuizzes());
       return true;
@@ -221,7 +222,7 @@ export const createTemplate = createAsyncThunk(
       payloadJSON.questions.pop();
       imagesURLS.pop();
 
-      let [questionIDs,id] = await createTemplateReq(payloadJSON);
+      let [questionIDs, id] = await createTemplateReq(payloadJSON);
       let questionIDsCounter = 0;
       let images = await Promise.all(
         imagesURLS.map(async (imageArr) => {
@@ -261,6 +262,7 @@ export const {
   addNewQuestion,
   changeTemplateTitle,
   changeTemplateTag,
+  resetError,
 } = quizzesSlice.actions;
 
 export default quizzesSlice.reducer;

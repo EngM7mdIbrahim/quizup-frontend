@@ -5,7 +5,7 @@ import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
 import { useSelector, useDispatch } from "react-redux";
 import { signIn, resetState } from "../slices/auth.slice";
 import useGeneralListener from "../hooks/useGeneralListener";
-import useResetNaviagtor from "../hooks/useResetNaviagtor";
+import useResetNaviagtor from "../hooks/useResetNavigator";
 
 export default function LoginScene() {
   const { isLoading, errorMessage, accessToken } = useSelector((state) => state.auth);

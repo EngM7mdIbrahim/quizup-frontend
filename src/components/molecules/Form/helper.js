@@ -84,13 +84,9 @@ export const constructValidationSchema = (inputs) => {
   return yup.object(validationSchema);
 };
 
-let count = 1;
 export const getInitialValues = (inputs) => {
-  console.log('Call Number: ',count);
-  count++;
   let initialValues = {};
   inputs.forEach((input) => {
-    console.log('Input labeled', input.name, 'has a value of', input.value)
     initialValues[input.name] = input.value;
   });
   return initialValues;

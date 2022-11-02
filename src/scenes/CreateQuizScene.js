@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useGeneralListener from "../hooks/useGeneralListener";
-import useResetNaviagtor from "../hooks/useResetNaviagtor";
+import useResetNaviagtor from "../hooks/useResetNavigator";
 import CreateQuizTemplate, {
   QUESTION_TYPES,
 } from "../templates/CreateQuizTemplate";

@@ -5,7 +5,7 @@ import useGeneralListener from "../hooks/useGeneralListener";
 import * as yup from "yup";
 import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
 import { resetState, signUp } from "../slices/auth.slice";
-import useResetNaviagtor from "../hooks/useResetNaviagtor";
+import useResetNaviagtor from "../hooks/useResetNavigator";
 
 export default function SignupScene() {
   const { isLoading, errorMessage, accessToken } = useSelector(

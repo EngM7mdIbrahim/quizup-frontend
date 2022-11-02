@@ -11,8 +11,11 @@ import {
 const initialState = {
   isLoading: false,
   errorMessage: "",
-  accessToken: localStorage.getItem(ACCESS_TOKEN_KEY)==='null'? null : localStorage.getItem(ACCESS_TOKEN_KEY),
-  name: "Unkown Name!",
+  accessToken:
+    localStorage.getItem(ACCESS_TOKEN_KEY) === "null"
+      ? null
+      : localStorage.getItem(ACCESS_TOKEN_KEY),
+  name: "Unknown Name!",
   // refreshToken: localStorage.getItem(ACCESS_TOKEN_KEY),
 };
 
@@ -22,13 +25,16 @@ export const authSlice = createSlice({
   reducers: {
     resetState: (state) => {
       state.errorMessage = "";
-      state.isLoading=false;
+      state.isLoading = false;
     },
     signOut: (state) => {
       state.accessToken = null;
       // state.refreshToken = null;
       localStorage.setItem(ACCESS_TOKEN_KEY, null);
       // localStorage.setItem(REFRESH_TOKEN_KEY, null);
+    },
+    resetError: (state, _) => {
+      state.errorMessage = "";
     },
   },
   extraReducers: (builder) => {
@@ -41,11 +47,11 @@ export const authSlice = createSlice({
         // state.refreshToken = payload.refreshToken;
         // localStorage.setItem(REFRESH_TOKEN_KEY, state.refreshToken);
       })
-      .addMatcher(isLoadingAction('auth'), (state, action) => {
+      .addMatcher(isLoadingAction("auth"), (state, action) => {
         state.isLoading = true;
         state.errorMessage = "";
       })
-      .addMatcher(isRejectedAction('auth'), (state, { payload }) => {
+      .addMatcher(isRejectedAction("auth"), (state, { payload }) => {
         state.errorMessage = payload;
         state.isLoading = false;
       });
@@ -59,7 +65,7 @@ export const signIn = createAsyncThunk(
       let response = await signInReq(payload);
       return response.data;
     } catch (error) {
-      console.error(error)
+      console.error(error);
       return rejectWithValue(checkAxiosError(error));
     }
   }
@@ -72,11 +78,11 @@ export const signUp = createAsyncThunk(
       let response = await signUpReq(payload);
       return response.data;
     } catch (error) {
-      console.error(error)
+      console.error(error);
       return rejectWithValue(checkAxiosError(error));
     }
   }
 );
 
-export const { signOut, resetState } = authSlice.actions;
+export const { signOut, resetState, resetError } = authSlice.actions;
 export default authSlice.reducer;

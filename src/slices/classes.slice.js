@@ -19,6 +19,9 @@ export const classesSlice = createSlice({
       state.errorMessage = "";
       state.isLoading = false;
     },
+    resetError: (state, _) =>{
+      state.errorMessage = "";
+    },
   },
   extraReducers: (builder) => {
     return builder
@@ -51,6 +54,6 @@ export const getClasses = createAsyncThunk(
 );
 
 
-export const { resetState } = classesSlice.actions;
+export const { resetState, resetError } = classesSlice.actions;
 
 export default classesSlice.reducer;

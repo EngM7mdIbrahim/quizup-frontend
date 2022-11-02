@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useGeneralListener from "../hooks/useGeneralListener";
 import ClassesTemplate from "../templates/ClassesTemplate";
 import { getClasses, resetState } from "../slices/classes.slice";
-import useResetNaviagtor from "../hooks/useResetNaviagtor";
+import useResetNaviagtor from "../hooks/useResetNavigator";
 import SingleClassTemplate, {
   getEmptyComponent,
 } from "../templates/SingleClassTemplate";

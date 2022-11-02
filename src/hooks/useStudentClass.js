@@ -1,15 +1,15 @@
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import AppLabel from "../components/atoms/AppLabel";
 import Image, { TYPES } from "../components/atoms/Image";
-
-import { deleteID } from "../slices/studentClass.slice";
+import useGeneralListener from './useGeneralListener';
+import { deleteID, resetError } from "../slices/studentClass.slice";
 import { STATUS, STUDENT_ACTIONS, SERVER_CMDS } from "../utils/constants";
 import StudentClassStartTemplate from "../templates/StudentClassStartTemplate";
 import StudentClassRunningTemplate from "../templates/StudentClassRunningTemplate";
 import IconBackgroundText from "../components/atoms/IconBackgroundText";
 import StudentStats from "../components/organisms/StudentStats";
+import { useEffect } from "react";
 
 
 const getErrorComponent = (error) => (
@@ -28,7 +28,6 @@ const getErrorComponent = (error) => (
   </div>
 );
 const getStudentClassStartScreen = (emitAction, initialPin) => {
-  console.log('Pin is ', initialPin)
   return <StudentClassStartTemplate
     initialPin={initialPin}
     onPinSubmit={(payload) => {
@@ -92,11 +91,13 @@ const getStudentClassAfterClass = (choices, correctAnswers, rank) => {
   />;
 };
 
-export default (socket, pin) => {
-  console.log('Hook called!')
-  const { status, questionNumber, choices, correctAnswers, rank} = useSelector(
-    (state) => state.studentClass
-  );
+export default (socket, pin, state) => {
+  if(pin===undefined){
+    pin = "";
+  }
+  const { status, questionNumber, choices, correctAnswers, rank, errorMessage} = state
+  useEffect(()=>{},[status]);
+  useGeneralListener(errorMessage, false, resetError);
   const dispatch = useDispatch();
   
   const emitAction = (action, payload) => {
@@ -106,16 +107,15 @@ export default (socket, pin) => {
       "with the following payload: ",
       payload
     );
-    // socket.emit(action, payload);
+    socket.emit(action, payload);
   };
 
-  const getUnkownComponent = (message = "Unkown Quiz ID ...") =>
+  const getUnkownComponent = (message = "Unknown Quiz ID ...") =>
     getErrorComponent(message);
 
   const getRenderedComponent = () => {
     switch (status) {
       case STATUS.WAITING_FOR_PLAYERS:
-        console.log('Habdaya')
         return getStudentClassStartScreen(emitAction, pin);
       case STATUS.QUESTIONS_CHOICES:
         return getStudentClassRunningScreen(

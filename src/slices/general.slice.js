@@ -27,9 +27,10 @@ export const generalSlice = createSlice({
     //   state.onAlertOk = ()=>{};
     // },
   },
+  dummyAction: (_,__) =>{}
 });
 
 // Action creators are generated for each case reducer function
-export const { setLoading, setErrorMessage, showConfirmation, resetConfirmation } = generalSlice.actions;
+export const { setLoading, setErrorMessage, showConfirmation, resetConfirmation, dummyAction, resetError  } = generalSlice.actions;
 
 export default generalSlice.reducer;
