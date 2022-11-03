@@ -15,6 +15,7 @@ import Image, { TYPES as IMAGE_TYPES } from "../../atoms/Image";
 export default function Form({
   style = {},
   titleStyle = {},
+  isLoading =false,
   className = "",
   subComponent = false,
   submitButtonText = 'Submit!',
@@ -76,7 +77,7 @@ export default function Form({
         })}
       </div>
 
-      <Button onClick={formik.handleSubmit}>{submitButtonText}</Button>
+      <Button isLoading={isLoading} onClick={formik.handleSubmit}>{submitButtonText}</Button>
     </div>
   );
 }

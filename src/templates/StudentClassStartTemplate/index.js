@@ -1,13 +1,14 @@
 import React from "react";
 import * as yup from "yup";
-import Image, { TYPES } from "../../components/atoms/Image";
 import Form from "../../components/molecules/Form";
 import { FORM_INPUT_TYPES } from "../../components/molecules/Form/constants";
+import WhiteBackgroundCard from "../../components/molecules/WhiteBackgroundCard";
 import { ACCENT, PRIMARY } from "../../styles/colors";
 import "./styles.css";
 
 export default function StudentClassStartTemplate({
   style = {},
+  isLoading=false,
   className = "",
   initialPin = "No value",
   onPinSubmit = ({ pin, name }) =>
@@ -48,28 +49,15 @@ export default function StudentClassStartTemplate({
         .required("Please enter your name as to be shown to other players!"),
     },
   ];
-  
+
   return (
     <div
       style={{ backgroundColor: ACCENT, ...style }}
       className={`page running-class-cont ${className}`}
     >
-      <div
-        style={{ backgroundColor: PRIMARY }}
-        className="student-start-class-details-cont"
-      >
-        <Image
-          className="student-running-class-logo"
-          type={TYPES.UNDEFINED}
-          style={{
-            width: undefined,
-            height: "70px",
-            objectFit: "contain",
-          }}
-          imageName="logo.png"
-        />
-
+      <WhiteBackgroundCard>
         <Form
+          isLoading={isLoading}
           style={{ flex: 1, justifyContent: "center" }}
           subComponent
           inputs={inputs}
@@ -77,7 +65,7 @@ export default function StudentClassStartTemplate({
           submitButtonText="Enter Room!"
           title=""
         />
-      </div>
+      </WhiteBackgroundCard>
     </div>
   );
 }

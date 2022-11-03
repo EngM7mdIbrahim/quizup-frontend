@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import AppLabel from "../components/atoms/AppLabel";
 import Image, { TYPES } from "../components/atoms/Image";
-import useGeneralListener from './useGeneralListener';
+import useGeneralListener from "./useGeneralListener";
 import { deleteID, resetError } from "../slices/studentClass.slice";
 import { STATUS, STUDENT_ACTIONS, SERVER_CMDS } from "../utils/constants";
 import StudentClassStartTemplate from "../templates/StudentClassStartTemplate";
@@ -10,7 +10,8 @@ import StudentClassRunningTemplate from "../templates/StudentClassRunningTemplat
 import IconBackgroundText from "../components/atoms/IconBackgroundText";
 import StudentStats from "../components/organisms/StudentStats";
 import { useEffect } from "react";
-
+import StudentClassWaitingForOthers from "../templates/StudentClassWaitingForOthers";
+import { setLoading } from "../slices/studentClass.slice";
 
 const getErrorComponent = (error) => (
   <div
@@ -27,14 +28,17 @@ const getErrorComponent = (error) => (
     <AppLabel style={{ textAlign: "center" }}>{error}</AppLabel>
   </div>
 );
-const getStudentClassStartScreen = (emitAction, initialPin) => {
-  return <StudentClassStartTemplate
-    initialPin={initialPin}
-    onPinSubmit={(payload) => {
-      emitAction(STUDENT_ACTIONS.JOIN_ROOM, payload);
-    }}
-  />
-  };
+const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
+  return (
+    <StudentClassStartTemplate
+      isLoading={isLoading}
+      initialPin={initialPin}
+      onPinSubmit={(payload) => {
+        emitAction(STUDENT_ACTIONS.JOIN_ROOM, payload);
+      }}
+    />
+  );
+};
 
 const getStudentClassRunningScreen = (emitAction, questionNumber, choices) => {
   const handleChoiceClick = (choice) => {
@@ -84,22 +88,37 @@ const getStudentClassAfterQuestion = (
 };
 
 const getStudentClassAfterClass = (choices, correctAnswers, rank) => {
-  return <StudentClassRunningTemplate
-    body={<StudentStats correcAnswers={correctAnswers} choices={choices} />}
-    // subTitle={}
-    title={`You're ${rank} on the list! \n Here is your status:`}
-  />;
+  return (
+    <StudentClassRunningTemplate
+      body={<StudentStats correcAnswers={correctAnswers} choices={choices} />}
+      // subTitle={}
+      title={`You're ${rank} on the list! \n Here is your status:`}
+    />
+  );
+};
+
+const getStudentClassWaitingForOthers = (username) => {
+  return <StudentClassWaitingForOthers username={username} />;
 };
 
 export default (socket, pin, state) => {
-  if(pin===undefined){
+  if (pin === undefined) {
     pin = "";
   }
-  const { status, questionNumber, choices, correctAnswers, rank, errorMessage} = state
-  useEffect(()=>{},[status]);
+  const {
+    status,
+    questionNumber,
+    choices,
+    correctAnswers,
+    rank,
+    errorMessage,
+    name,
+    isLoading,
+  } = state;
+  useEffect(() => {}, [status]);
   useGeneralListener(errorMessage, false, resetError);
   const dispatch = useDispatch();
-  
+
   const emitAction = (action, payload) => {
     console.log(
       "Action should be emitted: ",
@@ -107,7 +126,12 @@ export default (socket, pin, state) => {
       "with the following payload: ",
       payload
     );
-    socket.emit(action, payload);
+    dispatch(setLoading());
+    // TODO: REMOVE THE TIMEOUT WHEN YOU FINISH
+    setTimeout(()=>{
+      socket.emit(action, payload);
+    },2000);
+    
   };
 
   const getUnkownComponent = (message = "Unknown Quiz ID ...") =>
@@ -116,7 +140,7 @@ export default (socket, pin, state) => {
   const getRenderedComponent = () => {
     switch (status) {
       case STATUS.WAITING_FOR_PLAYERS:
-        return getStudentClassStartScreen(emitAction, pin);
+        return getStudentClassStartScreen(emitAction, pin, isLoading);
       case STATUS.QUESTIONS_CHOICES:
         return getStudentClassRunningScreen(
           emitAction,
@@ -141,7 +165,8 @@ export default (socket, pin, state) => {
         );
       case STATUS.END_SESSION:
         return getStudentClassAfterClass(choices, correctAnswers, rank);
-
+      case STATUS.WAITING_FOR_OTHERS_JOIN:
+        return getStudentClassWaitingForOthers(name);
       default:
         return getUnkownComponent(
           `Recieved unsupported game status. Status: ${status}`

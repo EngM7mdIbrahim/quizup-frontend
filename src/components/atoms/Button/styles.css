@@ -7,6 +7,8 @@ button{
   border: none;
   font-weight: 500;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
 }
 
 .secondary-button{
@@ -25,4 +27,8 @@ button{
 
 button:hover{
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+button:disabled{
+  opacity: 0.8;
 }

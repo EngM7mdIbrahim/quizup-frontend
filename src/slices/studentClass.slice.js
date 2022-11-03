@@ -10,26 +10,31 @@ const initialState = {
   questionNumber: -1,
   status: STATUS.WAITING_FOR_PLAYERS,
   errorMessage: "",
+  isLoading: false
 };
 
 export const studentClassSlice = createSlice({
   name: "studentClass",
   initialState,
   reducers: {
-    resetState: (state) => {
+    resetState: (_) => {
       return initialState;
     },
     setState: (_, { payload }) => {
       if(payload.socketID){
         window.localStorage.setItem(LOCAL_STORAGE_KEYS.STUDENT_SOCKET_ID, payload.socketID);
       }
-      return payload;
+      return {...payload, errorMessage: "", isLoading: false};
     },
     setErrorMessage: (state, {payload}) => {
       state.errorMessage = payload;
     },
+    setLoading: (state, _) =>{
+      state.isLoading = true;
+    },
     resetError: (state, _) =>{
       state.errorMessage = "";
+      state.isLoading = false;
     },
     deleteID: (state, _)=> {
       state.socketID = null;
@@ -38,5 +43,5 @@ export const studentClassSlice = createSlice({
   },
 });
 
-export const { setState, resetState, deleteID, setErrorMessage, setRoomPin, resetError } = studentClassSlice.actions;
+export const { setState, resetState, deleteID, setErrorMessage, setRoomPin, resetError, setLoading } = studentClassSlice.actions;
 export default studentClassSlice.reducer;
