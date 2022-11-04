@@ -105,6 +105,7 @@ const getTeacherClassReportsScreen = (quizID, quizzes, players) => {
 export default (socket) => {
   const { status, roomURL, players, questionNumber, errorMessage, isLoading } =
     useSelector((state) => state.teacherClass);
+  const dispatch = useDispatch();
   const pin = extractPin(roomURL);
   const { quizzes } = useSelector((state) => state.quizzes);
   useGeneralListener(errorMessage, isLoading);

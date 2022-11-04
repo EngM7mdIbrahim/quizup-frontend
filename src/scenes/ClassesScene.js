@@ -7,9 +7,10 @@ import useResetNaviagtor from "../hooks/useResetNavigator";
 
 export default function ClassesScene() {
   const { accessToken } = useSelector((state) => state.auth);
-  const { classes, errorMessage, isLoading } = useSelector(
+  const { classes } = useSelector(
     (state) => state.classes
   );
+  const { errorMessage, isLoading } = useSelector((state) => state.general )
   useGeneralListener(errorMessage, isLoading);
   const dispatch = useDispatch();
   const customNavigator = useResetNaviagtor(resetState);

@@ -10,23 +10,22 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingPopUp from "./components/organisms/LoadingPopUp";
 import ErrorPopUp from "./components/organisms/ErrorPopUp";
-import { setErrorMessage } from "./slices/general.slice";
+import { setOkButtonPressed } from "./slices/general.slice";
 import ClassesScene from "./scenes/ClassesScene";
 import SingleClassScene from "./scenes/SingleClassScene";
 import CreateQuizScene from "./scenes/CreateQuizScene";
 import TeacherClassScene from "./scenes/TeacherClassScene";
 import StudentClassScene from "./scenes/StudentClassScene";
+import { getErrorPopUpAction } from "./hooks/useLoadingState";
 
 function App() {
-  const { isLoading, errorMessage } = useSelector((state) => state.general);
-  const dispatch = useDispatch();
-
+  const { isLoading, errorMessage} = useSelector((state) => state.general);
   return (
     <>
       <ErrorPopUp
         errorMessage={errorMessage}
         onClick={() => {
-          dispatch(setErrorMessage(""));
+          getErrorPopUpAction()();
         }}
       />
       <LoadingPopUp isLoading={isLoading} />

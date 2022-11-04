@@ -4,16 +4,19 @@ import useGeneralListener from "../hooks/useGeneralListener";
 import QuizzesTemplate from "../templates/QuizzesTemplate";
 import { deleteQuiz, getQuizzes, resetState } from "../slices/quizzes.slice";
 import useResetNaviagtor from "../hooks/useResetNavigator";
+import useLoadingState from "../hooks/useLoadingState";
 import useAlertModal from "../hooks/useAlertModal";
 import AlertPopUp from "../components/organisms/AlertPopUp";
 
 export default function QuizzesScene() {
   const { accessToken, name } = useSelector((state) => state.auth);
-  const { quizzes, errorMessage, isLoading } = useSelector(
+  const { quizzes } = useSelector(
     (state) => state.quizzes
   );
   const [alertProps, showAlert] = useAlertModal();
-  useGeneralListener(errorMessage, isLoading);
+  const [dispatcher, setErrorMessage] = useLoadingState();
+  // useGeneralListener(errorMessage, isLoading);
+
   const dispatch = useDispatch();
   const customNavigator = useResetNaviagtor(resetState);
 
@@ -22,7 +25,8 @@ export default function QuizzesScene() {
     if (!accessToken) {
       customNavigator("/signin");
     }
-    dispatch(getQuizzes());
+    
+    dispatcher(getQuizzes(), "Unable to get the quizzes! Please check your internet connection!");
   }, []);
   /* eslint-disable */
 
@@ -30,11 +34,13 @@ export default function QuizzesScene() {
 
   // };
   const handleStartQuiz = (id) => {
-    customNavigator(`/class/${id}`)
+    customNavigator(`/class/${id}`);
   };
   const handleDeleteQuiz = (id) => {
     showAlert(
-      `Are your sure you want to delete ${quizzes.find(quiz=>quiz._id === id).name} quiz?`,
+      `Are your sure you want to delete ${
+        quizzes.find((quiz) => quiz._id === id).name
+      } quiz?`,
       () => {
         dispatch(deleteQuiz(id));
       }

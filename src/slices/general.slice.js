@@ -4,8 +4,6 @@ import { ACCESS_TOKEN_KEY } from "../utils/constants";
 const initialState = {
   isLoading: false,
   errorMessage: "",
-  // alertMessage: "",
-  // onAlertOk: ()=>{}
 };
 
 export const generalSlice = createSlice({
@@ -18,19 +16,25 @@ export const generalSlice = createSlice({
     setErrorMessage: (state, action) => {
       state.errorMessage = action.payload;
     },
-    // showConfirmation: (state, {payload})=>{
-    //   state.alertMessage = payload.message;
-    //   state.onAlertOk = payload.onAlertOk
-    // },
-    // resetConfirmation: (state)=>{
-    //   state.alertMessage = "";
-    //   state.onAlertOk = ()=>{};
-    // },
+    resetState: (_, __) => {
+      return initialState;
+    },
+    checkTimeout: (state, { payload }) => {
+      if (state.isLoading) {
+        state.isLoading = false;
+        state.errorMessage = payload;
+      }
+    },
   },
-  dummyAction: (_,__) =>{}
+  dummyAction: (_, __) => {},
 });
 
 // Action creators are generated for each case reducer function
-export const { setLoading, setErrorMessage, showConfirmation, resetConfirmation, dummyAction, resetError  } = generalSlice.actions;
+export const {
+  setLoading,
+  setErrorMessage,
+  checkTimeout,
+  resetState,
+} = generalSlice.actions;
 
 export default generalSlice.reducer;

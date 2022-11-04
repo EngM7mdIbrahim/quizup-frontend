@@ -12,6 +12,7 @@ import {
   sendQuizImagesReq,
 } from "../api/quizzes.api";
 import format from "date-format";
+import { setLoading, setErrorMessage } from "./general.slice";
 
 const QUESTION_SCHEME = {
   question: "What is your question",
@@ -152,23 +153,16 @@ export const quizzesSlice = createSlice({
       .addCase(createTemplate.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.addedQuiz = payload;
-      })
-      .addMatcher(isLoadingAction("quizzes"), (state) => {
-        state.isLoading = true;
-        state.errorMessage = "";
-      })
-      .addMatcher(isRejectedAction("quizzes"), (state, { payload }) => {
-        state.errorMessage = payload;
-        state.isLoading = false;
       });
   },
 });
 
 export const getQuizzes = createAsyncThunk(
   "quizzes/getQuizzes",
-  async (payload, { rejectWithValue }) => {
+  async ({ rejectWithValue, dispatch }) => {
     try {
-      let quizzes = await getQuizzesReq(payload);
+      console.log('Entered Here!')
+      let quizzes = await getQuizzesReq();
       let newQuizzes = quizzes.map((quiz) => {
         let newQuiz = {
           ...quiz,
@@ -176,10 +170,14 @@ export const getQuizzes = createAsyncThunk(
         };
         return newQuiz;
       });
+      dispatch(setLoading(false));
+      console.log(newQuizzes)
       return newQuizzes;
     } catch (error) {
       console.error(error);
-      return rejectWithValue(checkAxiosError(error));
+      dispatch(setLoading(false));
+      dispatch(setErrorMessage(checkAxiosError(error)));
+      return error;
     }
   }
 );
@@ -188,12 +186,15 @@ export const deleteQuiz = createAsyncThunk(
   "quizzes/deleteQuiz",
   async (id, { rejectWithValue, dispatch }) => {
     try {
-      await deleteQuizReq(id);
+      await deleteQuizReq('sfddsfsdf');
+      dispatch(setLoading(false));
       dispatch(getQuizzes());
       return true;
     } catch (error) {
       console.error(error);
-      return rejectWithValue(checkAxiosError(error));
+      dispatch(setLoading(false));
+      dispatch(setErrorMessage(checkAxiosError(error)));
+      return error;
     }
   }
 );
