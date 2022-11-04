@@ -9,6 +9,7 @@ export default function PlayersDeleteList({
   style = {},
   className = "",
   players = [],
+  isLoading = false,
   onDeletePlayer = (id) =>
     console.error(
       "No onDeletePlayer handler has been has been passed! - PlayersDeleteList. ID: ",
@@ -21,7 +22,7 @@ export default function PlayersDeleteList({
       style={{ ...style }}
       className={`players-list-delete-cont ${className}`}
     >
-      {players.map((player, index)=><PlayerListDeleteItem key={index} name={player.name} onDeletePlayer={()=>onDeletePlayer(index)}/>)}
+      {players.map((player, index)=><PlayerListDeleteItem isLoading={isLoading} key={index} name={player.name} onDeletePlayer={()=>onDeletePlayer(index)}/>)}
     </div>
   ) : <WaitingFor text="Waiting For Players ..." />;
 }

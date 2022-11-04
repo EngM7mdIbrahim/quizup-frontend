@@ -1,7 +1,7 @@
 export const ACCESS_TOKEN_KEY = 'access_token';
 export const REFRESH_TOKEN_KEY = 'refresh_token';
 
-export const BASE_URL = 'http://localhost:8000'
+export const BASE_URL = 'https://neat-owls-start-156-200-123-146.loca.lt'
 
 export const STATUS = {
     WAITING_FOR_PLAYERS: 'waiting-players',

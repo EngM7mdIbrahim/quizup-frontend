@@ -10,8 +10,9 @@ export default function TeacherClassStartTemplate({
   style = {},
   className = "",
   players = [],
-  pin=undefined,
-  roomURL="",
+  pin = undefined,
+  isLoading = false,
+  roomURL = "",
   onDeletePlayer = (id) =>
     console.error(
       "No onDeletePlayer handler has been has been passed! - RunningClassTemplate. ID: ",
@@ -43,12 +44,15 @@ export default function TeacherClassStartTemplate({
             imageName="logo.png"
           />
           <PlayersDeleteList
+            isLoading={isLoading}
             style={{ flex: 1 }}
             players={players}
             onDeletePlayer={onDeletePlayer}
           />
           {Array.isArray(players) && players.length !== 0 && (
-            <Button onClick={onStartGame} style={{ alignSelf: "center" }}>Start the game!</Button>
+            <Button onClick={onStartGame} style={{ alignSelf: "center" }}>
+              Start the game!
+            </Button>
           )}
         </div>
         <div

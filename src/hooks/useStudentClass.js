@@ -128,10 +128,8 @@ export default (socket, pin, state) => {
     );
     dispatch(setLoading());
     // TODO: REMOVE THE TIMEOUT WHEN YOU FINISH
-    setTimeout(()=>{
-      socket.emit(action, payload);
-    },2000);
-    
+
+    socket.emit(action, payload);
   };
 
   const getUnkownComponent = (message = "Unknown Quiz ID ...") =>

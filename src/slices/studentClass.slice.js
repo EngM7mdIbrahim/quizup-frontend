@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOCAL_STORAGE_KEYS, STATUS } from "../utils/constants";
 
+
 const initialState = {
   name: '',
   socketID: window.localStorage.getItem(LOCAL_STORAGE_KEYS.STUDENT_SOCKET_ID),
@@ -29,12 +30,12 @@ export const studentClassSlice = createSlice({
     setErrorMessage: (state, {payload}) => {
       state.errorMessage = payload;
     },
-    setLoading: (state, _) =>{
+    setLoading: (state, {payload = "We are sorry, an error occurred. Please try again!"}) =>{
       state.isLoading = true;
     },
     resetError: (state, _) =>{
       state.errorMessage = "";
-      state.isLoading = false;
+      // state.isLoading = false;
     },
     deleteID: (state, _)=> {
       state.socketID = null;

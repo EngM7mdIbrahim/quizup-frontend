@@ -7,6 +7,7 @@ import TeacherClassStartTemplate from "../templates/TeacherClassStartTemplate";
 import { SERVER_CMDS, STATUS, TEACHER_ACTIONS } from "../utils/constants";
 import { calcChoicesStats, extractPin, getPlayerScore } from "../utils/helper";
 import useGeneralListener from "./useGeneralListener";
+import { setLoading } from "../slices/teahcerClass.slice";
 
 const getErrorComponent = (error) => (
   <div
@@ -120,6 +121,7 @@ export default (socket) => {
     if (socket) {
       socket.emit(action, payload);
     }
+    dispatch(setLoading());
   };
   const getUnkownComponent = (message = "Unkown Quiz ID ...") =>
     getErrorComponent(message);
