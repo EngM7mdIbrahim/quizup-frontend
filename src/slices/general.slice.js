@@ -30,11 +30,7 @@ export const generalSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  setLoading,
-  setErrorMessage,
-  checkTimeout,
-  resetState,
-} = generalSlice.actions;
+export const { setLoading, setErrorMessage, checkTimeout, resetState } =
+  generalSlice.actions;
 
 export default generalSlice.reducer;

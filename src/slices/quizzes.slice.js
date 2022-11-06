@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
-import { constructChoicesArray } from "../utils/helper";
+import { constructChoicesArray, handleThunkError } from "../utils/helper";
 import {
   checkAxiosError,
   isLoadingAction,
@@ -147,8 +147,7 @@ export const quizzesSlice = createSlice({
   extraReducers: (builder) => {
     return builder
       .addCase(getQuizzes.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.quizzes = payload;
+        state.quizzes = payload ? payload : state.quizzes;
       })
       .addCase(createTemplate.fulfilled, (state, { payload }) => {
         state.isLoading = false;
@@ -159,9 +158,8 @@ export const quizzesSlice = createSlice({
 
 export const getQuizzes = createAsyncThunk(
   "quizzes/getQuizzes",
-  async ({ rejectWithValue, dispatch }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
-      console.log('Entered Here!')
       let quizzes = await getQuizzesReq();
       let newQuizzes = quizzes.map((quiz) => {
         let newQuiz = {
@@ -171,13 +169,9 @@ export const getQuizzes = createAsyncThunk(
         return newQuiz;
       });
       dispatch(setLoading(false));
-      console.log(newQuizzes)
       return newQuizzes;
     } catch (error) {
-      console.error(error);
-      dispatch(setLoading(false));
-      dispatch(setErrorMessage(checkAxiosError(error)));
-      return error;
+      handleThunkError(error, dispatch, rejectWithValue);
     }
   }
 );
@@ -186,22 +180,19 @@ export const deleteQuiz = createAsyncThunk(
   "quizzes/deleteQuiz",
   async (id, { rejectWithValue, dispatch }) => {
     try {
-      await deleteQuizReq('sfddsfsdf');
-      dispatch(setLoading(false));
+      await deleteQuizReq(id);
       dispatch(getQuizzes());
+      dispatch(setLoading(false))
       return true;
     } catch (error) {
-      console.error(error);
-      dispatch(setLoading(false));
-      dispatch(setErrorMessage(checkAxiosError(error)));
-      return error;
+      handleThunkError(error, dispatch, rejectWithValue);
     }
   }
 );
 
 export const createTemplate = createAsyncThunk(
   "quizzes/createTemplate",
-  async (payload, { rejectWithValue }) => {
+  async (payload, { dispatch, rejectWithValue }) => {
     try {
       let imagesURLS = payload.questions.map((question) => question.image);
       let payloadJSON = {
@@ -242,10 +233,10 @@ export const createTemplate = createAsyncThunk(
       images = images.filter((image) => image);
 
       await sendQuizImagesReq(images, id);
+      dispatch(setLoading(false));
       return true;
     } catch (error) {
-      console.error(error);
-      return rejectWithValue(checkAxiosError(error));
+      handleThunkError(error, dispatch, rejectWithValue);
     }
   }
 );

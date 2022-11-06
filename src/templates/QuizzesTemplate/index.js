@@ -1,5 +1,6 @@
 import React from "react";
 import AppLabel from "../../components/atoms/AppLabel";
+import Button from "../../components/atoms/Button";
 import CreateQuizCard from "../../components/molecules/CreateQuizCard";
 import QuizCard from "../../components/molecules/QuizCard";
 import "./styles.css";
@@ -21,12 +22,18 @@ export default function QuizzesTemplate({
   handleCreateQuiz = () => {
     console.error("No create quiz handler passed - QuizzesTemplate");
   },
+  handleRefresh = () => {
+    console.error("No refresh handler passed - QuizzesTemplate");
+  },
 }) {
   return (
     <div
       style={{ ...style }}
       className={`quizzes-temp-cont profile-template-page ${className}`}
     >
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Button onClick={handleRefresh}>Refresh!</Button>
+      </div>
       <AppLabel isBold>Templates</AppLabel>
       {quizzes &&
         quizzes.map((quiz) => {

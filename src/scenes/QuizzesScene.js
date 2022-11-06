@@ -10,14 +10,9 @@ import AlertPopUp from "../components/organisms/AlertPopUp";
 
 export default function QuizzesScene() {
   const { accessToken, name } = useSelector((state) => state.auth);
-  const { quizzes } = useSelector(
-    (state) => state.quizzes
-  );
+  const { quizzes } = useSelector((state) => state.quizzes);
   const [alertProps, showAlert] = useAlertModal();
-  const [dispatcher, setErrorMessage] = useLoadingState();
-  // useGeneralListener(errorMessage, isLoading);
-
-  const dispatch = useDispatch();
+  const [dispatcher] = useLoadingState();
   const customNavigator = useResetNaviagtor(resetState);
 
   /* eslint-disable */
@@ -25,8 +20,10 @@ export default function QuizzesScene() {
     if (!accessToken) {
       customNavigator("/signin");
     }
-    
-    dispatcher(getQuizzes(), "Unable to get the quizzes! Please check your internet connection!");
+    dispatcher(
+      getQuizzes(),
+      "Unable to get the quizzes! Please check your internet connection!"
+    );
   }, []);
   /* eslint-disable */
 
@@ -42,13 +39,19 @@ export default function QuizzesScene() {
         quizzes.find((quiz) => quiz._id === id).name
       } quiz?`,
       () => {
-        dispatch(deleteQuiz(id));
+        dispatcher(deleteQuiz(id), "Unable to delete this quiz, please check your connection!");
       }
     );
   };
   const handleCreateQuiz = () => {
     customNavigator("/profile/quizzes/create");
   };
+  const handleRefresh = () =>{
+    dispatcher(
+      getQuizzes(),
+      "Unable to get the quizzes! Please check your internet connection!"
+    );
+  }
 
   return (
     <>
@@ -61,6 +64,7 @@ export default function QuizzesScene() {
         handleQuizDelete={handleDeleteQuiz}
         handleCreateQuiz={handleCreateQuiz}
         handleQuizStart={handleStartQuiz}
+        handleRefresh={handleRefresh}
         userName={name}
         quizzes={quizzes}
       />

@@ -18,9 +18,10 @@ import {
   changeQuestionOptionText,
   addNewQuestion,
   changeTemplateTitle,
-  changeTemplateTag
+  changeTemplateTag,
 } from "../slices/quizzes.slice";
 import { useParams } from "react-router-dom";
+import useLoadingState from "../hooks/useLoadingState";
 
 export default function CreateQuizScene() {
   const { accessToken } = useSelector((state) => state.auth);
@@ -28,14 +29,13 @@ export default function CreateQuizScene() {
     (state) => state.quizzes
   );
   useGeneralListener(errorMessage, isLoading);
+  const [dispatcher] = useLoadingState();
   const dispatch = useDispatch();
   const customNavigator = useResetNaviagtor(resetState);
-  const {id} = useParams();
-  if(id && quizzes[id]){
-    dispatch(setTemplate(quizzes[id]))
+  const { id } = useParams();
+  if (id && quizzes[id]) {
+    dispatch(setTemplate(quizzes[id]));
   }
-
-
 
   useEffect(() => {
     if (!accessToken || addedQuiz) {
@@ -74,10 +74,14 @@ export default function CreateQuizScene() {
       onQuestionImageChange={(image, id) =>
         dispatch(changeQuestionImage({ image, id }))
       }
-      onQuestionOptionCorrectSelect={(letter, id)=>dispatch(changeQuestionCorrectAns({letter,id}))}
-      onQuestionOptionTextChange={(newValue,optionId,id)=>dispatch(changeQuestionOptionText({id,optionId,newValue}))}
+      onQuestionOptionCorrectSelect={(letter, id) =>
+        dispatch(changeQuestionCorrectAns({ letter, id }))
+      }
+      onQuestionOptionTextChange={(newValue, optionId, id) =>
+        dispatch(changeQuestionOptionText({ id, optionId, newValue }))
+      }
       onQuestionUpClick={(index) => {
-        dispatch(changeQuestionOrder({index,isUp: true}));
+        dispatch(changeQuestionOrder({ index, isUp: true }));
       }}
       onHideQuestionModal={() => {
         dispatch(setTemplate({ ...template, showModal: false }));
@@ -86,13 +90,24 @@ export default function CreateQuizScene() {
         dispatch(setTemplate({ ...template, showModal: true }));
       }}
       onQuestionDownClick={(index) => {
-        dispatch(changeQuestionOrder({index,isUp: false}));
+        dispatch(changeQuestionOrder({ index, isUp: false }));
       }}
-      onTemplateSave={()=>dispatch(createTemplate(template))}
-      onTemplateTitleChange={(newValue)=>{dispatch(changeTemplateTitle(newValue))}}
-      onTemplateTagChange={(newValue)=>{dispatch(changeTemplateTag(newValue))}}
-      onQuestionTypeChoice={question=>dispatch(addNewQuestion(question))}
-      onQuestionClearImage={(selected) => dispatch(clearQuestionImage(selected))}
+      onTemplateSave={() =>
+        dispatcher(
+          createTemplate(template),
+          "Cannot save the quiz, please check your internet connection!"
+        )
+      }
+      onTemplateTitleChange={(newValue) => {
+        dispatch(changeTemplateTitle(newValue));
+      }}
+      onTemplateTagChange={(newValue) => {
+        dispatch(changeTemplateTag(newValue));
+      }}
+      onQuestionTypeChoice={(question) => dispatch(addNewQuestion(question))}
+      onQuestionClearImage={(selected) =>
+        dispatch(clearQuestionImage(selected))
+      }
     />
   );
 }

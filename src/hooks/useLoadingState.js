@@ -5,20 +5,22 @@ import {
   setLoading,
 } from "../slices/general.slice";
 
-const defaultCallback = () =>{
+const defaultErrorCallback = () =>{
   console.log('Nothing was assigned to ');
 }
 
-let errorPopUpAction = defaultCallback;
+let errorPopUpAction = defaultErrorCallback;
 const setErrorPopUpAction = (localCallback) =>{
   errorPopUpAction = localCallback;
 }
 const resetErrorPopUpAction = () =>{
-  errorPopUpAction = defaultCallback;
+  errorPopUpAction = defaultErrorCallback;
 }
 export const getErrorPopUpAction = () =>{
   return errorPopUpAction;
 }
+
+
 
 export default (timeout = 5000) => {
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ export default (timeout = 5000) => {
   const dispatcher = (
     dispatchAction,
     onTimeoutErrorMessage = "We are sorry, an error occurred! Please try again later!",
-    onOkPressButton = defaultCallback
+    onOkPressButton = defaultErrorCallback,
   ) => {
     //Setting the default callback when ok is pressed!
     setErrorPopUpAction(()=>{
@@ -41,6 +43,7 @@ export default (timeout = 5000) => {
     dispatch(setLoading(true));
     //Pass the action to the dispatcher
     dispatch(dispatchAction);
+    
     setTimeout(() => {
       console.log('Entered timeout!')
       dispatch(checkTimeout(onTimeoutErrorMessage));
