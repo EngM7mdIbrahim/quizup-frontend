@@ -169,21 +169,21 @@ export const getQuizzes = createAsyncThunk(
 
 export const deleteQuiz = createAsyncThunk(
   "quizzes/deleteQuiz",
-  async (id, { rejectWithValue, dispatch }) => {
+  async (id, {dispatch }) => {
     try {
       await deleteQuizReq(id);
       dispatch(getQuizzes());
       dispatch(setLoading(false))
       return true;
     } catch (error) {
-      handleThunkError(error, dispatch, rejectWithValue);
+      handleThunkError(error, dispatch  );
     }
   }
 );
 
 export const createTemplate = createAsyncThunk(
   "quizzes/createTemplate",
-  async (payload, { dispatch, rejectWithValue }) => {
+  async (payload, { dispatch }) => {
     try {
       let imagesURLS = payload.questions.map((question) => question.image);
       let payloadJSON = {
@@ -227,7 +227,7 @@ export const createTemplate = createAsyncThunk(
       dispatch(setLoading(false));
       return true;
     } catch (error) {
-      handleThunkError(error, dispatch, rejectWithValue);
+      handleThunkError(error, dispatch);
     }
   }
 );

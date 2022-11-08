@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useLoadingState from "../hooks/useLoadingState";
 
 export default function SignupScene() {
-  const { isLoading, errorMessage, accessToken } = useSelector(
+  const { accessToken } = useSelector(
     (state) => state.auth
   );
   const [internetDispatcher] = useLoadingState();
@@ -19,7 +19,7 @@ export default function SignupScene() {
     if (accessToken) {
       goTo("/profile");
     }
-  }, [isLoading, errorMessage, accessToken, goTo]);
+  }, [accessToken, goTo]);
 
   const handleSignUp = (user) => {
     internetDispatcher(signUp(user), "Cannot sign you up, please check your internet connection!");

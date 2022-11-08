@@ -16,7 +16,7 @@ export default function LoginScene() {
     if (accessToken) {
       goTo("/profile/quizzes");
     }
-  }, []);
+  }, [accessToken]);
 
   const handleLogin = (user) => {
     internetDispatcher(signIn(user), "Cannot sign you in, please check your internet connection!");

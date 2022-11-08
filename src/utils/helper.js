@@ -29,7 +29,7 @@ export const isFulfilledAuthAction = (action) => {
   );
 };
 
-export const checkAxiosError = (error, errorMessage) => {
+export const checkAxiosError = (error) => {
   const isDev = true;
 
   if (error.code.includes("ERR_NETWORK")) {
@@ -39,15 +39,15 @@ export const checkAxiosError = (error, errorMessage) => {
   }
 };
 
-export const handleThunkError = (error, dispatch, rejectWithValue)=>{
-  console.log('Received Error from Axios: ', error);
-  const receievedErrorMessage = checkAxiosError(error)
-      if(receievedErrorMessage){
-        dispatch(setLoading(false));
-        dispatch(setErrorMessage(receievedErrorMessage));
-      }
-      rejectWithValue(error);
-}
+export const handleThunkError = (error, dispatch) => {
+  console.log("Received Error from Axios: ", error);
+  const receievedErrorMessage = checkAxiosError(error);
+  if (receievedErrorMessage) {
+    dispatch(setLoading(false));
+    dispatch(setErrorMessage(receievedErrorMessage));
+  }
+  throw error
+};
 
 export const constructChoicesArray = (questions) => {
   let choices = [];

@@ -21,13 +21,13 @@ export const classesSlice = createSlice({
 
 export const getClasses = createAsyncThunk(
   "quizzes/getClasses",
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, {  dispatch }) => {
     try {
       let classes = await getClassesReq();
       dispatch(setLoading(false));
       return classes;
     } catch (error) {
-      handleThunkError(error, dispatch, rejectWithValue);
+      handleThunkError(error, dispatch);
     }
   }
 );

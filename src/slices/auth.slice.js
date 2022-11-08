@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { signInReq, signUpReq } from "../api/auth.api";
 import {
   ACCESS_TOKEN_KEY,
-  REFRESH_TOKEN_KEY,
   USER_NAME,
 } from "../utils/constants";
 import { handleThunkError, isFulfilledAuthAction } from "../utils/helper";
@@ -24,22 +23,16 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    resetState: (state) => {
-      state.errorMessage = "";
-      state.isLoading = false;
-    },
     signOut: (state) => {
       state.accessToken = null;
       // state.refreshToken = null;
       localStorage.setItem(ACCESS_TOKEN_KEY, null);
       // localStorage.setItem(REFRESH_TOKEN_KEY, null);
     },
-    resetError: (state, _) => {
-      state.errorMessage = "";
-    },
   },
   extraReducers: (builder) => {
     return builder.addMatcher(isFulfilledAuthAction, (state, { payload }) => {
+      console.log('Payload: ', payload)
       state.isLoading = false;
       state.accessToken = payload.accessToken;
       state.name = payload.name;
@@ -53,26 +46,26 @@ export const authSlice = createSlice({
 
 export const signIn = createAsyncThunk(
   "auth/signin",
-  async (payload, { rejectWithValue, dispatch }) => {
+  async (payload, { dispatch }) => {
     try {
       let response = await signInReq(payload);
       dispatch(setLoading(false));
       return response.data;
     } catch (error) {
-      handleThunkError(error, dispatch, rejectWithValue);
+      handleThunkError(error, dispatch);
     }
   }
 );
 
 export const signUp = createAsyncThunk(
   "auth/signup",
-  async (payload, { rejectWithValue, dispatch }) => {
+  async (payload, {dispatch }) => {
     try {
       let response = await signUpReq(payload);
       dispatch(setLoading(false));
       return response.data;
     } catch (error) {
-      handleThunkError(error, dispatch, rejectWithValue);
+      handleThunkError(error, dispatch);
     }
   }
 );
