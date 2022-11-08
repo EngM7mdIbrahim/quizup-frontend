@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import useGeneralListener from "../hooks/useGeneralListener";
 import CreateQuizTemplate, {
   QUESTION_TYPES,
 } from "../templates/CreateQuizTemplate";
@@ -24,10 +23,9 @@ import useLoadingState from "../hooks/useLoadingState";
 
 export default function CreateQuizScene() {
   const { accessToken } = useSelector((state) => state.auth);
-  const { isLoading, errorMessage, template, quizzes, addedQuiz } = useSelector(
+  const { template, quizzes, addedQuiz } = useSelector(
     (state) => state.quizzes
   );
-  useGeneralListener(errorMessage, isLoading);
   const [internetDispatcher] = useLoadingState();
   const dispatch = useDispatch();
   const goTo = useNavigate()
@@ -40,7 +38,7 @@ export default function CreateQuizScene() {
     if (!accessToken || addedQuiz) {
       goTo("/profile/quizzes");
     }
-  }, [isLoading, errorMessage, dispatch]);
+  }, [dispatch]);
 
   const { questions, showModal, selected, name, tag } = template;
   const newQuestions = questions.map((question) => {

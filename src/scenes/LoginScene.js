@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import LoginSignupTemplate from "../templates/LoginSignUpTemplate";
 import * as yup from "yup";
 import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { signIn } from "../slices/auth.slice";
 import useLoadingState from "../hooks/useLoadingState";
 import { useNavigate } from "react-router-dom";

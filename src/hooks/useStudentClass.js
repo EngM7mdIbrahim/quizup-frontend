@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import AppLabel from "../components/atoms/AppLabel";
 import Image, { TYPES } from "../components/atoms/Image";
-import useGeneralListener from "./useGeneralListener";
 import { deleteID, resetError } from "../slices/studentClass.slice";
 import { STATUS, STUDENT_ACTIONS, SERVER_CMDS } from "../utils/constants";
 import StudentClassStartTemplate from "../templates/StudentClassStartTemplate";
@@ -12,22 +11,10 @@ import StudentStats from "../components/organisms/StudentStats";
 import { useEffect } from "react";
 import StudentClassWaitingForOthers from "../templates/StudentClassWaitingForOthers";
 import { setLoading } from "../slices/studentClass.slice";
+import ComponentErrorPompt from "../components/organisms/ComponentErrorPompt";
+import useLoadingState from "./useLoadingState";
 
-const getErrorComponent = (error) => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "50px",
-      flexDirection: "column",
-    }}
-    className="page"
-  >
-    <Image type={TYPES.MED} imageName="logo-square.png" />
-    <AppLabel style={{ textAlign: "center" }}>{error}</AppLabel>
-  </div>
-);
+const getErrorComponent = (error) => <ComponentErrorPompt error={error} />;
 const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
   return (
     <StudentClassStartTemplate
@@ -105,32 +92,8 @@ export default (socket, pin, state) => {
   if (pin === undefined) {
     pin = "";
   }
-  const {
-    status,
-    questionNumber,
-    choices,
-    correctAnswers,
-    rank,
-    errorMessage,
-    name,
-    isLoading,
-  } = state;
-  useEffect(() => {}, [status]);
-  useGeneralListener(errorMessage, false, resetError);
-  const dispatch = useDispatch();
-
-  const emitAction = (action, payload) => {
-    console.log(
-      "Action should be emitted: ",
-      action,
-      "with the following payload: ",
-      payload
-    );
-    dispatch(setLoading());
-    // TODO: REMOVE THE TIMEOUT WHEN YOU FINISH
-
-    socket.emit(action, payload);
-  };
+  const { status, questionNumber, choices, correctAnswers, rank, name } = state;
+  const [_,emitAction] = useLoadingState(null,socket)
 
   const getUnkownComponent = (message = "Unknown Quiz ID ...") =>
     getErrorComponent(message);

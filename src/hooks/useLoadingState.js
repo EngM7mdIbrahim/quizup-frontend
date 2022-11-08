@@ -5,50 +5,64 @@ import {
   setLoading,
 } from "../slices/general.slice";
 
-const defaultErrorCallback = () =>{
-  console.log('Nothing was assigned to ');
-}
+const defaultErrorCallback = () => {
+  console.log("Nothing was assigned to ");
+};
 
 let errorPopUpAction = defaultErrorCallback;
-const setErrorPopUpAction = (localCallback) =>{
+const setErrorPopUpAction = (localCallback) => {
   errorPopUpAction = localCallback;
-}
-const resetErrorPopUpAction = () =>{
+};
+const resetErrorPopUpAction = () => {
   errorPopUpAction = defaultErrorCallback;
-}
-export const getErrorPopUpAction = () =>{
+};
+export const getErrorPopUpAction = () => {
   return errorPopUpAction;
-}
+};
 
-
-
-export default (timeout = 5000) => {
+export default (timeout = 5000, socket = null) => {
   const dispatch = useDispatch();
-
-  const setLocalErrorMessage = (errorMessage) => {
-    dispatch(setErrorMessage(errorMessage));
-  };
-  const dispatcher = (
-    dispatchAction,
+  const timeOutHandler = (
     onTimeoutErrorMessage = "We are sorry, an error occurred! Please try again later!",
-    onOkPressButton = defaultErrorCallback,
+    onOkPressButton = defaultErrorCallback
   ) => {
     //Setting the default callback when ok is pressed!
-    setErrorPopUpAction(()=>{
+    setErrorPopUpAction(() => {
       onOkPressButton();
       resetErrorPopUpAction();
-      setLocalErrorMessage("");
+      dispatch(setErrorMessage(""));
     });
-    //Initiate loading state
-    dispatch(setLoading(true));
-    //Pass the action to the dispatcher
-    dispatch(dispatchAction);
-    
     setTimeout(() => {
-      console.log('Entered timeout!')
+      console.log("Entered timeout!");
       dispatch(checkTimeout(onTimeoutErrorMessage));
     }, timeout);
   };
 
-  return [dispatcher, setLocalErrorMessage];
+  const emitAction = (
+    action,
+    onTimeoutErrorMessage,
+    payload,
+    onOkPressButton
+  ) => {
+    timeOutHandler(onTimeoutErrorMessage, onOkPressButton);
+    console.log("Emitting Action:", action, "with payload:", payload, "...");
+    dispatch(setLoading(true));
+    if (socket) {
+      socket.emit(action, payload);
+    }
+  };
+
+  const dispatcher = (
+    dispatchAction,
+    onTimeoutErrorMessage,
+    onOkPressButton
+  ) => {
+    timeOutHandler(onTimeoutErrorMessage, onOkPressButton);
+    //Initiate loading state
+    dispatch(setLoading(true));
+    //Pass the action to the dispatcher
+    dispatch(dispatchAction);
+  };
+
+  return [dispatcher, emitAction];
 };

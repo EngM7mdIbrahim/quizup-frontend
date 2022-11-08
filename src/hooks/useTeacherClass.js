@@ -1,29 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import AppLabel from "../components/atoms/AppLabel";
-import Image, { TYPES } from "../components/atoms/Image";
 import TeacherClassQuestionTemplate from "../templates/TeacherClassQuestionTemplate";
 import TeacherClassReportsTemplate from "../templates/TeacherClassReportsTemplate";
 import TeacherClassStartTemplate from "../templates/TeacherClassStartTemplate";
-import { SERVER_CMDS, STATUS, TEACHER_ACTIONS } from "../utils/constants";
+import { STATUS, TEACHER_ACTIONS } from "../utils/constants";
 import { calcChoicesStats, extractPin, getPlayerScore } from "../utils/helper";
-import useGeneralListener from "./useGeneralListener";
-import { setLoading } from "../slices/teahcerClass.slice";
+import useLoadingState from './useLoadingState'
+import useSocketHandler from "./useSocketHandler";
 
-const getErrorComponent = (error) => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "50px",
-      flexDirection: "column",
-    }}
-    className="page"
-  >
-    <Image type={TYPES.MED} imageName="logo-square.png" />
-    <AppLabel style={{ textAlign: "center" }}>{error}</AppLabel>
-  </div>
-);
+
 
 const getTeacherClassStartScreen = (roomURL, pin, players) => (
   <TeacherClassStartTemplate players={players} roomURL={roomURL} pin={pin} />
@@ -103,29 +87,11 @@ const getTeacherClassReportsScreen = (quizID, quizzes, players) => {
 };
 
 export default (socket) => {
-  const { status, roomURL, players, questionNumber, errorMessage, isLoading } =
-    useSelector((state) => state.teacherClass);
-  const dispatch = useDispatch();
-  const pin = extractPin(roomURL);
+  const { status, roomURL, players, questionNumber} = useSelector((state) => state.teacherClass);
+  const [emitAction, getUnkownComponent] = useSocketHandler();
   const { quizzes } = useSelector((state) => state.quizzes);
-  useGeneralListener(errorMessage, isLoading);
-
-  const emitAction = (action, payload) => {
-    console.log(
-      "Action should be emitted: ",
-      action,
-      "with the following payload: ",
-      payload
-    );
-    //TODO: handle emiting the ranks and the scores for each player.
-    //TODO: handle the saving event
-    if (socket) {
-      socket.emit(action, payload);
-    }
-    dispatch(setLoading());
-  };
-  const getUnkownComponent = (message = "Unkown Quiz ID ...") =>
-    getErrorComponent(message);
+  
+  const pin = extractPin(roomURL);
   const getRenderedComponent = (quizID) => {
     switch (status) {
       case STATUS.WAITING_FOR_PLAYERS:
