@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useGeneralListener from "../hooks/useGeneralListener";
-import useResetNaviagtor from "../hooks/useResetNavigator";
 import CreateQuizTemplate, {
   QUESTION_TYPES,
 } from "../templates/CreateQuizTemplate";
@@ -20,7 +19,7 @@ import {
   changeTemplateTitle,
   changeTemplateTag,
 } from "../slices/quizzes.slice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useLoadingState from "../hooks/useLoadingState";
 
 export default function CreateQuizScene() {
@@ -29,9 +28,9 @@ export default function CreateQuizScene() {
     (state) => state.quizzes
   );
   useGeneralListener(errorMessage, isLoading);
-  const [dispatcher] = useLoadingState();
+  const [internetDispatcher] = useLoadingState();
   const dispatch = useDispatch();
-  const customNavigator = useResetNaviagtor(resetState);
+  const goTo = useNavigate()
   const { id } = useParams();
   if (id && quizzes[id]) {
     dispatch(setTemplate(quizzes[id]));
@@ -39,7 +38,7 @@ export default function CreateQuizScene() {
 
   useEffect(() => {
     if (!accessToken || addedQuiz) {
-      customNavigator("/profile/quizzes");
+      goTo("/profile/quizzes");
     }
   }, [isLoading, errorMessage, dispatch]);
 
@@ -93,7 +92,7 @@ export default function CreateQuizScene() {
         dispatch(changeQuestionOrder({ index, isUp: false }));
       }}
       onTemplateSave={() =>
-        dispatcher(
+        internetDispatcher(
           createTemplate(template),
           "Cannot save the quiz, please check your internet connection!"
         )

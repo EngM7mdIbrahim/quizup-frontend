@@ -1,59 +1,37 @@
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
-import { checkAxiosError, isLoadingAction, isRejectedAction } from "../utils/helper";
+import {
+  handleThunkError,
+} from "../utils/helper";
 import { getClassesReq } from "../api/classes.api";
+import { setLoading } from "./general.slice";
 
-const sliceName = "classes";
 const initialState = {
-  isLoading: false,
-  errorMessage: "",
   classes: undefined,
 };
 
-
-
 export const classesSlice = createSlice({
-  name: sliceName,
+  name: "classes",
   initialState,
-  reducers: {
-    resetState: (state) => {
-      state.errorMessage = "";
-      state.isLoading = false;
-    },
-    resetError: (state, _) =>{
-      state.errorMessage = "";
-    },
-  },
   extraReducers: (builder) => {
-    return builder
-      .addCase(getClasses.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.classes = payload;
-      })
-      .addMatcher(isLoadingAction(sliceName), (state) => {
-        state.isLoading = true;
-        state.errorMessage = "";
-      })
-      .addMatcher(isRejectedAction(sliceName), (state, { payload }) => {
-        state.errorMessage = payload;
-        state.isLoading = false;
-      });
+    return builder.addCase(getClasses.fulfilled, (state, { payload }) => {
+      state.classes = payload;
+    });
   },
 });
 
 export const getClasses = createAsyncThunk(
   "quizzes/getClasses",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       let classes = await getClassesReq();
+      dispatch(setLoading(false));
       return classes;
     } catch (error) {
-      console.error(error)
-      return rejectWithValue(checkAxiosError(error));
+      handleThunkError(error, dispatch, rejectWithValue);
     }
   }
 );
 
-
-export const { resetState, resetError } = classesSlice.actions;
+export const {} = classesSlice.actions;
 
 export default classesSlice.reducer;

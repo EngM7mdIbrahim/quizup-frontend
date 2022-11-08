@@ -1,29 +1,28 @@
 import React, { useEffect } from "react";
 import LoginSignupTemplate from "../templates/LoginSignUpTemplate";
-import { useSelector, useDispatch } from "react-redux";
-import useGeneralListener from "../hooks/useGeneralListener";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
-import { resetState, signUp } from "../slices/auth.slice";
-import useResetNaviagtor from "../hooks/useResetNavigator";
+import { signUp } from "../slices/auth.slice";
+import { useNavigate } from "react-router-dom";
+import useLoadingState from "../hooks/useLoadingState";
 
 export default function SignupScene() {
   const { isLoading, errorMessage, accessToken } = useSelector(
     (state) => state.auth
   );
-  const dispatch = useDispatch();
-  useGeneralListener(errorMessage, isLoading);
+  const [internetDispatcher] = useLoadingState();
 
-  const customNavigator = useResetNaviagtor(resetState);
+  const goTo = useNavigate();
 
   useEffect(() => {
     if (accessToken) {
-      customNavigator("/profile");
+      goTo("/profile");
     }
-  }, [isLoading, errorMessage, accessToken, dispatch, customNavigator]);
+  }, [isLoading, errorMessage, accessToken, goTo]);
 
   const handleSignUp = (user) => {
-    dispatch(signUp(user));
+    internetDispatcher(signUp(user), "Cannot sign you up, please check your internet connection!");
   };
 
   const inputs = [

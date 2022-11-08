@@ -1,10 +1,5 @@
-import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { constructChoicesArray, handleThunkError } from "../utils/helper";
-import {
-  checkAxiosError,
-  isLoadingAction,
-  isRejectedAction,
-} from "../utils/helper";
 import {
   getQuizzesReq,
   deleteQuizReq,
@@ -27,8 +22,6 @@ const QUESTION_SCHEME = {
 };
 
 const initialState = {
-  isLoading: false,
-  errorMessage: "",
   quizzes: [],
   addedQuiz: true,
   template: {
@@ -58,8 +51,6 @@ export const quizzesSlice = createSlice({
   initialState,
   reducers: {
     resetState: (state) => {
-      state.errorMessage = "";
-      state.isLoading = false;
       state.addedQuiz = false;
       state.template = {
         questions: [

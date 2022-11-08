@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useGeneralListener from "../hooks/useGeneralListener";
 import ClassesTemplate from "../templates/ClassesTemplate";
-import { getClasses, resetState } from "../slices/classes.slice";
+import { getClasses } from "../slices/classes.slice";
 import useResetNaviagtor from "../hooks/useResetNavigator";
+import useLoadingState from "../hooks/useLoadingState";
+import { useNavigate } from "react-router-dom";
 
 export default function ClassesScene() {
   const { accessToken } = useSelector((state) => state.auth);
@@ -12,20 +14,20 @@ export default function ClassesScene() {
   );
   const { errorMessage, isLoading } = useSelector((state) => state.general )
   useGeneralListener(errorMessage, isLoading);
-  const dispatch = useDispatch();
-  const customNavigator = useResetNaviagtor(resetState);
+  const [internetDispatcher] = useLoadingState();
+  const goTo = useNavigate();
 
   /* eslint-disable */
   useEffect(() => {
     if (!accessToken) {
-      customNavigator("/signin");
+      goTo("/signin");
     }
-    dispatch(getClasses());
+    internetDispatcher(getClasses(), "Unable to get your reports, please check your internet connection!");
   }, []);
   /* eslint-disable */
 
   const handleReportClick = (id) => {
-    customNavigator(`/profile/reports/${id}`);
+    goTo(`/profile/reports/${id}`);
   };
 
   return (

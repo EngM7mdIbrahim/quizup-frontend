@@ -1,13 +1,7 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import useGeneralListener from "../hooks/useGeneralListener";
-import ClassesTemplate from "../templates/ClassesTemplate";
-import { getClasses, resetState } from "../slices/classes.slice";
-import useResetNaviagtor from "../hooks/useResetNavigator";
-import SingleClassTemplate, {
-  getEmptyComponent,
-} from "../templates/SingleClassTemplate";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import SingleClassTemplate, { getEmptyComponent } from "../templates/SingleClassTemplate";
+import { useNavigate, useParams } from "react-router-dom";
 
 const checkSettings = (classes, id) => {
   if (!classes) {
@@ -26,34 +20,36 @@ export default function SignleClassScene() {
   const { accessToken, name } = useSelector((state) => state.auth);
   const { id } = useParams();
   const { classes } = useSelector((state) => state.classes);
-  const customNavigator = useResetNaviagtor();
+  const goTo = useNavigate();
 
   /* eslint-disable */
   useEffect(() => {
     if (!accessToken) {
-      customNavigator("/signin");
+      goTo("/signin");
     }
   }, []);
   /* eslint-disable */
 
   const handleBackToReports = () => {
-    customNavigator("/profile/reports");
+    goTo("/profile/reports");
   };
 
   let renderedComp = <></>;
   const message = checkSettings(classes, id);
 
-  if(message){
-    renderedComp = getEmptyComponent(message)
-  }else{
+  if (message) {
+    renderedComp = getEmptyComponent(message);
+  } else {
     let session = classes.find((session) => session._id === id);
-    renderedComp = <SingleClassTemplate
-    classTitle={session.name}
-    hostedOn={session.createdAt}
-    onBackToReports={handleBackToReports}
-    players={session.players}
-    userName={name}
-  />
+    renderedComp = (
+      <SingleClassTemplate
+        classTitle={session.name}
+        hostedOn={session.createdAt}
+        onBackToReports={handleBackToReports}
+        players={session.players}
+        userName={name}
+      />
+    );
   }
-  return renderedComp
+  return renderedComp;
 }

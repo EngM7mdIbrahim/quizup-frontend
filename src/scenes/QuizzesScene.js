@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import useGeneralListener from "../hooks/useGeneralListener";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import QuizzesTemplate from "../templates/QuizzesTemplate";
-import { deleteQuiz, getQuizzes, resetState } from "../slices/quizzes.slice";
-import useResetNaviagtor from "../hooks/useResetNavigator";
+import { deleteQuiz, getQuizzes } from "../slices/quizzes.slice";
 import useLoadingState from "../hooks/useLoadingState";
 import useAlertModal from "../hooks/useAlertModal";
 import AlertPopUp from "../components/organisms/AlertPopUp";
+import { useNavigate } from "react-router-dom";
 
 export default function QuizzesScene() {
   const { accessToken, name } = useSelector((state) => state.auth);
   const { quizzes } = useSelector((state) => state.quizzes);
   const [alertProps, showAlert] = useAlertModal();
   const [dispatcher] = useLoadingState();
-  const customNavigator = useResetNaviagtor(resetState);
+  const goTo = useNavigate();
 
   /* eslint-disable */
   useEffect(() => {
     if (!accessToken) {
-      customNavigator("/signin");
+      goTo("/signin");
     }
     dispatcher(
       getQuizzes(),
@@ -31,7 +30,7 @@ export default function QuizzesScene() {
 
   // };
   const handleStartQuiz = (id) => {
-    customNavigator(`/class/${id}`);
+    goTo(`/class/${id}`);
   };
   const handleDeleteQuiz = (id) => {
     showAlert(
@@ -44,7 +43,7 @@ export default function QuizzesScene() {
     );
   };
   const handleCreateQuiz = () => {
-    customNavigator("/profile/quizzes/create");
+    goTo("/profile/quizzes/create");
   };
   const handleRefresh = () =>{
     dispatcher(
