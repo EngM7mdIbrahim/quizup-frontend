@@ -1,9 +1,11 @@
 import { useDispatch } from "react-redux";
 import {
   checkTimeout,
-  setErrorMessage,
   setLoading,
 } from "../slices/general.slice";
+import { deleteID } from "../slices/studentClass.slice";
+import { SERVER_CMDS } from "../utils/constants";
+
 
 const defaultErrorCallback = () => {
   console.log("Nothing was assigned to ");
@@ -30,7 +32,6 @@ export default (timeout = 5000, socket = null) => {
     setErrorPopUpAction(() => {
       onOkPressButton();
       resetErrorPopUpAction();
-      dispatch(setErrorMessage(""));
     });
     setTimeout(() => {
       console.log("Entered timeout!");
@@ -64,5 +65,16 @@ export default (timeout = 5000, socket = null) => {
     dispatch(dispatchAction);
   };
 
-  return [dispatcher, emitAction];
+  const execCMD = (cmd) => {
+    if (!cmd) {
+      return;
+    }
+    switch (cmd) {
+      case SERVER_CMDS.deleteID:
+        dispatch(deleteID());
+        break;
+    }
+  };
+
+  return [dispatcher, emitAction, execCMD];
 };

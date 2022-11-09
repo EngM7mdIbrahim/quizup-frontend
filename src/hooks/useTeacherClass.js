@@ -48,7 +48,8 @@ const getTeacherClassQuestionsScreen = (
   questionNumber,
   players,
   waitingAnswers,
-  emitAction
+  emitAction,
+  getErrorComponent
 ) => {
   const payload = validateTeacherClassQuestion(quizID, quizzes, questionNumber);
   if (!Array.isArray(payload)) {
@@ -72,7 +73,7 @@ const getTeacherClassQuestionsScreen = (
   );
 };
 
-const getTeacherClassReportsScreen = (quizID, quizzes, players) => {
+const getTeacherClassReportsScreen = (quizID, quizzes, players, getErrorComponent) => {
   const payload = validateTeacherClassQuestion(quizID, quizzes);
   if (!Array.isArray(payload)) {
     return getErrorComponent(payload);
@@ -88,7 +89,7 @@ const getTeacherClassReportsScreen = (quizID, quizzes, players) => {
 
 export default (socket) => {
   const { status, roomURL, players, questionNumber} = useSelector((state) => state.teacherClass);
-  const [emitAction, getUnkownComponent] = useSocketHandler();
+  const [emitAction, getUnkownComponent,getErrorComponent, execCMD] = useSocketHandler();
   const { quizzes } = useSelector((state) => state.quizzes);
   
   const pin = extractPin(roomURL);
@@ -113,10 +114,11 @@ export default (socket) => {
           questionNumber,
           players,
           false,
-          emitAction
+          emitAction,
+          getErrorComponent
         );
       case STATUS.END_SESSION:
-        return getTeacherClassReportsScreen(quizID, quizzes, players);
+        return getTeacherClassReportsScreen(quizID, quizzes, players, getErrorComponent);
       default:
         return getUnkownComponent(
           `Recieved unsupported game status. Status: ${status}`

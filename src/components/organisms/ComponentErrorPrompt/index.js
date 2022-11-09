@@ -3,8 +3,8 @@ import AppLabel from "../../atoms/AppLabel";
 import Image, { TYPES } from "../../atoms/Image";
 import "./styles.css";
 
-export default function ComponentErrorPompt({
-  error = "No error message passed - ComponentErrorPompt",
+export default function ComponentErrorPrompt({
+  error = "No error message passed - ComponentErrorPrompt",
   style = {},
   className = "",
 }) {

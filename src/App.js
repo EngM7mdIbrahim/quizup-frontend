@@ -6,11 +6,11 @@ import QuizzesScene from "./scenes/QuizzesScene";
 
 import ProfileScene from "./templates/ProfileScene";
 
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingPopUp from "./components/organisms/LoadingPopUp";
 import ErrorPopUp from "./components/organisms/ErrorPopUp";
-import { setOkButtonPressed } from "./slices/general.slice";
+import { setErrorMessage } from "./slices/general.slice";
 import ClassesScene from "./scenes/ClassesScene";
 import SingleClassScene from "./scenes/SingleClassScene";
 import CreateQuizScene from "./scenes/CreateQuizScene";
@@ -19,16 +19,18 @@ import StudentClassScene from "./scenes/StudentClassScene";
 import { getErrorPopUpAction } from "./hooks/useLoadingState";
 
 function App() {
-  const { isLoading, errorMessage} = useSelector((state) => state.general);
+  const { isLoading, isSocket, errorMessage} = useSelector((state) => state.general);
+  const dispatch = useDispatch();
   return (
     <>
       <ErrorPopUp
         errorMessage={errorMessage}
         onClick={() => {
           getErrorPopUpAction()();
+          dispatch(setErrorMessage(""))
         }}
       />
-      <LoadingPopUp isLoading={isLoading} />
+      <LoadingPopUp isLoading={isLoading && !isSocket} />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginScene />} />

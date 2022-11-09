@@ -1,27 +1,20 @@
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import AppLabel from "../components/atoms/AppLabel";
-import Image, { TYPES } from "../components/atoms/Image";
-import { deleteID, resetError } from "../slices/studentClass.slice";
+
 import { STATUS, STUDENT_ACTIONS, SERVER_CMDS } from "../utils/constants";
 import StudentClassStartTemplate from "../templates/StudentClassStartTemplate";
 import StudentClassRunningTemplate from "../templates/StudentClassRunningTemplate";
 import IconBackgroundText from "../components/atoms/IconBackgroundText";
 import StudentStats from "../components/organisms/StudentStats";
-import { useEffect } from "react";
 import StudentClassWaitingForOthers from "../templates/StudentClassWaitingForOthers";
-import { setLoading } from "../slices/studentClass.slice";
-import ComponentErrorPompt from "../components/organisms/ComponentErrorPompt";
 import useLoadingState from "./useLoadingState";
+import useSocketHandler from "./useSocketHandler";
 
-const getErrorComponent = (error) => <ComponentErrorPompt error={error} />;
 const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
   return (
     <StudentClassStartTemplate
       isLoading={isLoading}
       initialPin={initialPin}
       onPinSubmit={(payload) => {
-        emitAction(STUDENT_ACTIONS.JOIN_ROOM, payload);
+        emitAction(STUDENT_ACTIONS.JOIN_ROOM, "Unable to join the room, please check your internet connection!",payload);
       }}
     />
   );
@@ -29,7 +22,7 @@ const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
 
 const getStudentClassRunningScreen = (emitAction, questionNumber, choices) => {
   const handleChoiceClick = (choice) => {
-    emitAction(STUDENT_ACTIONS.SUBMIT_ANSWER, choice);
+    emitAction(STUDENT_ACTIONS.SUBMIT_ANSWER,"Unable to submit your answer, please check your internet connection!",  choice);
   };
   return (
     <StudentClassRunningTemplate
@@ -88,15 +81,10 @@ const getStudentClassWaitingForOthers = (username) => {
   return <StudentClassWaitingForOthers username={username} />;
 };
 
-export default (socket, pin, state) => {
-  if (pin === undefined) {
-    pin = "";
-  }
+export default (socket, recPin, state, isLoading) => {
+  let pin = recPin ? recPin : "";
   const { status, questionNumber, choices, correctAnswers, rank, name } = state;
-  const [_,emitAction] = useLoadingState(null,socket)
-
-  const getUnkownComponent = (message = "Unknown Quiz ID ...") =>
-    getErrorComponent(message);
+  const [emitAction, getUnkownComponent, _,  execCMD] = useSocketHandler(socket);
 
   const getRenderedComponent = () => {
     switch (status) {
@@ -134,17 +122,5 @@ export default (socket, pin, state) => {
         );
     }
   };
-
-  const execCMD = (cmd) => {
-    if (!cmd) {
-      return;
-    }
-    switch (cmd) {
-      case SERVER_CMDS.deleteID:
-        dispatch(deleteID());
-        break;
-    }
-  };
-
   return [getUnkownComponent, emitAction, getRenderedComponent, execCMD];
 };

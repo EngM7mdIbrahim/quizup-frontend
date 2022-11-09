@@ -1,24 +1,22 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import ComponentErrorPompt from "../components/organisms/ComponentErrorPompt";
+import ComponentErrorPrompt from "../components/organisms/ComponentErrorPrompt";
 import useLoadingState from "./useLoadingState";
+import { setSocket } from "../slices/general.slice";
 
 export default (socket) => {
+  const [_, emitAction, execCMD] = useLoadingState(undefined, socket);
   const dispatch = useDispatch();
-  const [_, emitAction] = useLoadingState(null, socket);
+  useEffect(() => {
+    dispatch(setSocket(true));
+    return () => {
+      dispatch(setSocket(false));
+    };
+  }, []);
 
   const getUnkownComponent = (message = "Unknown Quiz ID ...") =>
     getErrorComponent(message);
-  const getErrorComponent = (error) => <ComponentErrorPompt error={error} />;
-  const execCMD = (cmd) => {
-    if (!cmd) {
-      return;
-    }
-    switch (cmd) {
-      case SERVER_CMDS.deleteID:
-        dispatch(deleteID());
-        break;
-    }
-  };
-  
-  return [emitAction, getUnkownComponent, execCMD];
+  const getErrorComponent = (error) => <ComponentErrorPrompt error={error} />;
+
+  return [emitAction, getUnkownComponent, getErrorComponent, execCMD];
 };
