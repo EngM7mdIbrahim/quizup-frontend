@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
 import { signUp } from "../slices/auth.slice";
-import { useNavigate } from "react-router-dom";
+import useCustomNavigator from "../hooks/useCustomNavigator";
 import useLoadingState from "../hooks/useLoadingState";
 
 export default function SignupScene() {
@@ -13,7 +13,7 @@ export default function SignupScene() {
   );
   const [internetDispatcher] = useLoadingState();
 
-  const goTo = useNavigate();
+  const goTo = useCustomNavigator();
 
   useEffect(() => {
     if (accessToken) {

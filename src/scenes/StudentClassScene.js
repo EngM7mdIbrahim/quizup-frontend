@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import { BASE_URL, STUDENT_ON_ERR, STUDENT_ON_ACK } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import useStudentClass from "../hooks/useStudentClass";
-import { setErrorMessage, setLoading } from "../slices/general.slice";
+import { resetSocketLoadingAction, setErrorMessage, setLoading } from "../slices/general.slice";
 
 import { setState } from "../slices/studentClass.slice";
 import { useSelector } from "react-redux";
@@ -32,16 +32,15 @@ export default function StudentClassScene() {
     //Add listeners
     socket.on(STUDENT_ON_ACK, (data) => {
       console.log("Received update from the server!", data);
-      dispatch(setLoading(false))
+      dispatch(resetSocketLoadingAction())
       dispatch(setState(data));
     });
     socket.on(STUDENT_ON_ERR, (errorMessage, cmd) => {
       console.log("Error Message from the sockets: ", errorMessage);
       dispatch(setErrorMessage(errorMessage.message));
-      dispatch(setLoading(false))
+      dispatch(resetSocketLoadingAction())
       execCMD(cmd);
     });
-    setSocket(socket);
     return () => {
       socket.off("connect");
       socket.off(STUDENT_ON_ACK);

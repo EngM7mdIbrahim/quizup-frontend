@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import SingleClassTemplate, { getEmptyComponent } from "../templates/SingleClassTemplate";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
+import useCustomNavigator from "../hooks/useCustomNavigator";
 
 const checkSettings = (classes, id) => {
   if (!classes) {
@@ -20,7 +21,7 @@ export default function SignleClassScene() {
   const { accessToken, name } = useSelector((state) => state.auth);
   const { id } = useParams();
   const { classes } = useSelector((state) => state.classes);
-  const goTo = useNavigate();
+  const goTo = useCustomNavigator();
 
   /* eslint-disable */
   useEffect(() => {

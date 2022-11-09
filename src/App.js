@@ -19,7 +19,7 @@ import StudentClassScene from "./scenes/StudentClassScene";
 import { getErrorPopUpAction } from "./hooks/useLoadingState";
 
 function App() {
-  const { isLoading, isSocket, errorMessage} = useSelector((state) => state.general);
+  const { isLoading, errorMessage} = useSelector((state) => state.general);
   const dispatch = useDispatch();
   return (
     <>
@@ -30,7 +30,7 @@ function App() {
           dispatch(setErrorMessage(""))
         }}
       />
-      <LoadingPopUp isLoading={isLoading && !isSocket} />
+      <LoadingPopUp isLoading={isLoading} />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginScene />} />

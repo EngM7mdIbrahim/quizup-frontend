@@ -5,14 +5,15 @@ import { deleteQuiz, getQuizzes } from "../slices/quizzes.slice";
 import useLoadingState from "../hooks/useLoadingState";
 import useAlertModal from "../hooks/useAlertModal";
 import AlertPopUp from "../components/organisms/AlertPopUp";
-import { useNavigate } from "react-router-dom";
+import useCustomNavigator from "../hooks/useCustomNavigator";
 
 export default function QuizzesScene() {
   const { accessToken, name } = useSelector((state) => state.auth);
   const { quizzes } = useSelector((state) => state.quizzes);
   const [alertProps, showAlert] = useAlertModal();
   const [dispatcher] = useLoadingState();
-  const goTo = useNavigate();
+  const goTo = useCustomNavigator();
+  console.log('The get quizzes actions is',)
 
   /* eslint-disable */
   useEffect(() => {

@@ -1,12 +1,11 @@
 import { useDispatch } from "react-redux";
-import {
-  checkTimeout,
-  setLoading,
-} from "../slices/general.slice";
+import { checkTimeout, checkSocketTimeout, setLoading, addSocketLoadingAction } from "../slices/general.slice";
 import { deleteID } from "../slices/studentClass.slice";
 import { SERVER_CMDS } from "../utils/constants";
 
+let loadingTimeout = setTimeout(() => {}, 0);
 
+export const getLoadingTimout = () => loadingTimeout;
 const defaultErrorCallback = () => {
   console.log("Nothing was assigned to ");
 };
@@ -32,11 +31,8 @@ export default (timeout = 5000, socket = null) => {
     setErrorPopUpAction(() => {
       onOkPressButton();
       resetErrorPopUpAction();
+      clearTimeout(loadingTimeout);
     });
-    setTimeout(() => {
-      console.log("Entered timeout!");
-      dispatch(checkTimeout(onTimeoutErrorMessage));
-    }, timeout);
   };
 
   const emitAction = (
@@ -46,10 +42,16 @@ export default (timeout = 5000, socket = null) => {
     onOkPressButton
   ) => {
     timeOutHandler(onTimeoutErrorMessage, onOkPressButton);
+    setTimeout(() => {
+      console.log("Entered timeout!");
+      dispatch(checkSocketTimeout({errorMessage: onTimeoutErrorMessage, action}));
+    }, timeout);
     console.log("Emitting Action:", action, "with payload:", payload, "...");
-    dispatch(setLoading(true));
+    dispatch(addSocketLoadingAction(action))
     if (socket) {
       socket.emit(action, payload);
+    }else{
+      console.log('Tried but the socket is null!')
     }
   };
 
@@ -58,7 +60,12 @@ export default (timeout = 5000, socket = null) => {
     onTimeoutErrorMessage,
     onOkPressButton
   ) => {
+    
     timeOutHandler(onTimeoutErrorMessage, onOkPressButton);
+    setTimeout(() => {
+      console.log("Entered timeout!");
+      dispatch(checkTimeout(onTimeoutErrorMessage));
+    }, timeout);
     //Initiate loading state
     dispatch(setLoading(true));
     //Pass the action to the dispatcher

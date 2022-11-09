@@ -3,7 +3,7 @@ import { useSelector, } from "react-redux";
 import ClassesTemplate from "../templates/ClassesTemplate";
 import { getClasses } from "../slices/classes.slice";
 import useLoadingState from "../hooks/useLoadingState";
-import { useNavigate } from "react-router-dom";
+import useCustomNavigator from "../hooks/useCustomNavigator";
 
 export default function ClassesScene() {
   const { accessToken } = useSelector((state) => state.auth);
@@ -11,7 +11,7 @@ export default function ClassesScene() {
     (state) => state.classes
   );
   const [internetDispatcher] = useLoadingState();
-  const goTo = useNavigate();
+  const goTo = useCustomNavigator();
 
   /* eslint-disable */
   useEffect(() => {

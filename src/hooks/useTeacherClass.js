@@ -87,9 +87,9 @@ const getTeacherClassReportsScreen = (quizID, quizzes, players, getErrorComponen
   return <TeacherClassReportsTemplate scores={scores} />;
 };
 
-export default (socket) => {
+export default (socket, socketLoadingActions) => {
   const { status, roomURL, players, questionNumber} = useSelector((state) => state.teacherClass);
-  const [emitAction, getUnkownComponent,getErrorComponent, execCMD] = useSocketHandler();
+  const [emitAction, getUnkownComponent,getErrorComponent, execCMD] = useSocketHandler(socket);
   const { quizzes } = useSelector((state) => state.quizzes);
   
   const pin = extractPin(roomURL);

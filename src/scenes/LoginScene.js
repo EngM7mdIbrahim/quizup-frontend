@@ -5,12 +5,12 @@ import { FORM_INPUT_TYPES } from "../components/molecules/Form/constants";
 import { useSelector } from "react-redux";
 import { signIn } from "../slices/auth.slice";
 import useLoadingState from "../hooks/useLoadingState";
-import { useNavigate } from "react-router-dom";
+import useCustomNavigator from "../hooks/useCustomNavigator";
 
 export default function LoginScene() {
   const { accessToken } = useSelector((state) => state.auth);
   const [internetDispatcher] = useLoadingState();
-  const goTo = useNavigate();
+  const goTo = useCustomNavigator();
 
   useEffect(() => {
     if (accessToken) {

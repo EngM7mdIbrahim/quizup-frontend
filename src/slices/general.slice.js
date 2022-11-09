@@ -4,7 +4,7 @@ import { ACCESS_TOKEN_KEY } from "../utils/constants";
 const initialState = {
   isLoading: false,
   errorMessage: "",
-  isSocket: false,
+  socketLoadingActions: [],
 };
 
 export const generalSlice = createSlice({
@@ -26,15 +26,34 @@ export const generalSlice = createSlice({
         state.errorMessage = payload;
       }
     },
-    setSocket: (state, { payload }) =>{
-      state.isSocket = payload
-    }
+    checkSocketTimeout: (state, { payload }) => {
+      if (state.socketLoadingActions.findIndex(action => action === payload.action) !== -1) {
+        state.socketLoadingActions = [];
+        state.errorMessage = payload.errorMessage;
+      }
+    },
+    setSocket: (state, { payload }) => {
+      state.isSocket = payload;
+    },
+    addSocketLoadingAction: (state, { payload }) => {
+      state.socketLoadingActions.push(payload);
+    },
+    resetSocketLoadingAction: (state) => {
+      state.socketLoadingActions = []
+    },
   },
   dummyAction: (_, __) => {},
 });
 
 // Action creators are generated for each case reducer function
-export const { setLoading, setErrorMessage, checkTimeout, resetState, setSocket } =
-  generalSlice.actions;
+export const {
+  setLoading,
+  setErrorMessage,
+  checkTimeout,
+  checkSocketTimeout,
+  resetState,
+  addSocketLoadingAction,
+  resetSocketLoadingAction
+} = generalSlice.actions;
 
 export default generalSlice.reducer;
