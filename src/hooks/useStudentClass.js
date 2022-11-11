@@ -4,7 +4,6 @@ import StudentClassRunningTemplate from "../templates/StudentClassRunningTemplat
 import IconBackgroundText from "../components/atoms/IconBackgroundText";
 import StudentStats from "../components/organisms/StudentStats";
 import StudentClassInfoTemplate from "../templates/StudentClassInfoTemplate";
-import useCustomNavigator from "./useCustomNavigator";
 import useSocketHandler from "./useSocketHandler";
 
 const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
@@ -90,7 +89,7 @@ const getStudentClassWaitingForOthers = (username) => {
 
 const getStudentClassDeletedPlayer = (username, navigator) =>{
   return <StudentClassInfoTemplate username={username} isDeleted={true} handleRejoin={()=>{
-    navigator('/student');
+    window.location.reload();
   }} />;
 }
 
@@ -98,7 +97,6 @@ export default (socket, recPin, state, isLoading) => {
   let pin = recPin ? recPin : "";
   const { status, questionNumber, choices, correctAnswers, rank, name } = state;
   const [emitAction, getUnkownComponent, _, execCMD] = useSocketHandler(socket);
-  const navigator = useCustomNavigator();
 
   const getRenderedComponent = () => {
     switch (status) {
@@ -132,7 +130,7 @@ export default (socket, recPin, state, isLoading) => {
         return getStudentClassWaitingForOthers(name);
 
       case STATUS.DELETED_PLAYER:
-        return getStudentClassDeletedPlayer(name, navigator)
+        return getStudentClassDeletedPlayer(name)
       default:
         return getUnkownComponent(
           `Recieved unsupported game status. Status: ${status}`
