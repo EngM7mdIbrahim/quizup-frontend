@@ -17,6 +17,7 @@ import {
 } from "../slices/teahcerClass.slice";
 import useTeacherClass from "../hooks/useTeacherClass";
 import useResetNaviagtor from "../hooks/useResetNavigator";
+import { resetSocketLoadingAction } from "../slices/general.slice";
 
 export default function TeacherClassesScene() {
   const { accessToken } = useSelector((state) => state.auth);

@@ -1,11 +1,10 @@
-
 import { STATUS, STUDENT_ACTIONS, SERVER_CMDS } from "../utils/constants";
 import StudentClassStartTemplate from "../templates/StudentClassStartTemplate";
 import StudentClassRunningTemplate from "../templates/StudentClassRunningTemplate";
 import IconBackgroundText from "../components/atoms/IconBackgroundText";
 import StudentStats from "../components/organisms/StudentStats";
-import StudentClassWaitingForOthers from "../templates/StudentClassWaitingForOthers";
-import useLoadingState from "./useLoadingState";
+import StudentClassInfoTemplate from "../templates/StudentClassInfoTemplate";
+import useCustomNavigator from "./useCustomNavigator";
 import useSocketHandler from "./useSocketHandler";
 
 const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
@@ -14,7 +13,11 @@ const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
       isLoading={isLoading}
       initialPin={initialPin}
       onPinSubmit={(payload) => {
-        emitAction(STUDENT_ACTIONS.JOIN_ROOM, "Unable to join the room, please check your internet connection!",payload);
+        emitAction(
+          STUDENT_ACTIONS.JOIN_ROOM,
+          "Unable to join the room, please check your internet connection!",
+          payload
+        );
       }}
     />
   );
@@ -22,7 +25,11 @@ const getStudentClassStartScreen = (emitAction, initialPin, isLoading) => {
 
 const getStudentClassRunningScreen = (emitAction, questionNumber, choices) => {
   const handleChoiceClick = (choice) => {
-    emitAction(STUDENT_ACTIONS.SUBMIT_ANSWER,"Unable to submit your answer, please check your internet connection!",  choice);
+    emitAction(
+      STUDENT_ACTIONS.SUBMIT_ANSWER,
+      "Unable to submit your answer, please check your internet connection!",
+      choice
+    );
   };
   return (
     <StudentClassRunningTemplate
@@ -78,13 +85,20 @@ const getStudentClassAfterClass = (choices, correctAnswers, rank) => {
 };
 
 const getStudentClassWaitingForOthers = (username) => {
-  return <StudentClassWaitingForOthers username={username} />;
+  return <StudentClassInfoTemplate username={username} />;
 };
+
+const getStudentClassDeletedPlayer = (username, navigator) =>{
+  return <StudentClassInfoTemplate username={username} isDeleted={true} handleRejoin={()=>{
+    navigator('/student');
+  }} />;
+}
 
 export default (socket, recPin, state, isLoading) => {
   let pin = recPin ? recPin : "";
   const { status, questionNumber, choices, correctAnswers, rank, name } = state;
-  const [emitAction, getUnkownComponent, _,  execCMD] = useSocketHandler(socket);
+  const [emitAction, getUnkownComponent, _, execCMD] = useSocketHandler(socket);
+  const navigator = useCustomNavigator();
 
   const getRenderedComponent = () => {
     switch (status) {
@@ -116,6 +130,9 @@ export default (socket, recPin, state, isLoading) => {
         return getStudentClassAfterClass(choices, correctAnswers, rank);
       case STATUS.WAITING_FOR_OTHERS_JOIN:
         return getStudentClassWaitingForOthers(name);
+
+      case STATUS.DELETED_PLAYER:
+        return getStudentClassDeletedPlayer(name, navigator)
       default:
         return getUnkownComponent(
           `Recieved unsupported game status. Status: ${status}`

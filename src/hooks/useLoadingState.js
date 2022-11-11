@@ -41,15 +41,17 @@ export default (timeout = 5000, socket = null) => {
     payload,
     onOkPressButton
   ) => {
+    const loadingAction = action+JSON.stringify({...payload, accessToken: undefined})
     timeOutHandler(onTimeoutErrorMessage, onOkPressButton);
     setTimeout(() => {
       console.log("Entered timeout!");
-      dispatch(checkSocketTimeout({errorMessage: onTimeoutErrorMessage, action}));
+      dispatch(checkSocketTimeout({errorMessage: onTimeoutErrorMessage, action: loadingAction}));
     }, timeout);
-    console.log("Emitting Action:", action, "with payload:", payload, "...");
-    dispatch(addSocketLoadingAction(action))
+    console.log("Will emit an action!");
+    dispatch(addSocketLoadingAction(loadingAction))
     if (socket) {
       socket.emit(action, payload);
+      console.log("Emitting Action:", action, "with payload:", payload, "...");
     }else{
       console.log('Tried but the socket is null!')
     }

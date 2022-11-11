@@ -11,10 +11,10 @@ export default function PlayerListDeleteItem({
   className = "",
   isLoading = false,
   onDeletePlayer = (id) =>
-  console.error(
-    "No onDeletePlayer handler has been has been passed! - PlayerListDeleteItem. ID: ",
-    id
-  ),
+    console.error(
+      "No onDeletePlayer handler has been has been passed! - PlayerListDeleteItem. ID: ",
+      id
+    ),
 }) {
   return (
     <div
@@ -22,7 +22,14 @@ export default function PlayerListDeleteItem({
       className={`players-list-delete-item-cont ${className}`}
     >
       <UserRecord big tag={name} />
-      <IconButton isLoading={isLoading} imageType={TYPES.ALMOSTTINY} style={{ width:'30px', height: '30px',borderRadius: '50%'}} backgroundColor={ACCENT} iconName="recycling-bin.png" onClick={onDeletePlayer} />
+      <IconButton
+        isLoading={isLoading}
+        imageType={TYPES.ALMOSTTINY}
+        style={{ width: "30px", height: "30px", borderRadius: "50%" }}
+        backgroundColor={ACCENT}
+        iconName="recycling-bin.png"
+        onClick={onDeletePlayer}
+      />
     </div>
   );
 }

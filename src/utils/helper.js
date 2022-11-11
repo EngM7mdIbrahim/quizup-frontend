@@ -46,7 +46,7 @@ export const handleThunkError = (error, dispatch) => {
     dispatch(setLoading(false));
     dispatch(setErrorMessage(receievedErrorMessage));
   }
-  throw error
+  throw error;
 };
 
 export const constructChoicesArray = (questions) => {
@@ -88,4 +88,18 @@ export const getPlayerScore = (choices, correctAnswers) => {
 export const extractPin = (roomURL) => {
   const roomURLTokens = roomURL.split("/");
   return roomURLTokens[roomURLTokens.length - 1];
+};
+
+export const isSocketLoadingAction = (socketLoadingActions, action) => {
+  console.log(
+    "Received loading action check with socketLoadingAction:",
+    socketLoadingActions,
+    "and the action:",
+    action
+  );
+  return (
+    socketLoadingActions.findIndex(
+      (loadingAction) => loadingAction === action
+    ) !== -1
+  );
 };

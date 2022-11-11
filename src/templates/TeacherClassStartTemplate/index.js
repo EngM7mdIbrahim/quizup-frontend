@@ -11,7 +11,7 @@ export default function TeacherClassStartTemplate({
   className = "",
   players = [],
   pin = undefined,
-  isLoading = false,
+  socketLoadingActions = [],
   roomURL = "",
   onDeletePlayer = (id) =>
     console.error(
@@ -44,9 +44,9 @@ export default function TeacherClassStartTemplate({
             imageName="logo.png"
           />
           <PlayersDeleteList
-            isLoading={isLoading}
             style={{ flex: 1 }}
             players={players}
+            socketLoadingActions = {socketLoadingActions}
             onDeletePlayer={onDeletePlayer}
           />
           {Array.isArray(players) && players.length !== 0 && (

@@ -4,13 +4,29 @@ import TeacherClassReportsTemplate from "../templates/TeacherClassReportsTemplat
 import TeacherClassStartTemplate from "../templates/TeacherClassStartTemplate";
 import { STATUS, TEACHER_ACTIONS } from "../utils/constants";
 import { calcChoicesStats, extractPin, getPlayerScore } from "../utils/helper";
-import useLoadingState from './useLoadingState'
 import useSocketHandler from "./useSocketHandler";
 
-
-
-const getTeacherClassStartScreen = (roomURL, pin, players) => (
-  <TeacherClassStartTemplate players={players} roomURL={roomURL} pin={pin} />
+const getTeacherClassStartScreen = (
+  roomURL,
+  pin,
+  players,
+  accessToken,
+  emitAction,
+  socketLoadingActions
+) => (
+  <TeacherClassStartTemplate
+    onDeletePlayer={(index) => {
+      emitAction(
+        TEACHER_ACTIONS.DELETE_PLAYER,
+        "Unable to delete the player, please check your internet connection!",
+        { accessToken, index }
+      );
+    }}
+    socketLoadingActions={socketLoadingActions}
+    players={players}
+    roomURL={roomURL}
+    pin={pin}
+  />
 );
 
 const validateTeacherClassQuestion = (quizID, quizzes, questionNumber) => {
@@ -73,7 +89,12 @@ const getTeacherClassQuestionsScreen = (
   );
 };
 
-const getTeacherClassReportsScreen = (quizID, quizzes, players, getErrorComponent) => {
+const getTeacherClassReportsScreen = (
+  quizID,
+  quizzes,
+  players,
+  getErrorComponent
+) => {
   const payload = validateTeacherClassQuestion(quizID, quizzes);
   if (!Array.isArray(payload)) {
     return getErrorComponent(payload);
@@ -88,15 +109,26 @@ const getTeacherClassReportsScreen = (quizID, quizzes, players, getErrorComponen
 };
 
 export default (socket, socketLoadingActions) => {
-  const { status, roomURL, players, questionNumber} = useSelector((state) => state.teacherClass);
-  const [emitAction, getUnkownComponent,getErrorComponent, execCMD] = useSocketHandler(socket);
+  const { status, roomURL, players, questionNumber } = useSelector(
+    (state) => state.teacherClass
+  );
+  const { accessToken } = useSelector((state) => state.auth);
+  const [emitAction, getUnkownComponent, getErrorComponent, execCMD] =
+    useSocketHandler(socket);
   const { quizzes } = useSelector((state) => state.quizzes);
-  
+
   const pin = extractPin(roomURL);
   const getRenderedComponent = (quizID) => {
     switch (status) {
       case STATUS.WAITING_FOR_PLAYERS:
-        return getTeacherClassStartScreen(roomURL, pin, players);
+        return getTeacherClassStartScreen(
+          roomURL,
+          pin,
+          players,
+          accessToken,
+          emitAction,
+          socketLoadingActions
+        );
       case STATUS.QUESTIONS_CHOICES:
       case STATUS.QUESTIONS_TRUE_FALSE:
         return getTeacherClassQuestionsScreen(
@@ -118,14 +150,18 @@ export default (socket, socketLoadingActions) => {
           getErrorComponent
         );
       case STATUS.END_SESSION:
-        return getTeacherClassReportsScreen(quizID, quizzes, players, getErrorComponent);
+        return getTeacherClassReportsScreen(
+          quizID,
+          quizzes,
+          players,
+          getErrorComponent
+        );
       default:
         return getUnkownComponent(
           `Recieved unsupported game status. Status: ${status}`
         );
     }
   };
-
 
   return [getUnkownComponent, emitAction, getRenderedComponent];
 };

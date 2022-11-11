@@ -11,20 +11,17 @@ export default function IconButton({
   style = {},
   className = "",
   isLoading = false,
-  loadingIcon= "logo-square-white.png",
+  loadingIcon = "logo-square-white.png",
   backgroundColor = PRIMARY,
   iconName = undefined,
   imageType = TYPES.EXTRA_SMALL,
   onClick = () =>
     console.error("No on click handler passed here - IconButton "),
 }) {
-  return isLoading ? <LoadingIndicator
-  iconName={loadingIcon}
-  style={{ alignSelf: 'center', width: "20px", height: "20px" }}
-/> : (
+  return (
     <div
       onClick={(e) => {
-        if(!isLoading){
+        if (!isLoading) {
           onClick();
         }
         stopPropagation && e.stopPropagation();
@@ -32,7 +29,14 @@ export default function IconButton({
       style={{ backgroundColor, ...style }}
       className={`icon-button-cont ${className}`}
     >
-      {!hidden && <Image imageName={iconName} type={imageType} />}
+      {isLoading ? (
+        <LoadingIndicator
+          iconName={loadingIcon}
+          style={{ alignSelf: "center", width: "20px", height: "20px" }}
+        />
+      ) : (
+        !hidden && <Image imageName={iconName} type={imageType} />
+      )}
     </div>
   );
 }

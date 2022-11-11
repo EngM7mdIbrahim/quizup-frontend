@@ -12,6 +12,7 @@ export const STATUS = {
   SHOW_ANSWERS: "show-ans",
   END_SESSION: "end-session",
   WAITING_ANSWERS: "waiting-answers",
+  DELETED_PLAYER: "player-deleted"
 };
 
 export const SERVER_CMDS = {
@@ -26,6 +27,7 @@ export const LOCAL_STORAGE_KEYS = {
 export const TEACHER_ACTIONS = {
   REQ_ROOM: "teacher-join",
   REQUEST_UPDATE: "teacher-request-update-state",
+  DELETE_PLAYER: 'teacher-delete-player',
 };
 
 export const TEACHER_ON_ACK = "teacher-ack";
