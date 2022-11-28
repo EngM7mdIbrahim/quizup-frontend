@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import TeacherClassQuestionTemplate from "../templates/TeacherClassQuestionTemplate";
 import TeacherClassReportsTemplate from "../templates/TeacherClassReportsTemplate";
 import TeacherClassStartTemplate from "../templates/TeacherClassStartTemplate";
