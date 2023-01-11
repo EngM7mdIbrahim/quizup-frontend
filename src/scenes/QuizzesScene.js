@@ -13,7 +13,6 @@ export default function QuizzesScene() {
   const [alertProps, showAlert] = useAlertModal();
   const [dispatcher] = useLoadingState();
   const goTo = useCustomNavigator();
-  console.log('The get quizzes actions is',)
 
   /* eslint-disable */
   useEffect(() => {

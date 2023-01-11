@@ -2,7 +2,7 @@ export const ACCESS_TOKEN_KEY = "access_token";
 export const USER_NAME = "user-name";
 export const REFRESH_TOKEN_KEY = "refresh_token";
 
-export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = process.env.REACT_APP_API_URL || "https://quiz-up-backend.onrender.com";
 
 export const STATUS = {
   WAITING_FOR_PLAYERS: "waiting-players",
